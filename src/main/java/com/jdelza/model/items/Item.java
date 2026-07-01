@@ -1,13 +1,15 @@
-package com.jdelza.model.characters;
+package com.jdelza.model.items;
 
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.entities.Entity;
 
-public class Character extends Entity {
+public abstract class Item extends Entity {
 
-    public Character(Coordinates position) {
+    public Item(Coordinates position) {
         super(position);
     }
+
+
 
 
 }
