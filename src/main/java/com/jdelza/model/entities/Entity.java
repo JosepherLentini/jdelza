@@ -7,10 +7,6 @@ public abstract class Entity {
         this.position = position;
     }
 
-    public Entity(int x, int y) {
-        this.position = new Coordinates(x,y);
-    }
-
     //Get methods
     public Coordinates getPosition() {return position;}
 
