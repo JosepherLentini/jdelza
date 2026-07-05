@@ -5,7 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea1cf717-d1a5-4c4e-b4fe-dc6545168066" name="Changes" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/Directions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Tile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Zone.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/zone_test" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/entities/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/entities/Coordinates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/interfaces/Movable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/interfaces/Movable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Map.java" afterDir="false" />
+>>>>>>> 3de6479ecafe5cdedf6f5b473aba09851179919e
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,7 +28,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -33,13 +48,18 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Main.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
+<<<<<<< HEAD
     "git-widget-placeholder": "main",
+=======
+    "git-widget-placeholder": "feature/map",
+>>>>>>> 3de6479ecafe5cdedf6f5b473aba09851179919e
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Giuseppe Lentini/Documents/Progetti universitari Java/jdelza/pom.xml",
     "nodejs_package_manager_path": "npm"
