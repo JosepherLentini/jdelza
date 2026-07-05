@@ -1,8 +1,7 @@
 package com.jdelza.model.characters;
 
-import com.jdelza.model.Directions;
+import com.jdelza.model.enums.Directions;
 import com.jdelza.model.entities.Coordinates;
-import com.jdelza.model.entities.Entity;
 
 /**
  * This class define the player of the game
