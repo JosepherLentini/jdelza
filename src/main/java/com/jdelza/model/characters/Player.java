@@ -1,5 +1,6 @@
 package com.jdelza.model.characters;
 
+import com.jdelza.model.Directions;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.entities.Entity;
 
@@ -13,7 +14,16 @@ public class Player extends Character {
     }
 
     @Override
-    public void move() {
-
+    public void move(Directions direction) {
+        this.setPosition(new Coordinates(
+                this.getPosition().getX() + direction.getX(),
+                this.getPosition().getY() + direction.getY()
+        ));
     }
+
+    @Override
+    public String toString(){
+        return "P ";
+    }
+
 }
