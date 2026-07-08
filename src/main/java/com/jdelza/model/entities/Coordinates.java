@@ -1,5 +1,7 @@
 package com.jdelza.model.entities;
 
+import java.util.Objects;
+
 public class Coordinates {
     private int x,y;
 
@@ -18,4 +20,18 @@ public class Coordinates {
     @Override
     public String toString(){return  "(" + this.getX() + ", " + this.getY()+ ")";}
 
+    @Override
+    public boolean equals(Object o ){
+        if (o == null) return false;
+        if (o.getClass() != this.getClass()) return false;
+
+        Coordinates c = (Coordinates)o;
+
+        return c.getX() == this.getX() && c.getY() == this.getY();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
 }
