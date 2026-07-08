@@ -8,11 +8,17 @@ import com.jdelza.model.interfaces.Movable;
  * This class describes a character capable of moving
  */
 
-public abstract class Character extends Entity implements Movable {
+public abstract class GameCharacter extends Entity{
 
-    public Character(Coordinates position) {
+
+    /**
+     *
+     * @param position
+     */
+    public GameCharacter(Coordinates position) {
         super(position);
     }
+
 
 
 }

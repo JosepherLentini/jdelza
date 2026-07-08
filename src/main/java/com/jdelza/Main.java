@@ -2,6 +2,7 @@ package com.jdelza;
 
 import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
+import com.jdelza.model.enums.Directions;
 import com.jdelza.model.world.Tile;
 import com.jdelza.model.world.Zone;
 
@@ -49,7 +50,9 @@ public class Main {
 
 
 
-        System.out.println(z);
+        for (Directions d : Directions.values()){
+            System.out.println(d);
+        }
 
 
 
