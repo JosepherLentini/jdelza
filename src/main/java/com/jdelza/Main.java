@@ -20,7 +20,8 @@ public class Main {
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
         // to see how IntelliJ IDEA suggests fixing it.
         List<String> righe = new ArrayList<>();
-        Player p = new Player(new Coordinates(0,0));
+        Player p = Player.getPlayerInstance();
+
 
         try {
             Path path = Paths.get("src/test/zone_test");
@@ -51,8 +52,12 @@ public class Main {
 
 
         for (Directions d : Directions.values()){
-            System.out.println(d);
+            //System.out.println(d);
         }
+
+        Integer[] x = new Integer[3];
+
+        System.out.println(x[2]);
 
 
 

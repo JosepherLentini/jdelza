@@ -1,6 +1,12 @@
 package com.jdelza.model.enums;
 
 public enum WeaponType {
-    SWORD, ROCK, SPEAR;
+    NONE(DamageType.NULL), SWORD(DamageType.NORMAL), ROCK(DamageType.LIGHT), SPEAR(DamageType.LIGHT);
+
+    private DamageType weaponAttackPoints;
+
+    WeaponType(DamageType weaponAttackPoints){
+        this.weaponAttackPoints = weaponAttackPoints;
+    }
 
 }
