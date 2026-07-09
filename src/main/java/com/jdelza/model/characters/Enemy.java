@@ -12,34 +12,38 @@ import com.jdelza.model.weapons.Weapon;
  */
 public abstract class Enemy extends GameCharacter implements Movable, Damageable {
 
-    public double lifePoints;
-    public double collisionPoints;
+    private double lifePoints;
+    private double contactDamage;
     private Weapon weapon;
     private SkinColor color;
     private EnemyType enemyType;
 
+    /**
+     * Constructor
+     * @param position      enemy type Coordinates position
+     * @param weapon        weapon which enemy uses
+     * @param color         color of enemy skin
+     * @param enemyType     the typo ef the enemy which contains specifics enemy properties
+     */
     public Enemy(Coordinates position, Weapon weapon, SkinColor color, EnemyType enemyType) {
         super(position);
         this.lifePoints = enemyType.getLifePoints();
-        this.collisionPoints = enemyType.getCollisionPoints();
+        this.contactDamage = enemyType.getContactDamage();
         this.weapon = weapon;
         this.color = color;
         this.enemyType = enemyType;
     }
+
     //Get methods
     public double getLifePoints() {return lifePoints;}
-    public double getAttackPoints() {return collisionPoints;}
+    public double getContactDamage() {return contactDamage;}
     public Weapon getWeapon() {return weapon;}
     public SkinColor getColor() {return color;}
     public EnemyType getEnemyType() {return enemyType;}
 
 
     //Set methods
-
-
-    public void setLifePoints(double lifePoints) {
-        this.lifePoints = lifePoints;
-    }
+    public void setLifePoints(double lifePoints) {this.lifePoints = lifePoints;}
 
 
     @Override
@@ -52,4 +56,8 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
             this.setLifePoints(damage);
         }
     }
+
+
+
+
 }

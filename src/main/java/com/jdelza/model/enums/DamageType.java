@@ -1,6 +1,7 @@
 package com.jdelza.model.enums;
 
 public enum DamageType {
+    NULL(0.0),
     LIGHT(0.5),
     NORMAL(1.0),
     STRONG(2.0),
