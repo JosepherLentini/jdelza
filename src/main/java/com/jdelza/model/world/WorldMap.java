@@ -2,21 +2,31 @@ package com.jdelza.model.world;
 
 import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
+import com.jdelza.utils.Dimensions;
 
 /**
  * This class represent the current logic view of the game
  */
-public class Map {
+public class WorldMap {
     public Zone[][] map;
     public Player player;
     /**
      * Contructor
-     * @param heigt     height of the map
-     * @param width     width of the map
      */
-    public Map(int heigt, int width) {
+    public WorldMap(Player player) {
 
-        this.map = new Zone[heigt][width];
+        int mapHeigt = Dimensions.MAP_ROWS.getInt();
+        int mapWidth = Dimensions.MAP_COLUMNS.getInt();
+
+        this.map = new Zone[mapHeigt][mapWidth ];
+        this.player = player;
+
+        for (int i = 0; i< mapHeigt; i++){
+            for (int j=0; j<mapWidth; j++){
+                Coordinates zoneCoordinates = new Coordinates(j,i);
+                map[i][j] = new Zone(player.getPlayerMapPosition().equals(zoneCoordinates) ? player : null, zoneCoordinates);
+            }
+        }
 
     }
 
@@ -59,7 +69,13 @@ public class Map {
         for (int h = 0; h < map.length; h++){
 
             for (int w = 0; w < map[0].length; w++){
-                sb.append(map[h][w].toString());
+                if (player.getPlayerMapPosition().equals(new Coordinates(w,h))){
+                    sb.append(" # ");
+                }
+                else{
+                    sb.append(" + ");
+                }
+
             }
             sb.append("\n");
 

@@ -13,20 +13,38 @@ import com.jdelza.model.weapons.Weapon;
  */
 public class Player extends GameCharacter implements Movable, Damageable {
 
-    static Player playerInstance;
-    private double lifes;
-    private Weapon slotB;
-    private Usable slotA;
+
+    //Instance
+    static Player playerInstance;           //Player instance because class Player is a Singleton
+
+    //Position
+    private Coordinates playerMapPosition;  //Player Map coordinates
+
+    //Health
+    private double lifes;                   //Player lifes
+
+    //Slots
+    private Weapon slotB;                   //Player item at slot B
+    private Usable slotA;                   //Player item at slot A
+
+    //Items
     private Usable[] inventory;
+    private int numberOfRupies;
+    private int numberOfBombs;
 
     /**
      * Contructor
-     * @param position      player position expressed by Coordinates
+     *
+     * @param playerZonePosition player zone position expressed by Coordinates
      */
-    private Player(Coordinates position) {
-        super(position);
+    private Player(Coordinates playerZonePosition, Coordinates playerMapPosition) {
+        super(playerZonePosition);
+        this.playerMapPosition = playerMapPosition;
+
         this.lifes = 3.0;
         this.inventory = new Usable[6];
+        this.numberOfRupies = 0;
+        this.numberOfBombs = 0;
     }
 
     /**
@@ -34,7 +52,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
      * @return instance of Player
      */
     public static Player getPlayerInstance(){
-        if (playerInstance == null){ playerInstance= new Player(new Coordinates(0,0));}
+        if (playerInstance == null){ playerInstance= new Player(new Coordinates(0,0), new Coordinates(0,0));}
         return playerInstance;
     }
 
@@ -43,10 +61,15 @@ public class Player extends GameCharacter implements Movable, Damageable {
     public Weapon getSlotB() {return slotB;}
     public Usable getSlotA() {return slotA;}
     public Usable[] getInventory() {return inventory;}
+    public int getNumberOfRupies() {return numberOfRupies;}
+    public Coordinates getPlayerMapPosition() {return playerMapPosition;}
 
     //Set methods
     public void setLifes(double lifes) {this.lifes = lifes;}
     public void setSlotA(Usable slotA) {this.slotA = slotA;}
+    public void setSlotB(Weapon slotB) {this.slotB = slotB;}
+    public void setNumberOfRupies(int numberOfRupies) {this.numberOfRupies = numberOfRupies;}
+    public void setPlayerMapPosition(Coordinates playerMapPosition) {this.playerMapPosition = playerMapPosition;}
 
     /**
      * This function is used to insert an Usable item into the inventory
@@ -67,6 +90,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
                 this.getPosition().getY() + direction.getY()
         ));
     }
+
 
     @Override
     public String toString(){

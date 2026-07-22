@@ -5,21 +5,21 @@ import com.jdelza.model.entities.Entity;
 
 public class Tile extends Entity {
 
-    public String path;
+    public int tileId;
     public boolean walkable;
 
-    public Tile(Coordinates position, String path) {
+    public Tile(Coordinates position) {
         super(position);
-        this.path = path;
+        this.tileId = tileId;
         this.walkable = true;
     }
 
     //Get methods
-    public String getPath() {return path;}
+    public int getPath() {return tileId;}
     public boolean isWalkable() {return walkable;}
 
     //Set methods
-    public String setPath(String path){return this.path;}
+    public void setTileId(int tileId) {this.tileId = tileId;}
     public void setWalkable(boolean walkable) {this.walkable = walkable;}
 
     @Override
