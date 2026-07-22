@@ -34,11 +34,8 @@ public class Weapon extends Entity implements Damager {
 
     @Override
     public void toDamage(Damageable damageable) {
-
         //When a collision occurs between sword and game characters, points are deducted
-        if (this.getPosition().equals(damageable.getPosition())){
-            damageable.takeDamage(this.attackPoints.getDamage());
-        }
+        damageable.takeDamage(this.attackPoints.getDamage());
     }
 
 }

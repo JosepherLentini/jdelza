@@ -1,7 +1,7 @@
 package com.jdelza.model.characters;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.enums.EnemyType;
-import com.jdelza.model.enums.SkinColor;
+import com.jdelza.model.enums.GameColor;
 import com.jdelza.model.interfaces.Damageable;
 import com.jdelza.model.interfaces.Movable;
 import com.jdelza.model.weapons.Weapon;
@@ -15,7 +15,7 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
     private double lifePoints;
     private double contactDamage;
     private Weapon weapon;
-    private SkinColor color;
+    private GameColor color;
     private EnemyType enemyType;
 
     /**
@@ -25,7 +25,7 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
      * @param color         color of enemy skin
      * @param enemyType     the typo ef the enemy which contains specifics enemy properties
      */
-    public Enemy(Coordinates position, Weapon weapon, SkinColor color, EnemyType enemyType) {
+    public Enemy(Coordinates position, Weapon weapon, GameColor color, EnemyType enemyType) {
         super(position);
         this.lifePoints = enemyType.getLifePoints();
         this.contactDamage = enemyType.getContactDamage();
@@ -38,7 +38,7 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
     public double getLifePoints() {return lifePoints;}
     public double getContactDamage() {return contactDamage;}
     public Weapon getWeapon() {return weapon;}
-    public SkinColor getColor() {return color;}
+    public GameColor getColor() {return color;}
     public EnemyType getEnemyType() {return enemyType;}
 
 

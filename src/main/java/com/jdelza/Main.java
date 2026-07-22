@@ -1,65 +1,106 @@
 package com.jdelza;
 
-import com.jdelza.model.characters.Player;
-import com.jdelza.model.entities.Coordinates;
-import com.jdelza.model.enums.Directions;
-import com.jdelza.model.world.Tile;
-import com.jdelza.model.world.Zone;
+import com.jdelza.utils.Dimensions;
+import com.jdelza.view.overworld.Overworld;
+import com.jdelza.view.screen.GameScreen;
+import com.jdelza.view.screen.MainScreen;
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
+public class Main extends Application{
+
+
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        List<String> righe = new ArrayList<>();
-        Player p = Player.getPlayerInstance();
+        // Avvia l'applicazione JavaFX
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
+        /*
+
+        AnchorPane root = new AnchorPane(ms);
+        AnchorPane.
+         */
+
+        Overworld overworld = new Overworld();
+
+        /*
+        overworld.setLayoutY(-704*7);
+        overworld.setLayoutX(-1024*7);
+        */
+
+        MainScreen ms = new MainScreen();
+
+        GameScreen gs = new GameScreen(overworld);
 
 
-        try {
-            Path path = Paths.get("src/test/zone_test");
-            righe = Files.readAllLines(path);
-            System.out.println();
-
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Zone z = new Zone(righe.size(),righe.get(0).length(), p);
-
-        for (int y = 0; y < 5; y++){
-            for (int x = 0; x < 6; x++){
-
-            }
-        }
-
-        for (int y = 0; y < righe.size(); y++) {
-            for (int x = 0; x < righe.get(y).length(); x++) {
-                z.addTile(new Tile(new Coordinates(x,y), ""), y, x);
-                if (righe.get(y).split("")[x].equals("1") ) {z.getZone()[y][x].setWalkable(false);}
-            }
-        }
+        ms.getChildren().add(gs);
+        // StackPane non forza il ridimensionamento del figlio
+        StackPane root = new StackPane(ms);
 
 
 
-        for (Directions d : Directions.values()){
-            //System.out.println(d);
-        }
-
-        Integer[] x = new Integer[3];
-
-        System.out.println(x[2]);
+        // Imposta l'allineamento in alto così lo spazio vuoto rimane in basso
+        StackPane.setAlignment(ms, Pos.CENTER);
+        //ms.getChildren().add(overworld);
 
 
+
+
+        // Prende l'altezza visibile dello schermo principale (escludendo la barra delle applicazioni)
+        double bounds = Screen.getPrimary().getVisualBounds().getHeight();
+
+
+        overworld.setTranslateY(-Dimensions.MAP_HEIGHT.getInt()*7);
+        overworld.setTranslateX(-Dimensions.MAP_WIDTH.getInt()*7);
+
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Jdelza");
+        stage.setMaximized(true);
+        //stage.setResizable(false);
+        stage.centerOnScreen();
+        stage.show();
+
+
+        System.out.println(bounds);
+    }
+}
+
+
+
+
+
+/*
+
+public class Main extends Application {
+
+
+
+
+    public static void main(String[] args) {
+
+        Player zeldo = Player.getPlayerInstance();
+        zeldo.setPlayerMapPosition(new Coordinates(7,7));
+        zeldo.setPosition(new Coordinates(4,4));
+
+        WorldMap map = new WorldMap(zeldo);
+
+        Zone currentZone = map.getMap()[zeldo.getPlayerMapPosition().getY()][zeldo.getPlayerMapPosition().getX()];
+        Zone x = Arrays.stream(map.getMap()).flatMap(Arrays::stream).filter(z->z.getPlayer() != null).findFirst().get();
+
+        System.out.println(map.toString());
+        System.out.println(x);
 
     }
 }
+
+*/

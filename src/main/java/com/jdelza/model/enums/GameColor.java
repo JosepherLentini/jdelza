@@ -1,5 +1,5 @@
 package com.jdelza.model.enums;
 
-public enum SkinColor {
+public enum GameColor {
     BLUE, RED;
 }
