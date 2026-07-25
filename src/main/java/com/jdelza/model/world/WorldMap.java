@@ -15,8 +15,8 @@ public class WorldMap {
      */
     public WorldMap(Player player) {
 
-        int mapHeigt = Dimensions.MAP_ROWS.getInt();
-        int mapWidth = Dimensions.MAP_COLUMNS.getInt();
+        int mapHeigt = Dimensions.MAP_ROWS.get();
+        int mapWidth = Dimensions.MAP_COLUMNS.get();
 
         this.map = new Zone[mapHeigt][mapWidth ];
         this.player = player;

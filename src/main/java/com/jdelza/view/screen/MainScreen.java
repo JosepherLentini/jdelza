@@ -13,17 +13,16 @@ public class MainScreen extends StackPane {
     private final int mainScreenWidth;
 
     public MainScreen() {
-        this.mainScreenHeight = Dimensions.RENDER_SCREEN_HEIGHT.getInt();
-        this.mainScreenWidth  = Dimensions.RENDER_SCREEN_WIDTH.getInt();
+        this.mainScreenHeight = Dimensions.RENDER_SCREEN_HEIGHT.get();
+        this.mainScreenWidth  = Dimensions.RENDER_SCREEN_WIDTH.get();
 
-        /*
+
         this.setStyle(
                 "-fx-border-color: blue; " +
                         "-fx-border-style: solid; " +
                         "-fx-border-width: 3px; "
         );
 
-         */
 
 
         this.setPrefSize(mainScreenWidth, mainScreenHeight);

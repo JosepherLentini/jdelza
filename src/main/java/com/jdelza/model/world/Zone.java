@@ -19,8 +19,8 @@ public class Zone {
     public Zone(Player player, Coordinates zoneMapPosition) {
 
         //Standard and global zone dimensions
-        int zoneRows = Dimensions.ZONE_ROWS.getInt();
-        int zoneColumns = Dimensions.ZONE_COLUMNS.getInt();
+        int zoneRows = Dimensions.ZONE_ROWS.get();
+        int zoneColumns = Dimensions.ZONE_COLUMNS.get();
 
 
         this.zone = new Tile[zoneRows][zoneColumns];

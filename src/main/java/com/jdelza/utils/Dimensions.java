@@ -17,19 +17,23 @@ public enum Dimensions {
     RENDER_SCREEN_HEIGHT(176 * 4),
 
     MAP_WIDTH(288*4),
-    MAP_HEIGHT(124*4);
+    MAP_HEIGHT(124*4),
 
-    private final double value;
 
-    Dimensions(double value) {
+    //3. Tile sizes
+    TILE_WIDTH(72),
+    TILE_HEIGT(45);
+
+
+    private final int value;
+
+    Dimensions(int value) {
         this.value = value;
     }
 
-    public double get() {
+    public int get() {
         return value;
     }
 
-    public int getInt() {
-        return (int) value;
-    }
+
 }

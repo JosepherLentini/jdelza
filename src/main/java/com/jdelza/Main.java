@@ -1,6 +1,11 @@
 package com.jdelza;
 
+
+import com.jdelza.controller.GameController;
+import com.jdelza.model.GameModel;
 import com.jdelza.utils.Dimensions;
+import com.jdelza.view.GameView;
+import com.jdelza.view.PlayerView;
 import com.jdelza.view.overworld.Overworld;
 import com.jdelza.view.screen.GameScreen;
 import com.jdelza.view.screen.MainScreen;
@@ -24,24 +29,21 @@ public class Main extends Application{
     public void start(Stage stage) throws Exception {
 
         /*
-
-        AnchorPane root = new AnchorPane(ms);
-        AnchorPane.
-         */
-
+        PlayerView player = new PlayerView();
         Overworld overworld = new Overworld();
 
-        /*
-        overworld.setLayoutY(-704*7);
-        overworld.setLayoutX(-1024*7);
-        */
+         */
 
         MainScreen ms = new MainScreen();
 
-        GameScreen gs = new GameScreen(overworld);
 
 
-        ms.getChildren().add(gs);
+        GameModel model = new GameModel();
+        GameView view = new GameView(model);
+        GameScreen gs = view.getGamescreen();
+        GameController gc = new GameController(model, view);
+
+         //ms.getChildren().add(gs);
         // StackPane non forza il ridimensionamento del figlio
         StackPane root = new StackPane(ms);
 
@@ -52,14 +54,9 @@ public class Main extends Application{
         //ms.getChildren().add(overworld);
 
 
-
-
         // Prende l'altezza visibile dello schermo principale (escludendo la barra delle applicazioni)
         double bounds = Screen.getPrimary().getVisualBounds().getHeight();
 
-
-        overworld.setTranslateY(-Dimensions.MAP_HEIGHT.getInt()*7);
-        overworld.setTranslateX(-Dimensions.MAP_WIDTH.getInt()*7);
 
 
         Scene scene = new Scene(root);
@@ -68,6 +65,14 @@ public class Main extends Application{
         stage.setMaximized(true);
         //stage.setResizable(false);
         stage.centerOnScreen();
+
+        scene.setOnKeyPressed(
+                e ->{
+
+                    gc.handleKeyPressed(e);
+                }
+        );
+
         stage.show();
 
 
