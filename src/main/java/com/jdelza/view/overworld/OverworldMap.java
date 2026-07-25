@@ -9,8 +9,8 @@ public class OverworldMap {
 
     private ImageView[][] overworldMap;
     private final int scala = 4;
-    private final double larghezzaMappa = Dimensions.MAP_WIDTH.getInt();
-    private final double altezzaMappa = Dimensions.MAP_HEIGHT.getInt();   // 704 pixel
+    private final double larghezzaMappa = Dimensions.MAP_WIDTH.get();
+    private final double altezzaMappa = Dimensions.MAP_HEIGHT.get();   // 704 pixel
 
     public OverworldMap(){
         this.overworldMap = new ImageView[8][16];

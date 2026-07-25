@@ -11,8 +11,8 @@ public class Overworld extends Pane {
 
     // Definiamo la scala (moltiplicatore x4) e le dimensioni
     private final int scala = 4;
-    private final double larghezzaMappa = Dimensions.MAP_WIDTH.getInt();
-    private final double altezzaMappa = Dimensions.MAP_HEIGHT.getInt();
+    private final double larghezzaMappa = Dimensions.MAP_WIDTH.get();
+    private final double altezzaMappa = Dimensions.MAP_HEIGHT.get();
 
     public Overworld(){
 
@@ -44,6 +44,8 @@ public class Overworld extends Pane {
         //If you set minimum and maximum dimensions, the component will not adapt to its parent
         this.setMinSize(this.larghezzaMappa, this.altezzaMappa);
         this.setMaxSize(this.larghezzaMappa, this.altezzaMappa);
+
+
 
 
     }

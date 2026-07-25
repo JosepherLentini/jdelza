@@ -5,26 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea1cf717-d1a5-4c4e-b4fe-dc6545168066" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/Dimensions.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/Overworld.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/GameScreen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/Events.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/GameView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Enemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enemies/Moblin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enemies/Moblin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enemies/Octorock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enemies/Octorock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enemies/Tektite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enemies/Tektite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enums/SkinColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enums/GameColor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/interfaces/Healing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/interfaces/Healer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Bomb.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Bomb.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Candle.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Item.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Rupie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Rupie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/weapons/Weapon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/weapons/Weapon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/WorldMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/WorldMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/WorldMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Zone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Zone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/Dimensions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/Dimensions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/Overworld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/Overworld.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/OverworldMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/OverworldMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/GameScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/GameScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/MainScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/MainScreen.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,8 +27,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Enum" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -63,7 +55,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;refactor/items-settings&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/view-controller-player&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Giuseppe Lentini/Documents/Progetti universitari Java/jdelza/pom.xml&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,

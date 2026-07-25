@@ -52,7 +52,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
      * @return instance of Player
      */
     public static Player getPlayerInstance(){
-        if (playerInstance == null){ playerInstance= new Player(new Coordinates(0,0), new Coordinates(0,0));}
+        if (playerInstance == null){ playerInstance= new Player(new Coordinates(7,7), new Coordinates(7,7));}
         return playerInstance;
     }
 
@@ -72,7 +72,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
     public void setPlayerMapPosition(Coordinates playerMapPosition) {this.playerMapPosition = playerMapPosition;}
 
     /**
-     * This function is used to insert an Usable item into the inventory
+     * This function is used to insert a Usable item into the inventory
      * @param item  Usable item to add o the inventory
      */
     public void addItemToInventory(Usable item){
@@ -89,6 +89,8 @@ public class Player extends GameCharacter implements Movable, Damageable {
                 this.getPosition().getX() + direction.getX(),
                 this.getPosition().getY() + direction.getY()
         ));
+        System.out.println(this.getPosition());
+        System.out.println(this.getPlayerMapPosition());
     }
 
 
@@ -107,4 +109,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
             this.setLifes(damage);
         }
     }
+
+
+
 }

@@ -1,7 +1,10 @@
 package com.jdelza.view.screen;
 
+import com.jdelza.model.enums.Directions;
 import com.jdelza.utils.Dimensions;
+import com.jdelza.view.PlayerView;
 import com.jdelza.view.overworld.Overworld;
+import javafx.scene.control.skin.TextInputControlSkin;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -11,13 +14,18 @@ public class GameScreen extends VBox {
     private final int gameScreenHeight;
     private final int gameScreenWidth;
 
+    //Main game screen components
     private Pane overworld;        //This is the container of overwold class not Overwolrd classs
     private String inventory;
 
-    public GameScreen(Overworld overworld) {
-        this.gameScreenHeight = Dimensions.RENDER_SCREEN_HEIGHT.getInt();
-        this.gameScreenWidth = Dimensions.RENDER_SCREEN_WIDTH.getInt();
+    //Player
+    private PlayerView player;
+
+    public GameScreen(Overworld overworld, PlayerView player) {
+        this.gameScreenHeight = Dimensions.RENDER_SCREEN_HEIGHT.get();
+        this.gameScreenWidth = Dimensions.RENDER_SCREEN_WIDTH.get();
         this.overworld = overworld;
+        this.player = player;
 
         //Rectancle clip
         Rectangle overwoldClip = new Rectangle(gameScreenWidth, Dimensions.MAP_HEIGHT.get());
@@ -29,6 +37,7 @@ public class GameScreen extends VBox {
         overworldWrapper.setMinSize(gameScreenWidth, Dimensions.MAP_HEIGHT.get());
         overworldWrapper.setMaxSize(gameScreenWidth, Dimensions.MAP_HEIGHT.get());
         overworldWrapper.setClip(overwoldClip);
+        overworldWrapper.getChildren().add(player);
 
 
         Pane p = new Pane();
@@ -46,7 +55,7 @@ public class GameScreen extends VBox {
         );
 
         overworldWrapper.setStyle(
-                "-fx-border-color: blue; " +
+                "-fx-border-color: violet; " +
                         "-fx-border-style: solid; " +
                         "-fx-border-width: 2px; "
         );
@@ -62,5 +71,24 @@ public class GameScreen extends VBox {
 
 
 
+    }
+
+    //Get methods
+    public PlayerView getPlayer() {
+        return player;
+    }
+
+    public Pane getOverworld() {
+        return overworld;
+    }
+
+    //Player
+    public void movePlayer(Directions direction){
+        switch (direction){
+            case UP:    player.setTranslateY(player.getTranslateY()-player.getHeight());break;
+            case DOWN:  player.setTranslateY(player.getTranslateY()+player.getHeight());break;
+            case LEFT:  player.setTranslateX(player.getTranslateX()-player.getWidth());break;
+            case RIGHT: player.setTranslateX(player.getTranslateX()+player.getWidth());break;
+        }
     }
 }
