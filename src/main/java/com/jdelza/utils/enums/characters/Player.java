@@ -1,10 +1,10 @@
-package com.jdelza.model.characters;
+package com.jdelza.utils.enums.characters;
 
-import com.jdelza.model.enums.Directions;
+import com.jdelza.utils.enums.Directions;
 import com.jdelza.model.entities.Coordinates;
-import com.jdelza.model.interfaces.Damageable;
-import com.jdelza.model.interfaces.Movable;
-import com.jdelza.model.interfaces.Usable;
+import com.jdelza.utils.interfaces.Damageable;
+import com.jdelza.utils.interfaces.Movable;
+import com.jdelza.utils.interfaces.Usable;
 import com.jdelza.model.weapons.Weapon;
 
 

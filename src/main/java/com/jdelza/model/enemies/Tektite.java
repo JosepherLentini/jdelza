@@ -1,10 +1,10 @@
 package com.jdelza.model.enemies;
 
-import com.jdelza.model.characters.Enemy;
+import com.jdelza.utils.enums.characters.Enemy;
 import com.jdelza.model.entities.Coordinates;
-import com.jdelza.model.enums.Directions;
-import com.jdelza.model.enums.EnemyType;
-import com.jdelza.model.enums.GameColor;
+import com.jdelza.utils.enums.Directions;
+import com.jdelza.utils.enums.EnemyType;
+import com.jdelza.utils.enums.GameColor;
 import com.jdelza.model.weapons.Weapon;
 
 public class Tektite extends Enemy {

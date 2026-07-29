@@ -5,16 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea1cf717-d1a5-4c4e-b4fe-dc6545168066" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/Events.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/GameView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/MainController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/StartController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/ChangeScreen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/MainView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/StartView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/WorldMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/WorldMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Zone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Zone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/Dimensions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/Dimensions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/Overworld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/Overworld.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/OverworldMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/OverworldMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/GameModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/GameModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/Events.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/GameView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/GameView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/GameScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/GameScreen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/MainScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/MainScreen.java" afterDir="false" />
     </list>
@@ -27,8 +28,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -55,7 +56,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/view-controller-player&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/view-switcher&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Giuseppe Lentini/Documents/Progetti universitari Java/jdelza/pom.xml&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,

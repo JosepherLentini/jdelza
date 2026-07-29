@@ -1,8 +1,7 @@
-package com.jdelza.model.characters;
+package com.jdelza.utils.enums.characters;
 
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.entities.Entity;
-import com.jdelza.model.interfaces.Movable;
 
 /**
  * This class describes a character capable of moving

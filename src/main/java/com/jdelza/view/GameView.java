@@ -1,8 +1,7 @@
 package com.jdelza.view;
 
 import com.jdelza.model.GameModel;
-import com.jdelza.model.enums.Directions;
-import com.jdelza.utils.Events;
+import com.jdelza.utils.enums.Directions;
 import com.jdelza.view.overworld.Overworld;
 import com.jdelza.view.screen.GameScreen;
 
@@ -17,13 +16,13 @@ public class GameView implements Observer {
     /**
      * GameView constructor
      */
-    public GameView(GameModel gamemodel) {
+    public GameView(GameModel gameModel) {
 
         this.gamescreen = new GameScreen(new Overworld(), new PlayerView());
-        this.gameModel = gamemodel;
+        this.gameModel = gameModel;
 
-        gamescreen.getPlayer().setTranslateX(gamescreen.getPlayer().getPlayerWidth()*gamemodel.getPlayer().getPosition().getX());
-        gamescreen.getPlayer().setTranslateY(gamescreen.getPlayer().getPlayerHeight()*gamemodel.getPlayer().getPosition().getY());
+        gamescreen.getPlayer().setTranslateX(gamescreen.getPlayer().getPlayerWidth()*gameModel.getPlayer().getPosition().getX());
+        gamescreen.getPlayer().setTranslateY(gamescreen.getPlayer().getPlayerHeight()*gameModel.getPlayer().getPosition().getY());
 
 
     }

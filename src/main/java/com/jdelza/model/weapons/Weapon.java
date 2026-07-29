@@ -2,10 +2,10 @@ package com.jdelza.model.weapons;
 
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.entities.Entity;
-import com.jdelza.model.enums.DamageType;
-import com.jdelza.model.enums.WeaponType;
-import com.jdelza.model.interfaces.Damageable;
-import com.jdelza.model.interfaces.Damager;
+import com.jdelza.utils.enums.DamageType;
+import com.jdelza.utils.enums.WeaponType;
+import com.jdelza.utils.interfaces.Damageable;
+import com.jdelza.utils.interfaces.Damager;
 
 /**
  * Weapon represent the type of weapon used by enemies or player

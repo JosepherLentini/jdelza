@@ -1,8 +1,8 @@
 package com.jdelza.model.items;
 
-import com.jdelza.model.characters.Player;
+import com.jdelza.utils.enums.characters.Player;
 import com.jdelza.model.entities.Coordinates;
-import com.jdelza.model.enums.GameColor;
+import com.jdelza.utils.enums.GameColor;
 
 public class Rupie extends Item{
 

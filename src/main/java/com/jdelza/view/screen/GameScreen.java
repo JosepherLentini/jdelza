@@ -1,18 +1,17 @@
 package com.jdelza.view.screen;
 
-import com.jdelza.model.enums.Directions;
-import com.jdelza.utils.Dimensions;
+import com.jdelza.utils.enums.Directions;
+import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.view.PlayerView;
 import com.jdelza.view.overworld.Overworld;
-import javafx.scene.control.skin.TextInputControlSkin;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
 public class GameScreen extends VBox {
 
-    private final int gameScreenHeight;
-    private final int gameScreenWidth;
+    private final int gameScreenHeight = Dimensions.RENDER_SCREEN_HEIGHT.get();
+    private final int gameScreenWidth = Dimensions.RENDER_SCREEN_WIDTH.get();
 
     //Main game screen components
     private Pane overworld;        //This is the container of overwold class not Overwolrd classs
@@ -22,10 +21,17 @@ public class GameScreen extends VBox {
     private PlayerView player;
 
     public GameScreen(Overworld overworld, PlayerView player) {
-        this.gameScreenHeight = Dimensions.RENDER_SCREEN_HEIGHT.get();
-        this.gameScreenWidth = Dimensions.RENDER_SCREEN_WIDTH.get();
         this.overworld = overworld;
         this.player = player;
+
+        // IMPEDISCE AL VBOX DI ESPANDERSI OLTRE LE SUE DIMENSIONI DESIDERATE
+        this.setMinSize(gameScreenWidth, gameScreenHeight);
+        this.setPrefSize(gameScreenWidth, gameScreenHeight);
+        this.setMaxSize(gameScreenWidth, gameScreenHeight);
+
+        //LEGGE GLI EVENTI PRIMA DEL COMPONENTE WRAPPER
+        this.setFocusTraversable(true);
+        this.requestFocus();
 
         //Rectancle clip
         Rectangle overwoldClip = new Rectangle(gameScreenWidth, Dimensions.MAP_HEIGHT.get());
@@ -49,7 +55,7 @@ public class GameScreen extends VBox {
         p.setMaxSize(gameScreenWidth, 208);
 
         this.setStyle(
-                "-fx-border-color: green; " +
+                "-fx-border-color: yellow; " +
                         "-fx-border-style: solid; " +
                         "-fx-border-width: 3px; "
         );
