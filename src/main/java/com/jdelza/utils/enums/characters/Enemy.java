@@ -1,9 +1,9 @@
-package com.jdelza.model.characters;
+package com.jdelza.utils.enums.characters;
 import com.jdelza.model.entities.Coordinates;
-import com.jdelza.model.enums.EnemyType;
-import com.jdelza.model.enums.GameColor;
-import com.jdelza.model.interfaces.Damageable;
-import com.jdelza.model.interfaces.Movable;
+import com.jdelza.utils.enums.EnemyType;
+import com.jdelza.utils.enums.GameColor;
+import com.jdelza.utils.interfaces.Damageable;
+import com.jdelza.utils.interfaces.Movable;
 import com.jdelza.model.weapons.Weapon;
 
 

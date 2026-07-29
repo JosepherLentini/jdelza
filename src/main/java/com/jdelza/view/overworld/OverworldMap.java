@@ -1,6 +1,6 @@
 package com.jdelza.view.overworld;
 
-import com.jdelza.utils.Dimensions;
+import com.jdelza.utils.enums.Dimensions;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

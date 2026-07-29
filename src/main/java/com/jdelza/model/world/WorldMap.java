@@ -1,8 +1,8 @@
 package com.jdelza.model.world;
 
-import com.jdelza.model.characters.Player;
+import com.jdelza.utils.enums.characters.Player;
 import com.jdelza.model.entities.Coordinates;
-import com.jdelza.utils.Dimensions;
+import com.jdelza.utils.enums.Dimensions;
 
 /**
  * This class represent the current logic view of the game

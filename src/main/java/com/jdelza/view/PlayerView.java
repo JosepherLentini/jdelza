@@ -1,7 +1,7 @@
 package com.jdelza.view;
 
-import com.jdelza.model.enums.Directions;
-import com.jdelza.utils.Dimensions;
+import com.jdelza.utils.enums.Directions;
+import com.jdelza.utils.enums.Dimensions;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;

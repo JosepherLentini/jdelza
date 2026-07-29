@@ -2,15 +2,10 @@ package com.jdelza;
 
 
 import com.jdelza.controller.GameController;
+import com.jdelza.controller.StartController;
 import com.jdelza.model.GameModel;
-import com.jdelza.utils.Dimensions;
-import com.jdelza.view.GameView;
-import com.jdelza.view.PlayerView;
-import com.jdelza.view.overworld.Overworld;
-import com.jdelza.view.screen.GameScreen;
-import com.jdelza.view.screen.MainScreen;
+import com.jdelza.view.MainView;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
@@ -28,31 +23,45 @@ public class Main extends Application{
     @Override
     public void start(Stage stage) throws Exception {
 
+
         /*
-        PlayerView player = new PlayerView();
-        Overworld overworld = new Overworld();
-
-         */
-
         MainScreen ms = new MainScreen();
-
-
 
         GameModel model = new GameModel();
         GameView view = new GameView(model);
         GameScreen gs = view.getGamescreen();
         GameController gc = new GameController(model, view);
 
-         //ms.getChildren().add(gs);
-        // StackPane non forza il ridimensionamento del figlio
+         ms.getChildren().add(new StartScreen());
+        //StackPane non forza il ridimensionamento del figlio
         StackPane root = new StackPane(ms);
-
 
 
         // Imposta l'allineamento in alto così lo spazio vuoto rimane in basso
         StackPane.setAlignment(ms, Pos.CENTER);
         //ms.getChildren().add(overworld);
 
+         */
+        GameModel gameModel = new GameModel();
+        MainView main = new MainView(gameModel);
+
+        StartController startController = new StartController(main.getStartView());
+        GameController  gameController  = new GameController(gameModel, main.getGameView());
+
+
+        /*
+        GameView gameView = new GameView(gameModel);
+
+        StartController startController = new StartController();
+        GameController gameController = new GameController(gameModel, gameView);
+
+        main.getMainScreen().getChildren().add(startController.getStartView().getStartScreen());
+
+
+
+         */
+
+        StackPane root = main.getMainScreen();
 
         // Prende l'altezza visibile dello schermo principale (escludendo la barra delle applicazioni)
         double bounds = Screen.getPrimary().getVisualBounds().getHeight();
@@ -66,12 +75,14 @@ public class Main extends Application{
         //stage.setResizable(false);
         stage.centerOnScreen();
 
+        /*
         scene.setOnKeyPressed(
                 e ->{
-
                     gc.handleKeyPressed(e);
                 }
         );
+        */
+
 
         stage.show();
 

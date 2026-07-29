@@ -1,7 +1,7 @@
 package com.jdelza.view.overworld;
 
 
-import com.jdelza.utils.Dimensions;
+import com.jdelza.utils.enums.Dimensions;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 

@@ -1,4 +1,4 @@
-package com.jdelza.model.enums;
+package com.jdelza.utils.enums;
 
 public enum DamageType {
     NULL(0.0),

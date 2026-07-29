@@ -1,4 +1,4 @@
-package com.jdelza.model.interfaces;
+package com.jdelza.utils.interfaces;
 
 import com.jdelza.model.entities.Coordinates;
 

@@ -1,4 +1,4 @@
-package com.jdelza.utils;
+package com.jdelza.utils.enums;
 
 public enum Dimensions {
 
