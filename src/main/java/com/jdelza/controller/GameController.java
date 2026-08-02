@@ -1,6 +1,7 @@
 package com.jdelza.controller;
 
 import com.jdelza.model.GameModel;
+import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.view.GameView;
 import javafx.scene.input.KeyEvent;
@@ -32,7 +33,15 @@ public class GameController {
      * @param direction
      */
     public void movePlayer(Directions direction){
+
+
         gameModel.movePlayer(direction);
+
+
+
+
+
+
     }
 
     /**
@@ -41,7 +50,7 @@ public class GameController {
      */
     public void handleKeyPressed(KeyEvent ke){
 
-        System.out.println(ke.getCode());
+        //System.out.println(ke.getCode());
 
         switch(ke.getCode()){
             case UP:    movePlayer(Directions.UP); break;

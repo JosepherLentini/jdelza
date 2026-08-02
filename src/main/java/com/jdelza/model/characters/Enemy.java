@@ -1,4 +1,4 @@
-package com.jdelza.utils.enums.characters;
+package com.jdelza.model.characters;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.utils.enums.EnemyType;
 import com.jdelza.utils.enums.GameColor;

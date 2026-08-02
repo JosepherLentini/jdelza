@@ -12,6 +12,8 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 
+
+
 public class Main extends Application{
 
 
@@ -57,8 +59,6 @@ public class Main extends Application{
 
         main.getMainScreen().getChildren().add(startController.getStartView().getStartScreen());
 
-
-
          */
 
         StackPane root = main.getMainScreen();
@@ -75,20 +75,17 @@ public class Main extends Application{
         //stage.setResizable(false);
         stage.centerOnScreen();
 
-        /*
-        scene.setOnKeyPressed(
-                e ->{
-                    gc.handleKeyPressed(e);
-                }
-        );
-        */
-
 
         stage.show();
 
+        //System.out.println(gameModel.getOverworldMap().getZone(new Coordinates(7,7)).toString());
 
-        System.out.println(bounds);
+
+
     }
+
+
+
 }
 
 

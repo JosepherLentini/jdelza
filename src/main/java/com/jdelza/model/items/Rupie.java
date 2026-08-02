@@ -1,6 +1,6 @@
 package com.jdelza.model.items;
 
-import com.jdelza.utils.enums.characters.Player;
+import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.utils.enums.GameColor;
 

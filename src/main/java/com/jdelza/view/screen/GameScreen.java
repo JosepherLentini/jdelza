@@ -2,6 +2,7 @@ package com.jdelza.view.screen;
 
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.Dimensions;
+import com.jdelza.utils.events.PlayerMovement;
 import com.jdelza.view.PlayerView;
 import com.jdelza.view.overworld.Overworld;
 import javafx.scene.layout.Pane;
@@ -14,7 +15,7 @@ public class GameScreen extends VBox {
     private final int gameScreenWidth = Dimensions.RENDER_SCREEN_WIDTH.get();
 
     //Main game screen components
-    private Pane overworld;        //This is the container of overwold class not Overwolrd classs
+    private Pane overworld;        //This is the container of overwold class not Overwolrd class
     private String inventory;
 
     //Player
@@ -67,15 +68,9 @@ public class GameScreen extends VBox {
         );
 
 
-
         this.getChildren().addAll(p,overworldWrapper);
         Rectangle clip = new Rectangle(gameScreenWidth, gameScreenHeight);
         this.setClip(clip);
-
-
-
-
-
 
     }
 
@@ -89,12 +84,52 @@ public class GameScreen extends VBox {
     }
 
     //Player
-    public void movePlayer(Directions direction){
-        switch (direction){
-            case UP:    player.setTranslateY(player.getTranslateY()-player.getHeight());break;
-            case DOWN:  player.setTranslateY(player.getTranslateY()+player.getHeight());break;
-            case LEFT:  player.setTranslateX(player.getTranslateX()-player.getWidth());break;
-            case RIGHT: player.setTranslateX(player.getTranslateX()+player.getWidth());break;
+    public void movePlayer(PlayerMovement playerMovement){
+
+        if (playerMovement.isZoneChanged()){
+
+            switch (playerMovement.getDirection()){
+                case UP:    {
+
+                    overworld.setLayoutY(overworld.getLayoutY() + Dimensions.MAP_HEIGHT.get());
+                    player.setTranslateY((Dimensions.ZONE_ROWS.get()-1)* player.getHeight());
+
+                }; break;
+                case DOWN: {
+
+                    overworld.setLayoutY(overworld.getLayoutY() - Dimensions.MAP_HEIGHT.get());
+                    player.setTranslateY(0);
+
+                }; break;
+                case LEFT: {
+                    overworld.setLayoutX(overworld.getLayoutX() + Dimensions.MAP_WIDTH.get());
+                    player.setTranslateX((Dimensions.ZONE_COLUMNS.get()-1)*player.getPlayerWidth());
+
+                }; break;
+
+
+                case RIGHT:{
+                    overworld.setLayoutX(overworld.getLayoutX() - Dimensions.MAP_WIDTH.get());
+                    player.setTranslateX(0);
+
+                }; break;
+            }
+
         }
+        else{
+            switch (playerMovement.getDirection()){
+                case UP:    player.setTranslateY(player.getTranslateY()-player.getHeight());break;
+                case DOWN:  player.setTranslateY(player.getTranslateY()+player.getHeight());break;
+                case LEFT:  player.setTranslateX(player.getTranslateX()-player.getWidth());break;
+                case RIGHT: player.setTranslateX(player.getTranslateX()+player.getWidth());break;
+            }
+        }
+
+
+
     }
+
+
+
+
 }

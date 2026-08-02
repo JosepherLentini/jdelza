@@ -1,7 +1,9 @@
 package com.jdelza.view;
 
 import com.jdelza.model.GameModel;
+import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.Directions;
+import com.jdelza.utils.events.PlayerMovement;
 import com.jdelza.view.overworld.Overworld;
 import com.jdelza.view.screen.GameScreen;
 
@@ -19,6 +21,9 @@ public class GameView implements Observer {
     public GameView(GameModel gameModel) {
 
         this.gamescreen = new GameScreen(new Overworld(), new PlayerView());
+        gamescreen.getOverworld().setLayoutX(-gameModel.getPlayer().getPlayerMapPosition().getX()* Dimensions.MAP_WIDTH.get());
+        gamescreen.getOverworld().setLayoutY(-gameModel.getPlayer().getPlayerMapPosition().getY()* Dimensions.MAP_HEIGHT.get());
+
         this.gameModel = gameModel;
 
         gamescreen.getPlayer().setTranslateX(gamescreen.getPlayer().getPlayerWidth()*gameModel.getPlayer().getPosition().getX());
@@ -32,10 +37,16 @@ public class GameView implements Observer {
     public GameScreen getGamescreen() {return gamescreen;}
 
 
+    public void changeZone(int x, int y){
+        //gamescreen.getOverworld().setLayoutX(x*Dimensions.MAP_WIDTH.get());
+        gamescreen.getOverworld().setLayoutY(-6*Dimensions.MAP_HEIGHT.get());
+    }
+
+
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof Directions){
-            gamescreen.movePlayer((Directions) arg);
+        if (arg instanceof PlayerMovement){
+            gamescreen.movePlayer(((PlayerMovement) arg));
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.jdelza.model.world;
 
-import com.jdelza.utils.enums.characters.Player;
+import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.utils.enums.Dimensions;
 
@@ -33,6 +33,8 @@ public class Zone {
             }
         }
 
+        System.out.println("crea zona");
+
     }
 
     //Get methods
@@ -59,10 +61,10 @@ public class Zone {
         StringBuilder sb = new StringBuilder();
         for (int h = 0; h < zone.length; h++){
             for (int w = 0; w < zone[0].length; w++){
-                if (player != null & player.getPosition().getX() == w && player.getPosition().getY() == h){ // &
+                if (player != null && player.getPosition().getX() == w && player.getPosition().getY() == h){ // &
                     sb.append(player.toString());
 
-                } else {sb.append(zone[h][w].toString()+" ");}
+                } else {sb.append(zone[h][w].isWalkable() ? "0 " : "1 ");}
 
             }
             sb.append("\n");
