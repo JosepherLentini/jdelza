@@ -5,8 +5,8 @@ import com.jdelza.model.entities.Entity;
 
 public class Tile extends Entity {
 
-    public int tileId;
-    public boolean walkable;
+    private int tileId;
+    private boolean walkable;
 
     public Tile(Coordinates position) {
         super(position);

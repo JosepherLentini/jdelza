@@ -13,7 +13,6 @@ public class StartView extends Observable{
     public StartView() {
         this.startScreen = new StartScreen();
 
-
     }
 
 

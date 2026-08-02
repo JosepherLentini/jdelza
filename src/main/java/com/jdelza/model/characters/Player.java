@@ -1,5 +1,8 @@
-package com.jdelza.utils.enums.characters;
+package com.jdelza.model.characters;
 
+import com.jdelza.model.world.WorldMap;
+import com.jdelza.model.world.Zone;
+import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.utils.interfaces.Damageable;
@@ -83,14 +86,60 @@ public class Player extends GameCharacter implements Movable, Damageable {
         if (index<inventory.length){inventory[index] = item;}
     }
 
+    public void walk(WorldMap map, Directions direction){
+        Zone currentZone = map.getZone(this.getPlayerMapPosition());
+
+        Coordinates nextCoordinates  =new Coordinates(
+                this.getPosition().getX() + direction.getX(),
+                this.getPosition().getY() + direction.getY()
+        );
+        //move(direction);
+        System.out.println(currentZone.getZone()[nextCoordinates.getY()][nextCoordinates.getX()].isWalkable());
+
+        if (currentZone.getZone()[nextCoordinates.getY()][nextCoordinates.getX()].isWalkable()){
+            move(direction);
+        }
+
+
+
+    }
+
     @Override
     public void move(Directions direction) {
+
+
         this.setPosition(new Coordinates(
                 this.getPosition().getX() + direction.getX(),
                 this.getPosition().getY() + direction.getY()
         ));
-        System.out.println(this.getPosition());
-        System.out.println(this.getPlayerMapPosition());
+        System.out.println("Zone: "+ this.getPosition());
+        System.out.println("Map: " + this.getPlayerMapPosition());
+        //System.out.println("Model: player");
+    }
+
+    public void changeZone(Directions direction){
+        switch (direction){
+            case UP: {
+                super.setPosition(new Coordinates(super.getPosition().getX(), Dimensions.ZONE_ROWS.get()-1));
+                playerMapPosition.setY(playerMapPosition.getY()-1);
+
+            }; break;
+            case DOWN:{
+                super.setPosition(new Coordinates(super.getPosition().getX(), 0));
+                playerMapPosition.setY(playerMapPosition.getY()+1);
+
+            }; break;
+            case LEFT:{
+                super.setPosition(new Coordinates(Dimensions.ZONE_COLUMNS.get()-1, super.getPosition().getY()));
+                playerMapPosition.setX(playerMapPosition.getX()-1);
+
+            }; break;
+            case RIGHT:{
+                super.setPosition(new Coordinates(0, super.getPosition().getY()));
+                playerMapPosition.setX(playerMapPosition.getX()+1);
+
+            }; break;
+        }
     }
 
 
@@ -109,6 +158,8 @@ public class Player extends GameCharacter implements Movable, Damageable {
             this.setLifes(damage);
         }
     }
+
+
 
 
 
