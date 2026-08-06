@@ -23,6 +23,10 @@ public class Player extends GameCharacter implements Movable, Damageable {
     //Position
     private Coordinates playerMapPosition;  //Player Map coordinates
 
+    //Direction
+    private Directions playerDirection;
+    private boolean isMoving = false;
+
     //Health
     private double lifes;                   //Player lifes
 
@@ -48,6 +52,8 @@ public class Player extends GameCharacter implements Movable, Damageable {
         this.inventory = new Usable[6];
         this.numberOfRupies = 0;
         this.numberOfBombs = 0;
+
+        this.playerDirection = Directions.DOWN;
     }
 
     /**
@@ -66,13 +72,22 @@ public class Player extends GameCharacter implements Movable, Damageable {
     public Usable[] getInventory() {return inventory;}
     public int getNumberOfRupies() {return numberOfRupies;}
     public Coordinates getPlayerMapPosition() {return playerMapPosition;}
-
+    public Directions getPlayerDirection() {return playerDirection;}
     //Set methods
     public void setLifes(double lifes) {this.lifes = lifes;}
     public void setSlotA(Usable slotA) {this.slotA = slotA;}
     public void setSlotB(Weapon slotB) {this.slotB = slotB;}
     public void setNumberOfRupies(int numberOfRupies) {this.numberOfRupies = numberOfRupies;}
     public void setPlayerMapPosition(Coordinates playerMapPosition) {this.playerMapPosition = playerMapPosition;}
+    public void setPlayerDirection(Directions playerDirection) {this.playerDirection = playerDirection;}
+    public void setMoving(boolean moving) { isMoving = moving; }
+
+
+    /**
+     * Is player moving?
+     * @return
+     */
+    public boolean isMoving() { return isMoving; }
 
     /**
      * This function is used to insert a Usable item into the inventory
@@ -112,8 +127,8 @@ public class Player extends GameCharacter implements Movable, Damageable {
                 this.getPosition().getX() + direction.getX(),
                 this.getPosition().getY() + direction.getY()
         ));
-        System.out.println("Zone: "+ this.getPosition());
-        System.out.println("Map: " + this.getPlayerMapPosition());
+        //System.out.println("Zone: "+ this.getPosition());
+        //System.out.println("Map: " + this.getPlayerMapPosition());
         //System.out.println("Model: player");
     }
 
