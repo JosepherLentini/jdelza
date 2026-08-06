@@ -12,23 +12,42 @@ import java.util.Map;
 
 public class PlayerView extends Pane {
 
-    private int playerWidth;
-    private int playerHeight;
+    private final int playerWidth = Dimensions.TILE_WIDTH.get();        //Player height
+    private final int playerHeight = Dimensions.TILE_HEIGT.get();       //Player width
 
-    private Map<Directions, ImageView> playerDirectionImage;
+
+    private ImageView imwPDI;
+    boolean frame = false;
+
+    private Map<Directions, Image[]> walkingImage = new HashMap<>();    //Key: direction, Value: Image of direction
 
     public PlayerView() {
 
-        playerWidth = Dimensions.TILE_WIDTH.get();
-        playerHeight = Dimensions.TILE_HEIGT.get();
-        playerDirectionImage = new HashMap<>();
+
 
         this.setPrefSize(72 , 45);
         this.setMaxSize(72, 45);
         this.setMinSize(72,45);
 
-        Image playerDirectionImage = new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player/row-1-column-1.png");
-        ImageView imwPDI = new ImageView(playerDirectionImage);
+
+        for (Directions dir : Directions.values()) {
+
+            String path = "file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player/";
+            Image[] images = new Image[2];
+
+            for (int i = 1; i < 3; i++) {
+
+                images[i - 1] = new Image(path + dir.name()+ "_" + i + ".png");
+
+            }
+
+            walkingImage.put(dir, images);
+
+        }
+
+
+        imwPDI = new ImageView();
+        imwPDI.setImage(walkingImage.get(Directions.DOWN)[0]);
 
         imwPDI.setFitWidth(playerWidth);
         imwPDI.setFitHeight(playerHeight);
@@ -36,26 +55,23 @@ public class PlayerView extends Pane {
 
         this.getChildren().add(imwPDI);
 
-
-
-        this.setStyle(
-                    "-fx-border-color: brown; " +
-                            "-fx-border-style: solid; " +
-                            "-fx-border-width: 3px; "
-
-        );
-
         this.toFront();
 
     }
 
 
     //Get methods
-    public int getPlayerWidth() {
-        return playerWidth;
-    }
+    public int getPlayerWidth() {return playerWidth;}
+    public int getPlayerHeight() {return playerHeight;}
 
-    public int getPlayerHeight() {
-        return playerHeight;
+
+    public void changeSprite(Directions direction){
+        if(frame)
+            imwPDI.setImage(walkingImage.get(direction)[0]);
+        else
+            imwPDI.setImage(walkingImage.get(direction)[1]);
+
+        frame = !frame;
+
     }
 }

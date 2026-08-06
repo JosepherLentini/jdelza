@@ -20,7 +20,7 @@ public class GameView implements Observer {
      */
     public GameView(GameModel gameModel) {
 
-        this.gamescreen = new GameScreen(new Overworld(), new PlayerView());
+        this.gamescreen = new GameScreen(new Overworld(), new PlayerView(), gameModel.getPlayer());
         gamescreen.getOverworld().setLayoutX(-gameModel.getPlayer().getPlayerMapPosition().getX()* Dimensions.MAP_WIDTH.get());
         gamescreen.getOverworld().setLayoutY(-gameModel.getPlayer().getPlayerMapPosition().getY()* Dimensions.MAP_HEIGHT.get());
 
@@ -37,16 +37,15 @@ public class GameView implements Observer {
     public GameScreen getGamescreen() {return gamescreen;}
 
 
-    public void changeZone(int x, int y){
-        //gamescreen.getOverworld().setLayoutX(x*Dimensions.MAP_WIDTH.get());
-        gamescreen.getOverworld().setLayoutY(-6*Dimensions.MAP_HEIGHT.get());
-    }
-
-
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof PlayerMovement){
-            gamescreen.movePlayer(((PlayerMovement) arg));
+            PlayerMovement pm = (PlayerMovement) arg;
+            gamescreen.movePlayer(pm);
+
+
         }
     }
+
+
 }

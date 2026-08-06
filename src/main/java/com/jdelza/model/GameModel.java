@@ -33,37 +33,33 @@ public class GameModel extends Observable {
     //Player actions
     public void movePlayer(Directions direction){
 
-
-        boolean up =   player.getPosition().getY() == 0 && player.getPlayerMapPosition().getY() == 0 && direction == Directions.UP;
-        boolean down = player.getPosition().getY() == Dimensions.ZONE_ROWS.get()-1 && player.getPlayerMapPosition().getY() == Dimensions.MAP_ROWS.get()-1 && direction == Directions.DOWN;
-        boolean left =  player.getPosition().getX() == 0 && player.getPlayerMapPosition().getX() == 0 && direction == Directions.LEFT;
+        boolean up    = player.getPosition().getY() == 0 && player.getPlayerMapPosition().getY() == 0 && direction == Directions.UP;
+        boolean down  = player.getPosition().getY() == Dimensions.ZONE_ROWS.get()-1 && player.getPlayerMapPosition().getY() == Dimensions.MAP_ROWS.get()-1 && direction == Directions.DOWN;
+        boolean left  = player.getPosition().getX() == 0 && player.getPlayerMapPosition().getX() == 0 && direction == Directions.LEFT;
         boolean right = player.getPosition().getX() == Dimensions.ZONE_COLUMNS.get()-1 && player.getPlayerMapPosition().getX() == Dimensions.MAP_COLUMNS.get()-1 && direction == Directions.RIGHT;
 
-        if(up || down || left || right){
-            System.out.println("pup");
-        }
+        if(up || down || left || right){return;}
         else{
             if (player.getPosition().getY() == 0 && direction == Directions.UP){
-                //gameView.changeZone(player.getPosition().getX(), player.getPosition().getY()-1);
-                System.out.println("sbatti sopra");
+
                 player.changeZone(direction);
                 setChanged();
                 notifyObservers(new PlayerMovement(true,direction)  );
             }
             else if(player.getPosition().getX() == 0 && direction == Directions.LEFT){
-                System.out.println("sbatti sinistra");
+
                 player.changeZone(direction);
                 setChanged();
                 notifyObservers(new PlayerMovement(true,direction)  );
             }
             else if(player.getPosition().getY() == Dimensions.ZONE_ROWS.get()-1 && direction == Directions.DOWN){
-                System.out.println("sbatti sotto");
+
                 player.changeZone(direction);
                 setChanged();
                 notifyObservers(new PlayerMovement(true,direction)  );
             }
             else if(player.getPosition().getX() == Dimensions.ZONE_COLUMNS.get()-1 && direction == Directions.RIGHT){
-                System.out.println("sbatti destra");
+
                 player.changeZone(direction);
                 setChanged();
                 notifyObservers(new PlayerMovement(true,direction)  );
@@ -73,7 +69,7 @@ public class GameModel extends Observable {
 
                 Zone currentZone = overworldMap.getZone(player.getPlayerMapPosition());
 
-                Coordinates nextCoordinates  =new Coordinates(
+                Coordinates nextCoordinates = new Coordinates(
                         player.getPosition().getX() + direction.getX(),
                         player.getPosition().getY() + direction.getY()
                 );
@@ -90,20 +86,16 @@ public class GameModel extends Observable {
         }
 
 
+    }
 
 
 
-
-
-
-
-
-
-        //System.out.println("Model: game");
-
-
-
-
+    /**
+     * This method is able to change/set player direction
+     * @param direction
+     */
+    public void setPlayerDirection(Directions direction){
+        player.setPlayerDirection(direction);
     }
 
 
