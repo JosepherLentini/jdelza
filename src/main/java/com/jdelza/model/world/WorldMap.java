@@ -1,15 +1,17 @@
 package com.jdelza.model.world;
 
+import com.jdelza.model.characters.Enemy;
 import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.utils.enums.Dimensions;
+import com.jdelza.utils.enums.EnemyType;
+import com.jdelza.utils.enums.GameColor;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -21,7 +23,7 @@ public class WorldMap {
     /**
      * Contructor
      */
-    public WorldMap(Player player) {
+    public WorldMap(Player player) throws IOException {
 
         int mapHeigt = Dimensions.MAP_ROWS.get();
         int mapWidth = Dimensions.MAP_COLUMNS.get();
@@ -33,11 +35,25 @@ public class WorldMap {
             for (int j=0; j<mapWidth; j++){
                 Coordinates zoneCoordinates = new Coordinates(j,i);
                 map[i][j] = new Zone(player.getPlayerMapPosition().equals(zoneCoordinates) ? player : null, zoneCoordinates);
+
+
             }
         }
-        System.out.println("crea mappa");
 
+        /*
+        this.getZone(new Coordinates(6, 6)).addEnemy(
+                new Enemy(new Coordinates(6, 6), GameColor.BLUE, EnemyType.OCTOROK)
+                        .setEnemyMapCoordinates(new Coordinates(6, 6)).setEnemyID(0)
+        );
+
+         */
         setLogicMap();
+
+        createEnemiesFromFile().stream().forEach(e-> this.getZone(e.getEnemyMapCoordinates()).addEnemy(e));
+
+
+
+
     }
 
     //Get methods
@@ -72,6 +88,88 @@ public class WorldMap {
         map[y][x] = zone;
     }
 
+    public List<Enemy> createEnemiesFromFile() throws IOException {
+        final String percorso =  "C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/Nuovo Documento di testo.txt";
+        ArrayList<List<Enemy>> enemies = new ArrayList<>();
+
+        try(BufferedReader br = Files.newBufferedReader(Paths.get(percorso))) {
+
+            String line = br.readLine();
+
+            while (line != null) {
+
+                enemies.add(createEnemyListFromTxtFile(line.split("_")));
+
+                line = br.readLine();
+
+            }
+        }
+
+        return enemies.stream().flatMap(Collection::stream).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public Coordinates randomEnemyZonePosition(Coordinates mapCoordinates){
+        int x,y;
+        Random random = new Random();
+
+        x = random.nextInt(14);
+        y = random.nextInt(9);
+
+        if (!this.getZone(mapCoordinates).getZone()[y][x].isWalkable()){System.out.println("walkable"+"("+x+","+y+")");}
+
+        while (!this.getZone(mapCoordinates).getZone()[y][x].isWalkable()){
+            x = random.nextInt(14)+1;
+            y = random.nextInt(9)+1;
+        }
+
+
+
+        return new Coordinates(x,y);
+
+    }
+
+    public List<Enemy> createEnemyListFromTxtFile(String[] enemyTxTData){
+        List<Enemy> zoneEnemies = new ArrayList<>();
+
+        int numberOfEnemies = Integer.parseInt(enemyTxTData[1]);
+        String[] coordFromData = enemyTxTData[0].split(",");
+        Coordinates mapCoordinates = new Coordinates(Integer.parseInt(coordFromData[0]),Integer.parseInt(coordFromData[1]));
+        EnemyType enemyType = Arrays.stream(EnemyType.values()).filter(v->v.getName().equals(enemyTxTData[2])).findFirst().get();
+
+        System.out.println(Arrays.toString(enemyTxTData));
+        System.out.println(Arrays.toString(coordFromData));
+        System.out.println(mapCoordinates);
+        System.out.println(randomEnemyZonePosition(mapCoordinates));
+
+        for (int i = 0; i< numberOfEnemies; i++){
+            Coordinates newZoneEnemyCoordinates = randomEnemyZonePosition(mapCoordinates);
+            GameColor enemyColor = enemyTxTData.equals("BLUE") ? GameColor.BLUE : GameColor.RED;
+
+            /*
+            Coordinates finalNewZoneEnemyCoordinates = newZoneEnemyCoordinates;
+
+            boolean enemySamePosition = zoneEnemies.stream().anyMatch(enemy -> enemy.getPosition().equals(finalNewZoneEnemyCoordinates));
+
+            while (!enemySamePosition){
+                newZoneEnemyCoordinates = randomEnemyZonePosition(mapCoordinates);
+
+            }
+
+             */
+
+
+
+            zoneEnemies.add(new Enemy(newZoneEnemyCoordinates,enemyColor,enemyType).setEnemyMapCoordinates(mapCoordinates));
+
+        }
+
+
+
+
+        return zoneEnemies;
+
+    }
+
 
     @Override
     public String toString(){
@@ -99,12 +197,12 @@ public class WorldMap {
 
     public void setLogicMap(){
         System.out.println("crea logic");
-        String percorso = "C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/logic-world/Overworld_collisioni.csv";
+        String collisionPath = "C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/logic-world/Overworld_collisioni.csv";
         List<List<Integer>> logicMap = new ArrayList<>();
 
         try {
             // Legge tutte le righe del file e le elabora una alla volta
-            Files.lines(Paths.get(percorso)).forEach(riga -> {
+            Files.lines(Paths.get(collisionPath)).forEach(riga -> {
                 String[] valori = riga.split(","); // Separa per VIRGOLA
 
                 List<Integer> rig = Arrays.stream(valori).map(n -> Integer.parseInt(n.equals("0") ? "0" : "1")).collect(Collectors.toList());
@@ -133,12 +231,12 @@ public class WorldMap {
 
                     }
 
-                    System.out.println();
+                    //System.out.println();
 
                 }
-                System.out.print(x + " ");
-                System.out.print(y);
-                System.out.println();
+                //System.out.print(x + " ");
+                //System.out.print(y);
+                //System.out.println();
 
             }
 

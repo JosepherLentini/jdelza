@@ -1,19 +1,26 @@
 package com.jdelza.model.world;
 
+import com.jdelza.model.characters.Enemy;
 import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.utils.enums.Dimensions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Zone {
 
-    public Tile[][] zone;
-    public Player player;
+    private Tile[][] zone;
+    private Player player;
+
+    //Enemies
+    private List<Enemy> enemies;                 //Some zone contains enemies
 
     //Zone position
     private Coordinates zoneMapPosition;        //Zone map coordinates
 
     /**
-     * Contructor
+     * Zone constructor
      * @param player    player of the game
      */
     public Zone(Player player, Coordinates zoneMapPosition) {
@@ -22,10 +29,11 @@ public class Zone {
         int zoneRows = Dimensions.ZONE_ROWS.get();
         int zoneColumns = Dimensions.ZONE_COLUMNS.get();
 
-
+        //Class fields inizialization
         this.zone = new Tile[zoneRows][zoneColumns];
         this.player = player;
         this.zoneMapPosition = zoneMapPosition;
+        this.enemies = new ArrayList<>();
 
         for (int i = 0; i<zoneRows; i++){
             for (int j=0; j<zoneColumns; j++){
@@ -33,18 +41,22 @@ public class Zone {
             }
         }
 
-        System.out.println("crea zona");
-
     }
 
     //Get methods
     public Tile[][] getZone() {
         return zone;
     }
-
+    public List<Enemy> getEnemies() {return enemies;}
     public Player getPlayer() {
         return player;
     }
+
+    /**
+     * This method allows to add an enemy
+     * @param e     new enemy
+     */
+    public void addEnemy(Enemy e){this.enemies.add(e);}
 
     /**
      * Methods to add or set a Tile objent placed in y, coordinates in to the zone

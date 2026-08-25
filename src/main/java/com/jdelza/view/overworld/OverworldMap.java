@@ -17,8 +17,8 @@ public class OverworldMap {
 
         for (int i = 0; i < 8; i++){
             for (int j = 0; j < 16; j++){
-
-                String path = "file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/overworld/row-" + (i+1) + "-column-" + (j+1) + ".png";
+                String path = "com/jdelza/view/assets/overworld/row-"+ (i+1) + "-column-" + (j+1) + ".png";
+                            //"file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/overworld/row-" + (i+1) + "-column-" + (j+1) + ".png";
                 Image zona = new Image(path);
 
 

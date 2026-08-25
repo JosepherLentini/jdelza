@@ -9,7 +9,6 @@ import com.jdelza.model.entities.Entity;
 
 public abstract class GameCharacter extends Entity{
 
-
     /**
      *
      * @param position

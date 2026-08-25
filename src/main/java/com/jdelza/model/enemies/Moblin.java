@@ -10,10 +10,10 @@ import com.jdelza.model.weapons.Weapon;
 public class Moblin extends Enemy {
 
     public Moblin(Coordinates position, Weapon weapon, GameColor color, EnemyType enemyType) {
-        super(position, weapon, color, enemyType);
+        super(position, /*weapon,*/ color, enemyType);
     }
 
-
+    /*
     @Override
     public void takeDamage(double attackPoints) {
 
@@ -23,4 +23,6 @@ public class Moblin extends Enemy {
     public void move(Directions direction) {
 
     }
+
+     */
 }
