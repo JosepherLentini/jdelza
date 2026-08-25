@@ -8,6 +8,7 @@ import com.jdelza.utils.enums.Directions;
 import com.jdelza.model.world.WorldMap;
 import com.jdelza.utils.events.PlayerMovement;
 
+import java.io.IOException;
 import java.util.Observable;
 
 @SuppressWarnings("deprecations")
@@ -17,7 +18,7 @@ public class GameModel extends Observable {
     private WorldMap overworldMap;
 
 
-    public GameModel() {
+    public GameModel() throws IOException {
         this.player = Player.getPlayerInstance();
         this.overworldMap = new WorldMap(
                 this.player

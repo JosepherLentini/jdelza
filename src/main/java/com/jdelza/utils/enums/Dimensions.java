@@ -17,7 +17,7 @@ public enum Dimensions {
     RENDER_SCREEN_HEIGHT(176 * 4),
 
     MAP_WIDTH(288*4),
-    MAP_HEIGHT(124*4),
+    MAP_HEIGHT(495), //123.75*4
 
 
     //3. Tile sizes

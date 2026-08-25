@@ -1,10 +1,13 @@
 package com.jdelza.view.screen;
 
+import com.jdelza.model.characters.Enemy;
 import com.jdelza.model.characters.Player;
+import com.jdelza.model.entities.Coordinates;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.events.PlayerMovement;
-import com.jdelza.view.PlayerView;
+import com.jdelza.view.characters.EnemyView;
+import com.jdelza.view.characters.PlayerView;
 import com.jdelza.view.overworld.Overworld;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -12,6 +15,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class GameScreen extends VBox {
 
@@ -26,10 +32,15 @@ public class GameScreen extends VBox {
     private PlayerView player;  //player view
     private Player playerModel; //Instance of the player in the game
 
+    //Overworld
+    private Pane overworldWrapper;
+
     //Animation control
     private boolean isZoneChanging;
     private boolean isPlayerMoving;
 
+    //All enemies
+    private Set<EnemyView> allEnemies;
 
     /**
      * GameScreen constructor
@@ -40,6 +51,8 @@ public class GameScreen extends VBox {
     public GameScreen(Overworld overworld, PlayerView player, Player playerModel) {
         this.overworld = overworld;
         this.player = player;
+        this.allEnemies = new HashSet<>(){};
+        this.overworldWrapper = new Pane(overworld);
 
         this.isZoneChanging = false;
 
@@ -58,7 +71,7 @@ public class GameScreen extends VBox {
 
 
         //OverwoldWrapper contains overwold
-        Pane overworldWrapper = new Pane(overworld);
+
         overworldWrapper.setPrefSize(gameScreenWidth, Dimensions.MAP_HEIGHT.get());
         overworldWrapper.setMinSize(gameScreenWidth, Dimensions.MAP_HEIGHT.get());
         overworldWrapper.setMaxSize(gameScreenWidth, Dimensions.MAP_HEIGHT.get());
@@ -73,7 +86,7 @@ public class GameScreen extends VBox {
         p.setMinSize(gameScreenWidth, 208);
         p.setMaxSize(gameScreenWidth, 208);
 
-        /*
+
         this.setStyle(
                 "-fx-border-color: yellow; " +
                         "-fx-border-style: solid; " +
@@ -85,9 +98,31 @@ public class GameScreen extends VBox {
                         "-fx-border-style: solid; " +
                         "-fx-border-width: 2px; "
         );
-        */
+
+        /*
+        Pane t = new Pane();
+        t.setPrefSize(100,100);
+        t.setStyle(
+                "-fx-border-color: yellow; " +
+                        "-fx-border-style: solid; " +
+                        "-fx-border-width: 3px; "
+        );
+        t.setLayoutX(100);
+        t.setLayoutY(100);
+
+
+
+        t.toFront();
+
+         */
 
         this.getChildren().addAll(p,overworldWrapper);
+
+
+        //overworld.getChildren().add(new EnemyView(new Coordinates(7,7), new Coordinates(7,7)));
+        //placeEnemies();
+
+
         Rectangle clip = new Rectangle(gameScreenWidth, gameScreenHeight);
         this.setClip(clip);
 
@@ -95,17 +130,45 @@ public class GameScreen extends VBox {
 
     //Get methods
     public PlayerView getPlayer() {return player;}
-    public Pane getOverworld() {return overworld;}
-    public boolean isZoneChanging() {return isZoneChanging;}
-    public boolean isPlayerMoving() {return isPlayerMoving;}
+    public Pane       getOverworld() {return overworld;}
+    public boolean    isZoneChanging() {return isZoneChanging;}
+    public boolean    isPlayerMoving() {return isPlayerMoving;}
 
     //Set methods
     public void setZoneChanging(boolean zoneChanging) {isZoneChanging = zoneChanging;}
     public void setPlayerMoving(Boolean playerMoving){isPlayerMoving = playerMoving;}
 
-    //Player
-    public void movePlayer(PlayerMovement playerMovement) {
 
+    //Enemies
+    /**
+     * This method allow to add new enemyView in to allEnemy set
+     * @param e new enemy
+     */
+    public void addEnemy(EnemyView e){allEnemies.add(e);this.overworld.getChildren().add(e);}
+    public void placeEnemies(){
+
+        overworld.getChildren().forEach(n-> {
+            if (n instanceof EnemyView){
+
+                EnemyView ew = (EnemyView)n;
+                int x = ew.getEnemyViewMapPosition().getX()*Dimensions.ZONE_COLUMNS.get()+ew.getEnemyViewZonePosition().getX();
+                int y = ew.getEnemyViewMapPosition().getY()*Dimensions.ZONE_ROWS.get()+ew.getEnemyViewZonePosition().getY();
+
+                ew.setTranslateX(ew.getTileWidth()*x);
+                ew.setTranslateY(ew.getTileHeight()*y);
+            }
+        });
+
+;
+    }
+
+    //Player
+    /**
+     * Player movement and zone changing
+     * @param playerMovement is the player move event
+     */
+    public void movePlayer(PlayerMovement playerMovement) {
+        //placeEnemies();
         Directions dir = playerMovement.getDirection();
         if (playerMovement.isZoneChanged()) {
             setZoneChanging(true);
@@ -127,7 +190,7 @@ public class GameScreen extends VBox {
                 case UP:
                     //World translation and player movement in tandem with the world
                     zoneSwitchTransition.setToY(overworld.getTranslateY() + Dimensions.MAP_HEIGHT.get());
-                    playerSwitchTransition.setToY((Dimensions.ZONE_ROWS.get() - 1) * player.getPlayerHeight());
+                    playerSwitchTransition.setToY((Dimensions.ZONE_ROWS.get() - 1) * player.getTileHeight());
                     break;
 
                 case DOWN:
@@ -139,7 +202,7 @@ public class GameScreen extends VBox {
                 case LEFT:
                     //World translation and player movement in tandem with the world
                     zoneSwitchTransition.setToX(overworld.getTranslateX() + Dimensions.MAP_WIDTH.get());
-                    playerSwitchTransition.setToX((Dimensions.ZONE_COLUMNS.get() - 1) * player.getPlayerWidth());
+                    playerSwitchTransition.setToX((Dimensions.ZONE_COLUMNS.get() - 1) * player.getTileWidth());
                     break;
 
                 case RIGHT:
@@ -157,7 +220,7 @@ public class GameScreen extends VBox {
             parallel.play();
 
             //When transition ends
-            parallel.setOnFinished(e-> {setZoneChanging(false); });
+            parallel.setOnFinished(e-> {setZoneChanging(false);});
 
 
         } else {

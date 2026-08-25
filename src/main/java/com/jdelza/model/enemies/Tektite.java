@@ -10,12 +10,14 @@ import com.jdelza.model.weapons.Weapon;
 public class Tektite extends Enemy {
 
     public Tektite(Coordinates position, Weapon weapon, GameColor color, EnemyType enemyType) {
-        super(position, weapon, color, enemyType);
+        super(position, /*weapon,*/ color, enemyType);
     }
 
-
+    /*
     @Override
     public void move(Directions direction) {
 
     }
+
+     */
 }
