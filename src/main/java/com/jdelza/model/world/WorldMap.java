@@ -2,6 +2,8 @@ package com.jdelza.model.world;
 
 import com.jdelza.model.characters.Enemy;
 import com.jdelza.model.characters.Player;
+import com.jdelza.model.enemies.Octorock;
+import com.jdelza.model.enemies.Tektite;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.EnemyType;
@@ -35,24 +37,36 @@ public class WorldMap {
             for (int j=0; j<mapWidth; j++){
                 Coordinates zoneCoordinates = new Coordinates(j,i);
                 map[i][j] = new Zone(player.getPlayerMapPosition().equals(zoneCoordinates) ? player : null, zoneCoordinates);
-
-
             }
         }
 
-        /*
+        setLogicMap();
+
         this.getZone(new Coordinates(6, 6)).addEnemy(
-                new Enemy(new Coordinates(6, 6), GameColor.BLUE, EnemyType.OCTOROK)
-                        .setEnemyMapCoordinates(new Coordinates(6, 6)).setEnemyID(0)
+                new Octorock(new Coordinates(6, 6), GameColor.BLUE, EnemyType.OCTOROK)
+                        .setEnemyMapCoordinates(new Coordinates(6, 6)).setEnemyID("0")
+        );
+
+        this.getZone(new Coordinates(6, 6)).addEnemy(
+                new Octorock(new Coordinates(10, 6), GameColor.BLUE, EnemyType.OCTOROK)
+                        .setEnemyMapCoordinates(new Coordinates(6, 6)).setEnemyID("1")
+        );
+
+
+        /*
+        this.getZone(new Coordinates(6, 7)).addEnemy(
+                new Octorock(new Coordinates(3, 4), GameColor.BLUE, EnemyType.OCTOROK)
+                        .setEnemyMapCoordinates(new Coordinates(6, 7)).setEnemyID("2")
         );
 
          */
-        setLogicMap();
 
-        createEnemiesFromFile().stream().forEach(e-> this.getZone(e.getEnemyMapCoordinates()).addEnemy(e));
+        this.getZone(new Coordinates(6, 7)).addEnemy(
+                new Tektite(new Coordinates(3, 2), GameColor.BLUE, EnemyType.TEKTITE)
+                        .setEnemyMapCoordinates(new Coordinates(6, 7)).setEnemyID("3")
+        );
 
-
-
+        //createEnemiesFromFile().stream().forEach(e-> this.getZone(e.getEnemyMapCoordinates()).addEnemy(e));
 
     }
 
@@ -98,7 +112,7 @@ public class WorldMap {
 
             while (line != null) {
 
-                enemies.add(createEnemyListFromTxtFile(line.split("_")));
+                //enemies.add(createEnemyListFromTxtFile(line.split("_")));
 
                 line = br.readLine();
 
@@ -115,7 +129,7 @@ public class WorldMap {
         x = random.nextInt(14);
         y = random.nextInt(9);
 
-        if (!this.getZone(mapCoordinates).getZone()[y][x].isWalkable()){System.out.println("walkable"+"("+x+","+y+")");}
+        //if (!this.getZone(mapCoordinates).getZone()[y][x].isWalkable()){System.out.println("walkable"+"("+x+","+y+")");}
 
         while (!this.getZone(mapCoordinates).getZone()[y][x].isWalkable()){
             x = random.nextInt(14)+1;
@@ -136,12 +150,15 @@ public class WorldMap {
         Coordinates mapCoordinates = new Coordinates(Integer.parseInt(coordFromData[0]),Integer.parseInt(coordFromData[1]));
         EnemyType enemyType = Arrays.stream(EnemyType.values()).filter(v->v.getName().equals(enemyTxTData[2])).findFirst().get();
 
-        System.out.println(Arrays.toString(enemyTxTData));
-        System.out.println(Arrays.toString(coordFromData));
-        System.out.println(mapCoordinates);
-        System.out.println(randomEnemyZonePosition(mapCoordinates));
+        //System.out.println(Arrays.toString(enemyTxTData));
+        //System.out.println(Arrays.toString(coordFromData));
+        //System.out.println(mapCoordinates);
+        //System.out.println(randomEnemyZonePosition(mapCoordinates));
+
+        String enemyIdBase = (mapCoordinates.getX() < 10 ? "0" : "") + Integer.toString(mapCoordinates.getX()) + (mapCoordinates.getY() < 10 ? "0" : "" ) + Integer.toString(mapCoordinates.getY());
 
         for (int i = 0; i< numberOfEnemies; i++){
+            //System.out.println(enemyIdBase+Integer.toString(i));
             Coordinates newZoneEnemyCoordinates = randomEnemyZonePosition(mapCoordinates);
             GameColor enemyColor = enemyTxTData.equals("BLUE") ? GameColor.BLUE : GameColor.RED;
 
@@ -159,7 +176,7 @@ public class WorldMap {
 
 
 
-            zoneEnemies.add(new Enemy(newZoneEnemyCoordinates,enemyColor,enemyType).setEnemyMapCoordinates(mapCoordinates));
+            //zoneEnemies.add(new Enemy(newZoneEnemyCoordinates,enemyColor,enemyType).setEnemyMapCoordinates(mapCoordinates).setEnemyID(enemyIdBase+Integer.toString(i)));
 
         }
 
@@ -196,7 +213,7 @@ public class WorldMap {
 
 
     public void setLogicMap(){
-        System.out.println("crea logic");
+        //System.out.println("crea logic");
         String collisionPath = "C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/logic-world/Overworld_collisioni.csv";
         List<List<Integer>> logicMap = new ArrayList<>();
 

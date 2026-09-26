@@ -8,24 +8,32 @@ import javafx.scene.layout.Pane;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
-public class EnemyView extends CharacterView{
+public abstract class EnemyView extends CharacterView{
 
 
-    private ImageView tileImageView;          //Enemy imageView
+    protected ImageView tileImageView;          //Enemy imageView
     boolean frame = false;                    //This is used to switch player movement image
 
-    private int EnemyViewID;    //Enemy id
+    protected String enemyViewID;    //Enemy id
 
-    //Enemy position
-    private Coordinates enemyViewMapPosition;
-    private Coordinates enemyViewZonePosition;
+    //Enemy previous position
+    protected double prevX;
+    protected double prevY;
+
+    //Enemy direction
+    protected Directions enemyDirection;
+
+
 
     public EnemyView(Coordinates enemyViewMapPosition, Coordinates enemyViewZonePosition) {
 
         //Instance fields
-        this.enemyViewMapPosition = enemyViewMapPosition;
-        this.enemyViewZonePosition = enemyViewZonePosition;
+        //this.enemyViewMapPosition = enemyViewMapPosition;
+        //this.enemyViewZonePosition = enemyViewZonePosition;
+
+
 
         /*
         this.setStyle(
@@ -37,31 +45,36 @@ public class EnemyView extends CharacterView{
          */
 
 
-        String path = "com/jdelza/view/assets/enemies/oktorock/OKTOROCK_BLUE_DOWN_0.png";
-                    //"file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/OKTOROCK_BLUE_DOWN_0.png";
-
-        tileImageView = new ImageView();
-        tileImageView.setImage(new Image(path));
-
-        tileImageView.setFitWidth(super.getTileWidth());
-        tileImageView.setFitHeight(super.getTileHeight());
-        tileImageView.setSmooth(false);
-
-        this.getChildren().add(tileImageView);
-
         this.toFront();
     }
 
-
     //Get methods
-    public int getEnemyViewID() {return EnemyViewID;}
-    public Coordinates getEnemyViewMapPosition() {return enemyViewMapPosition;}
-    public Coordinates getEnemyViewZonePosition() {return enemyViewZonePosition;}
+    public String getEnemyViewID() {return enemyViewID;}
+    public Directions getEnemyDirection() {return enemyDirection;}
+
+    public double getPrevX() {
+        return prevX;
+    }
+
+    public double getPrevY() {
+        return prevY;
+    }
 
     //Set methods
-    public void setEnemyViewID(int enemyViewID) {EnemyViewID = enemyViewID;}
+    public void setEnemyViewID(String id) {enemyViewID = id;}
+    public void setEnemyDirection(Directions enemyDirection) {this.enemyDirection = enemyDirection;}
 
+    public void setPreviousPosition(double currX, double currY){
+        this.prevX = currX;
+        this.prevY = currY;
+    }
 
+    @Override
+    public String toString(){
+        return "enemy: "+ this.enemyViewID;
+    }
+
+    public abstract void changeSprite(Directions direction);
 
 
 

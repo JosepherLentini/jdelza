@@ -18,9 +18,12 @@ public class PlayerView extends CharacterView {
 
     private Map<Directions, Image[]> walkingImage = new HashMap<>();    //Key: direction, Value: Image of direction
 
+    private boolean injuring = false;
+
+    //Direction
+    private Directions playerDirection;
+
     public PlayerView() {
-
-
 
         for (Directions dir : Directions.values()) {
 
@@ -54,16 +57,51 @@ public class PlayerView extends CharacterView {
 
 
     //Get methods
+    public Map<Directions, Image[]> getWalkingImage() {return walkingImage;}
+    public boolean isInjuring() {return injuring;}
 
+    //Set methods
+    public void setInjuring(boolean injuring) {this.injuring = injuring;}
+    public void setTileImageView(Image image){tileImageView.setImage(image);}
 
+    /**
+     * This method occurs when player hit with weapons or enemies
+     */
+    public void playerInjured(){
 
-    public void changeSprite(Directions direction){
         if(frame)
-            tileImageView.setImage(walkingImage.get(direction)[0]);
+            tileImageView.setImage(new Image("com/jdelza/view/assets/enemies/oktorock/OKTOROCK_BLUE_UP_0.png"));
         else
-            tileImageView.setImage(walkingImage.get(direction)[1]);
+            tileImageView.setImage(new Image("com/jdelza/view/assets/enemies/oktorock/OKTOROCK_WEAPON.png"));
 
         frame = !frame;
+    }
+
+
+    /**
+     * This method occur when player is moving. It is used to change image for animate the player.
+     * @param direction
+     */
+    public void changeSprite(Directions direction){
+        if (isInjuring()){
+            playerInjured();
+        }
+        else{
+            if(frame)
+                tileImageView.setImage(walkingImage.get(direction)[0]);
+            else
+                tileImageView.setImage(walkingImage.get(direction)[1]);
+
+            frame = !frame;
+
+        }
+
 
     }
+
+
+
+
+
+
 }
