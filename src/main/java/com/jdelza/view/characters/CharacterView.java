@@ -17,12 +17,14 @@ public abstract class CharacterView extends Pane {
         this.setMaxSize(tileWidth, tileHeight);
         this.setMinSize(tileWidth,tileHeight);
 
-
+        /*
         this.setStyle(
                 "-fx-border-color: yellow; " +
                         "-fx-border-style: solid; " +
                         "-fx-border-width: 3px; "
         );
+
+         */
     }
 
 

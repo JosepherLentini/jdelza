@@ -10,6 +10,8 @@ import com.jdelza.utils.interfaces.Movable;
 import com.jdelza.utils.interfaces.Usable;
 import com.jdelza.model.weapons.Weapon;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 
 /**
  * This class define the player of the game
@@ -38,6 +40,13 @@ public class Player extends GameCharacter implements Movable, Damageable {
     private Usable[] inventory;
     private int numberOfRupies;
     private int numberOfBombs;
+
+    //Collision
+    private boolean hasCollided;
+
+    //Injure
+    private boolean hasPlayerInjuring;
+
 
     /**
      * Contructor
@@ -73,6 +82,9 @@ public class Player extends GameCharacter implements Movable, Damageable {
     public int getNumberOfRupies() {return numberOfRupies;}
     public Coordinates getPlayerMapPosition() {return playerMapPosition;}
     public Directions getPlayerDirection() {return playerDirection;}
+    public boolean hasCollided() {return hasCollided;}
+    public boolean isHasPlayerInjuring() {return hasPlayerInjuring;}
+
     //Set methods
     public void setLifes(double lifes) {this.lifes = lifes;}
     public void setSlotA(Usable slotA) {this.slotA = slotA;}
@@ -81,7 +93,8 @@ public class Player extends GameCharacter implements Movable, Damageable {
     public void setPlayerMapPosition(Coordinates playerMapPosition) {this.playerMapPosition = playerMapPosition;}
     public void setPlayerDirection(Directions playerDirection) {this.playerDirection = playerDirection;}
     public void setMoving(boolean moving) { isMoving = moving; }
-
+    public void setHasCollided(boolean collided){this.hasCollided = collided;}
+    public void setHasPlayerInjuring(boolean hasPlayerInjuring) {this.hasPlayerInjuring = hasPlayerInjuring;}
 
     /**
      * Is player moving?
@@ -101,35 +114,22 @@ public class Player extends GameCharacter implements Movable, Damageable {
         if (index<inventory.length){inventory[index] = item;}
     }
 
-    public void walk(WorldMap map, Directions direction){
-        Zone currentZone = map.getZone(this.getPlayerMapPosition());
-
-        Coordinates nextCoordinates  =new Coordinates(
-                this.getPosition().getX() + direction.getX(),
-                this.getPosition().getY() + direction.getY()
-        );
-        //move(direction);
-        System.out.println(currentZone.getZone()[nextCoordinates.getY()][nextCoordinates.getX()].isWalkable());
-
-        if (currentZone.getZone()[nextCoordinates.getY()][nextCoordinates.getX()].isWalkable()){
-            move(direction);
-        }
 
 
-
-    }
 
     @Override
     public void move(Directions direction) {
-
-
+        setPlayerDirection(direction);
         this.setPosition(new Coordinates(
                 this.getPosition().getX() + direction.getX(),
                 this.getPosition().getY() + direction.getY()
         ));
-        //System.out.println("Zone: "+ this.getPosition());
-        //System.out.println("Map: " + this.getPlayerMapPosition());
-        //System.out.println("Model: player");
+
+    }
+
+    @Override
+    public void move(Zone currentZone) {
+
     }
 
     public void changeZone(Directions direction){
@@ -172,6 +172,35 @@ public class Player extends GameCharacter implements Movable, Damageable {
         } else {
             this.setLifes(damage);
         }
+    }
+
+
+    /**
+     * This method return true if enemy will collide with enemy on the next step; else it will return false.
+     * @param zone      current player zone
+     * @param direction player direction
+     * @return boolean
+     */
+    public boolean collidedWithEnemy(Zone zone, Directions direction){
+
+        Coordinates nextCoordinates = new Coordinates(
+                this.getPosition().getX()+direction.getX(),
+                this.getPosition().getY()+direction.getY()
+        );
+
+        AtomicBoolean collision = new AtomicBoolean(false);
+
+        zone.getEnemies().stream().map(enemy-> enemy.getPosition()).forEach(
+                enemyPosition -> {
+                    if (enemyPosition.equals(nextCoordinates) && zone.getTile(enemyPosition).isWalkable()){
+                        System.out.println(enemyPosition + "||" + nextCoordinates);
+                        collision.set(true);
+                    }
+                }
+        );
+
+        return collision.get();
+
     }
 
 

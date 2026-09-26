@@ -3,7 +3,9 @@ package com.jdelza.model.world;
 import com.jdelza.model.characters.Enemy;
 import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
+import com.jdelza.model.weapons.Weapon;
 import com.jdelza.utils.enums.Dimensions;
+import com.jdelza.utils.enums.Directions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,9 @@ public class Zone {
 
     //Enemies
     private List<Enemy> enemies;                 //Some zone contains enemies
+
+    //Weapons
+    private List<Weapon> weapons;
 
     //Zone position
     private Coordinates zoneMapPosition;        //Zone map coordinates
@@ -34,6 +39,7 @@ public class Zone {
         this.player = player;
         this.zoneMapPosition = zoneMapPosition;
         this.enemies = new ArrayList<>();
+        this.weapons = new ArrayList<>();
 
         for (int i = 0; i<zoneRows; i++){
             for (int j=0; j<zoneColumns; j++){
@@ -51,6 +57,16 @@ public class Zone {
     public Player getPlayer() {
         return player;
     }
+    public Tile getTile(Coordinates coordinates){
+        return this.getZone()[coordinates.getY()][coordinates.getX()];
+    }
+    public List<Weapon> getWeapons() {return weapons;}
+
+
+    //set methods
+    public void setWeapons(List<Weapon> weapons) {
+        this.weapons = weapons;
+    }
 
     /**
      * This method allows to add an enemy
@@ -67,6 +83,23 @@ public class Zone {
     public void addTile(Tile tile, int y, int x){
         zone[y][x] = tile;
     }
+
+    /**
+     * This method allow to add new weapon in the zone
+     * @param newWeapon
+     */
+    public void addWeapon(Weapon newWeapon){
+        this.weapons.add(newWeapon);
+    }
+
+    /**
+     * This method allow to remove a weapon
+     * @param weapon
+     */
+    public void removeWeapon(Weapon weapon){
+        this.weapons.remove(weapon);
+    }
+
 
     @Override
     public String toString(){

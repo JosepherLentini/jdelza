@@ -3,21 +3,31 @@ package com.jdelza.view.screen;
 import com.jdelza.model.characters.Enemy;
 import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
+import com.jdelza.model.weapons.Weapon;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.events.PlayerMovement;
 import com.jdelza.view.characters.EnemyView;
 import com.jdelza.view.characters.PlayerView;
+import com.jdelza.view.characters.TektiteView;
+import com.jdelza.view.weapons.RockView;
+import com.jdelza.view.weapons.WeaponView;
 import com.jdelza.view.overworld.Overworld;
 import javafx.animation.ParallelTransition;
+import javafx.animation.PathTransition;
+import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
+import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GameScreen extends VBox {
 
@@ -134,6 +144,10 @@ public class GameScreen extends VBox {
     public boolean    isZoneChanging() {return isZoneChanging;}
     public boolean    isPlayerMoving() {return isPlayerMoving;}
 
+    public Set<EnemyView> getAllEnemies() {
+        return allEnemies;
+    }
+
     //Set methods
     public void setZoneChanging(boolean zoneChanging) {isZoneChanging = zoneChanging;}
     public void setPlayerMoving(Boolean playerMoving){isPlayerMoving = playerMoving;}
@@ -145,22 +159,28 @@ public class GameScreen extends VBox {
      * @param e new enemy
      */
     public void addEnemy(EnemyView e){allEnemies.add(e);this.overworld.getChildren().add(e);}
-    public void placeEnemies(){
 
-        overworld.getChildren().forEach(n-> {
-            if (n instanceof EnemyView){
+    public void addAndPlaceEnemy(EnemyView e, Coordinates modelEnemyMapCoordinates, Coordinates modelEnemyZoneCoordinates){
 
-                EnemyView ew = (EnemyView)n;
-                int x = ew.getEnemyViewMapPosition().getX()*Dimensions.ZONE_COLUMNS.get()+ew.getEnemyViewZonePosition().getX();
-                int y = ew.getEnemyViewMapPosition().getY()*Dimensions.ZONE_ROWS.get()+ew.getEnemyViewZonePosition().getY();
 
-                ew.setTranslateX(ew.getTileWidth()*x);
-                ew.setTranslateY(ew.getTileHeight()*y);
-            }
-        });
+        int x = modelEnemyMapCoordinates.getX()*Dimensions.ZONE_COLUMNS.get()+modelEnemyZoneCoordinates.getX();
+        int y = modelEnemyMapCoordinates.getY()*Dimensions.ZONE_ROWS.get()+modelEnemyZoneCoordinates.getY();
 
-;
+        int newX = e.getTileWidth()*x;
+        int newY = e.getTileHeight()*y;
+
+
+        e.setTranslateX(newX);
+        e.setTranslateY(newY);
+
+        e.setPreviousPosition(newX, newY);
+
+
+        this.overworld.getChildren().add(e);
+
     }
+
+
 
     //Player
     /**
@@ -168,7 +188,7 @@ public class GameScreen extends VBox {
      * @param playerMovement is the player move event
      */
     public void movePlayer(PlayerMovement playerMovement) {
-        //placeEnemies();
+
         Directions dir = playerMovement.getDirection();
         if (playerMovement.isZoneChanged()) {
             setZoneChanging(true);
@@ -256,16 +276,189 @@ public class GameScreen extends VBox {
             }
              */
 
-
             //playerModel.setMoving(false);
-
-
-
 
             }
 
 
         }
+
+    public void moveEnemies(List<Enemy> enemies){
+
+        List<String> ids = enemies.stream().map(e-> e.getEnemyID()).collect(Collectors.toCollection(ArrayList::new));
+
+
+
+        overworld.getChildren().stream().forEach(node-> {
+            if (node instanceof EnemyView){
+                EnemyView ew = (EnemyView) node;
+
+
+                if (ids.contains(ew.getEnemyViewID())){
+
+
+                    //System.out.println(ew);
+                    Enemy enemy = enemies.stream().reduce((e,f)-> e.getEnemyID().equals(ew.getEnemyViewID())  ? e : f).get();
+
+                    int x = enemy.getEnemyMapCoordinates().getX()*Dimensions.ZONE_COLUMNS.get()+enemy.getPosition().getX();
+                    int y = enemy.getEnemyMapCoordinates().getY()*Dimensions.ZONE_ROWS.get()+enemy.getPosition().getY();
+
+                    x = ew.getTileWidth()*x;
+                    y = ew.getTileHeight()*y;
+
+
+
+                    double newX = x-ew.getTranslateX();
+                    double newY = y-ew.getTranslateY();
+
+
+
+                    //System.out.println("from: " + ew.getPrevX()+" ,"+ew.getPrevY());
+                    //System.out.println((ew.getTranslateX())+" "+(ew.getTranslateY()));
+                    //System.out.println("to: " + x+" ,"+y);
+
+                    //ew.setTranslateX(x);
+                    //ew.setTranslateY(y);
+
+
+                    if (ew.getClass() == TektiteView.class){
+                        TektiteView tk = (TektiteView)ew;
+
+
+
+                        // 3. Creazione e configurazione della PathTransition
+                        TranslateTransition transition = new TranslateTransition();
+
+                        transition.setDuration(Duration.millis(300.0));
+                        transition.setByX(newX);
+                        transition.setByY(newY);
+                        transition.setNode(tk);
+
+
+                        // Avvia la transizione
+                        transition.play();
+
+
+
+
+                    }else{
+                        TranslateTransition transition = new TranslateTransition();
+                        transition.setNode(ew);
+
+                        if ((int)newX == 0 && newY > 0){
+                            ew.setEnemyDirection(Directions.DOWN);
+                        }
+                        else if((int)newX == 0 && newY < 0){
+                            ew.setEnemyDirection(Directions.UP);
+                        }
+                        else if ((int)newY == 0 && newX>0){
+                            ew.setEnemyDirection(Directions.RIGHT);
+                        }
+                        else if(((int)newY == 0 && newX<0)){
+                            ew.setEnemyDirection(Directions.LEFT);
+
+                        }
+
+                        transition.setByX(newX);
+                        transition.setByY(newY);
+
+
+
+                        //Setting transition duration
+                        transition.setDuration(Duration.millis(250));
+
+                        //Start transition
+                        transition.play();
+                    }
+
+
+                }
+
+
+
+
+            }
+        });
+
+
+
+    }
+
+    public void addWeapon(Weapon weapon){
+
+        //System.out.println("weapon added");
+        WeaponView weaponView = null;
+
+        switch (weapon.getWeaponType()){
+            case ROCK -> weaponView  = new RockView(weapon.getWeaponID());
+        }
+
+        int x = weapon.getWeaponMapPosition().getX()*Dimensions.ZONE_COLUMNS.get()+weapon.getPosition().getX();
+        int y = weapon.getWeaponMapPosition().getY()*Dimensions.ZONE_ROWS.get()+weapon.getPosition().getY();
+
+        weaponView.setTranslateX(Dimensions.TILE_WIDTH.get()*x);
+        weaponView.setTranslateY(Dimensions.TILE_HEIGT.get()*y);
+
+        weaponView.setWeaponDirection(weapon.getWeaponDirection());
+        this.overworld.getChildren().add(weaponView);
+    }
+
+    public void moveWeapons(List<Weapon> weapons) {
+        if (weapons == null || weapons.isEmpty()) return;
+
+        overworld.getChildren().forEach(node -> {
+            if (node instanceof WeaponView wv) {
+                // Cerchiamo l'arma con lo stesso ID direttamente nella lista
+                weapons.stream()
+                        .filter(w -> w.getWeaponID().equals(wv.getWeaponID()))
+                        .findFirst()
+                        .ifPresent(updatedWeapon -> {
+
+                            // Applicare qui la TranslateTransition o il cambio di layout
+                            TranslateTransition transition = new TranslateTransition(Duration.millis(100), wv);
+
+                            switch (wv.getWeaponDirection()) {
+                                case UP    -> transition.setByY(-Dimensions.TILE_HEIGT.get());
+                                case DOWN  -> transition.setByY(Dimensions.TILE_HEIGT.get());
+                                case LEFT  -> transition.setByX(-Dimensions.TILE_WIDTH.get());
+                                case RIGHT -> transition.setByX(Dimensions.TILE_WIDTH.get());
+                            }
+                            transition.play();
+                        });
+            }
+        });
+    }
+
+    public void removeWeapon(List<Weapon> weapons){
+
+        List<String> removeIDs = weapons.stream().map(w->w.getWeaponID()).collect(Collectors.toList());
+
+        List<WeaponView> removeWeaponViews = new ArrayList<>();
+
+        overworld.getChildren().stream().forEach(node-> {
+            if (node instanceof WeaponView) {
+                WeaponView w = (WeaponView)node;
+                if (removeIDs.contains(w.getWeaponID())){
+                    removeWeaponViews.add(w);
+                }
+            }
+        });
+
+
+        if (!removeWeaponViews.isEmpty()){overworld.getChildren().removeAll(removeWeaponViews);}
+    }
+
+    public void changeEnemySprite(){
+        overworld.getChildren().stream().forEach(node-> {
+            if (node instanceof EnemyView) {
+                EnemyView ew = (EnemyView) node;
+
+                ew.changeSprite(ew.getEnemyDirection());
+
+            }
+
+        })
+    ;}
 
 
 
