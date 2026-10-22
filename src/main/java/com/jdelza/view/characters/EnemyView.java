@@ -2,13 +2,14 @@ package com.jdelza.view.characters;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.Directions;
+import com.jdelza.view.overworld.Overworld;
+import com.jdelza.view.screen.GameScreen;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public abstract class EnemyView extends CharacterView{
 
@@ -25,10 +26,14 @@ public abstract class EnemyView extends CharacterView{
     //Enemy direction
     protected Directions enemyDirection;
 
+    //Dead
+    private boolean dead = false;
 
 
-    public EnemyView(Coordinates enemyViewMapPosition, Coordinates enemyViewZonePosition) {
 
+    public EnemyView(String enemyViewID) {
+
+        this.enemyViewID = enemyViewID;
         //Instance fields
         //this.enemyViewMapPosition = enemyViewMapPosition;
         //this.enemyViewZonePosition = enemyViewZonePosition;
@@ -59,14 +64,46 @@ public abstract class EnemyView extends CharacterView{
     public double getPrevY() {
         return prevY;
     }
+    public boolean isDead() {return dead;}
 
     //Set methods
-    public void setEnemyViewID(String id) {enemyViewID = id;}
+    public EnemyView setEnemyViewID(String id) {enemyViewID = id;return this;}
     public void setEnemyDirection(Directions enemyDirection) {this.enemyDirection = enemyDirection;}
+    public void setDead(boolean dead) {this.dead = dead;}
 
     public void setPreviousPosition(double currX, double currY){
         this.prevX = currX;
         this.prevY = currY;
+    }
+
+    public void enemyDeath(Overworld ow){
+        Timer timer = new Timer();
+        TimerTask collisionTask = new TimerTask() {
+
+            int count = 1;
+            String path  ="file:///C:/Users/Giuseppe Lentini/Downloads/DEATH_";
+
+
+            @Override
+            public void run() {
+
+                Platform.runLater(()->{
+
+                    tileImageView.setImage(new Image(path+count+".png"));
+                    count++;
+
+                    if (count>= 5) {
+                        ow.getChildren().remove(EnemyView.this);
+                        timer.cancel();
+                    }
+                });
+
+            }
+
+        };
+
+
+        timer.scheduleAtFixedRate(collisionTask, 0, 100);
     }
 
     @Override
@@ -75,6 +112,8 @@ public abstract class EnemyView extends CharacterView{
     }
 
     public abstract void changeSprite(Directions direction);
+
+
 
 
 

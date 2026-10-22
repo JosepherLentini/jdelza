@@ -5,24 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea1cf717-d1a5-4c4e-b4fe-dc6545168066" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/behaviours/OcktorockMovement.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/enums/Action.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/Attack.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/EnemyMovement.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/PlayerCollision.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/RemoveWeapons.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/interfaces/MovementBehaviour.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/enemies/oktorock/OKTOROCK_BLUE_RIGHT_0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/enemies/oktorock/OKTOROCK_BLUE_RIGHT_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/enemies/oktorock/OKTOROCK_BLUE_UP_0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/enemies/oktorock/OKTOROCK_BLUE_UP_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/OctorockView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/TektiteView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/weapons/RockView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/weapons/WeaponView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/StartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/StartController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/GameModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/GameModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Enemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Player.java" afterDir="false" />
@@ -31,13 +17,16 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enemies/Tektite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enemies/Tektite.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/weapons/Weapon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/weapons/Weapon.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/WorldMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/WorldMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Zone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Zone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/interfaces/Movable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/interfaces/Movable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/enums/EnemyType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/enums/EnemyType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/enums/WeaponType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/enums/WeaponType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/interfaces/Damageable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/interfaces/Damageable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/GameView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/GameView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/CharacterView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/CharacterView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/EnemyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/EnemyView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/OctorockView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/OctorockView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/PlayerView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/PlayerView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/TektiteView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/TektiteView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/GameScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/GameScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/weapons/WeaponView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/weapons/WeaponView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,9 +65,9 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/enemy__movement&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/player-attack&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Giuseppe Lentini/Documents/Progetti universitari Java/jdelza/src/main/java/com/jdelza/view/assets/enemies/oktorock&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Giuseppe Lentini/Documents/Progetti universitari Java/jdelza/src/main/java/com/jdelza/view/assets/player&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
@@ -88,6 +77,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\player" />
       <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\enemies\oktorock" />
       <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets" />
     </key>

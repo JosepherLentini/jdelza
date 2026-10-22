@@ -47,7 +47,7 @@ public class Main extends Application{
         GameModel gameModel = new GameModel();
         MainView main = new MainView(gameModel);
 
-        StartController startController = new StartController(main.getStartView());
+        StartController startController = new StartController(main.getStartView(), gameModel);
         GameController  gameController  = new GameController(gameModel, main.getGameView());
 
 
