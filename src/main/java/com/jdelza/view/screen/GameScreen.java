@@ -14,10 +14,7 @@ import com.jdelza.view.weapons.RockView;
 import com.jdelza.view.weapons.WeaponView;
 import com.jdelza.view.overworld.Overworld;
 import javafx.animation.ParallelTransition;
-import javafx.animation.PathTransition;
-import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
-import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.*;
@@ -109,28 +106,9 @@ public class GameScreen extends VBox {
                         "-fx-border-width: 2px; "
         );
 
-        /*
-        Pane t = new Pane();
-        t.setPrefSize(100,100);
-        t.setStyle(
-                "-fx-border-color: yellow; " +
-                        "-fx-border-style: solid; " +
-                        "-fx-border-width: 3px; "
-        );
-        t.setLayoutX(100);
-        t.setLayoutY(100);
-
-
-
-        t.toFront();
-
-         */
 
         this.getChildren().addAll(p,overworldWrapper);
 
-
-        //overworld.getChildren().add(new EnemyView(new Coordinates(7,7), new Coordinates(7,7)));
-        //placeEnemies();
 
 
         Rectangle clip = new Rectangle(gameScreenWidth, gameScreenHeight);
@@ -145,7 +123,8 @@ public class GameScreen extends VBox {
     public boolean    isPlayerMoving() {return isPlayerMoving;}
 
     public Set<EnemyView> getAllEnemies() {
-        return allEnemies;
+
+        return overworld.getChildren().stream().filter(n-> n instanceof EnemyView).map(n-> (EnemyView)n).collect(Collectors.toSet());
     }
 
     //Set methods
@@ -154,14 +133,7 @@ public class GameScreen extends VBox {
 
 
     //Enemies
-    /**
-     * This method allow to add new enemyView in to allEnemy set
-     * @param e new enemy
-     */
-    public void addEnemy(EnemyView e){allEnemies.add(e);this.overworld.getChildren().add(e);}
-
     public void addAndPlaceEnemy(EnemyView e, Coordinates modelEnemyMapCoordinates, Coordinates modelEnemyZoneCoordinates){
-
 
         int x = modelEnemyMapCoordinates.getX()*Dimensions.ZONE_COLUMNS.get()+modelEnemyZoneCoordinates.getX();
         int y = modelEnemyMapCoordinates.getY()*Dimensions.ZONE_ROWS.get()+modelEnemyZoneCoordinates.getY();
@@ -179,8 +151,6 @@ public class GameScreen extends VBox {
         this.overworld.getChildren().add(e);
 
     }
-
-
 
     //Player
     /**
@@ -245,7 +215,7 @@ public class GameScreen extends VBox {
 
         } else {
             setPlayerMoving(true);  //Player is mmoving
-
+            getPlayer().setPlayerDirection(dir);
             //Create transition
             TranslateTransition transition = new TranslateTransition();
             transition.setNode(player);
@@ -386,7 +356,6 @@ public class GameScreen extends VBox {
 
     public void addWeapon(Weapon weapon){
 
-        //System.out.println("weapon added");
         WeaponView weaponView = null;
 
         switch (weapon.getWeaponType()){
@@ -404,61 +373,114 @@ public class GameScreen extends VBox {
     }
 
     public void moveWeapons(List<Weapon> weapons) {
-        if (weapons == null || weapons.isEmpty()) return;
 
-        overworld.getChildren().forEach(node -> {
-            if (node instanceof WeaponView wv) {
-                // Cerchiamo l'arma con lo stesso ID direttamente nella lista
-                weapons.stream()
-                        .filter(w -> w.getWeaponID().equals(wv.getWeaponID()))
-                        .findFirst()
-                        .ifPresent(updatedWeapon -> {
 
-                            // Applicare qui la TranslateTransition o il cambio di layout
-                            TranslateTransition transition = new TranslateTransition(Duration.millis(100), wv);
+        if (!weapons.isEmpty()) {
+            overworld.getChildren().forEach(node -> {
+                if (node instanceof WeaponView wv) {
 
-                            switch (wv.getWeaponDirection()) {
-                                case UP    -> transition.setByY(-Dimensions.TILE_HEIGT.get());
-                                case DOWN  -> transition.setByY(Dimensions.TILE_HEIGT.get());
-                                case LEFT  -> transition.setByX(-Dimensions.TILE_WIDTH.get());
-                                case RIGHT -> transition.setByX(Dimensions.TILE_WIDTH.get());
-                            }
-                            transition.play();
-                        });
-            }
-        });
+                    // Find the weapon with the same ID directly in the list
+                    weapons.stream()
+                            .filter(w -> w.getWeaponID().equals(wv.getWeaponID()))
+                            .findFirst()
+                            .ifPresent(updatedWeapon -> {
+
+                                // Create transition
+                                TranslateTransition transition = new TranslateTransition(Duration.millis(100), wv);
+
+                                //Apply the changes
+                                switch (wv.getWeaponDirection()) {
+                                    case UP -> transition.setByY(-Dimensions.TILE_HEIGT.get());
+                                    case DOWN -> transition.setByY(Dimensions.TILE_HEIGT.get());
+                                    case LEFT -> transition.setByX(-Dimensions.TILE_WIDTH.get());
+                                    case RIGHT -> transition.setByX(Dimensions.TILE_WIDTH.get());
+                                }
+
+                                //Play the transition
+                                transition.play();
+                            });
+                }
+            });
+        }
+
+
     }
 
-    public void removeWeapon(List<Weapon> weapons){
+    /**
+     * This function allows you to remove the required weapons
+     * @param weapons      weapons from model
+     */
+    public void removeEnemyWeapon(List<Weapon> weapons){
 
-        List<String> removeIDs = weapons.stream().map(w->w.getWeaponID()).collect(Collectors.toList());
+        //list of IDs from the model’s weapons to be removed
+        List<String> removeIDs = weapons.stream().map(Weapon::getWeaponID).toList();
 
+        //list of WeaponView to be removed
         List<WeaponView> removeWeaponViews = new ArrayList<>();
 
-        overworld.getChildren().stream().forEach(node-> {
+        //Find the weapons to be removed by their ID
+        overworld.getChildren().forEach(node-> {
+            //cast node into a weapon
             if (node instanceof WeaponView) {
                 WeaponView w = (WeaponView)node;
+                //Add to the list of enemies to be removed
                 if (removeIDs.contains(w.getWeaponID())){
                     removeWeaponViews.add(w);
                 }
             }
         });
 
-
+        // if list of enemies to be removed in not empty, remove the weapons contained
         if (!removeWeaponViews.isEmpty()){overworld.getChildren().removeAll(removeWeaponViews);}
     }
 
-    public void changeEnemySprite(){
-        overworld.getChildren().stream().forEach(node-> {
-            if (node instanceof EnemyView) {
-                EnemyView ew = (EnemyView) node;
+    /**
+     * It takes the enemy as input from the model that is to be removed and removes it from the view
+     * @param deathEnemy       enemy from model
+     */
+    public void removeEnemies(Enemy deathEnemy){
 
-                ew.changeSprite(ew.getEnemyDirection());
+        //Find the corresponding enemy by ID
+        EnemyView deadEnemyView = overworld.getChildren().stream()
+
+                .filter(n -> n instanceof EnemyView)               //filter by enemy in the view
+                .map(n -> (EnemyView) n)                            //Cast it into an EnemyView
+                .filter(ne -> ne.getEnemyViewID().equals(deathEnemy.getEnemyID()))  //filter by id
+                .findFirst()
+                .orElse(null);
+
+        //if enemy from model and EnemyView aren't null
+        if(deathEnemy != null && deadEnemyView != null){
+            //Set enemy status to dead
+            deadEnemyView.setDead(true);
+            //Call enemy death animation
+            deadEnemyView.enemyDeath((Overworld) overworld);
+        }
+
+
+    }
+
+    /**
+     * This function allows you to change the enemies’ appearance and create movement animations
+     */
+    public void changeEnemyImage(){
+
+        //for node in the overworld
+        overworld.getChildren().forEach(node-> {
+            //if node is an enemy
+            if (node instanceof EnemyView enemyView) {
+
+                //if enemy still alive it will change his image
+                if(!enemyView.isDead())enemyView.changeSprite(enemyView.getEnemyDirection());
 
             }
 
         })
+
+
     ;}
+
+
 
 
 

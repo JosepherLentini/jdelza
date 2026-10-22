@@ -3,6 +3,7 @@ package com.jdelza.model.enemies;
 import com.jdelza.model.characters.Enemy;
 import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
+import com.jdelza.model.world.Zone;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.EnemyType;
 import com.jdelza.utils.enums.GameColor;
@@ -15,8 +16,18 @@ public class Moblin extends Enemy {
     }
 
     @Override
-    public boolean collisionWithPlayer(Player player) {
+    public boolean hasEnemyCollidedWithEnemy(Player player) {
         return true;
+    }
+
+    @Override
+    public void move(Directions direction) {
+
+    }
+
+    @Override
+    public void move(Zone currentZone) {
+
     }
 
     /*

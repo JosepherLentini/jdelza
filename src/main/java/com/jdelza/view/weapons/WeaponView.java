@@ -14,6 +14,7 @@ public abstract class WeaponView extends Pane {
     public WeaponView(String weaponID) {
         this.weaponID = weaponID;
 
+        /*
         ImageView img  = new ImageView();
         img.setImage(new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/OKTOROCK_WEAPON.png"));
 
@@ -22,6 +23,11 @@ public abstract class WeaponView extends Pane {
         img.setSmooth(false);
 
         this.getChildren().add(img);
+
+         */
+
+
+
 
     }
 

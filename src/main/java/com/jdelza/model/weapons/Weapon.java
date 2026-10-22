@@ -22,7 +22,7 @@ public class Weapon extends Entity implements Damager {
     private Coordinates weaponMapPosition;
 
     //Type
-    private WeaponType weaponType;
+    private final WeaponType weaponType;
 
     //Weapon direction
     private Directions weaponDirection;
@@ -116,7 +116,7 @@ public class Weapon extends Entity implements Damager {
     @Override
     public void toDamage(Damageable damageable) {
         //When a collision occurs between sword and game characters, points are deducted
-        damageable.takeDamage(this.attackPoints.getDamage());
+        damageable.takeDamage(this.getWeaponType().getDamageType());
     }
 
     public boolean hasCollidedWithPlayer(Player player){

@@ -18,21 +18,6 @@ public class Octorock extends Enemy{
     }
 
 
-
-    @Override
-    public void move(Zone zone) {
-        if (this.steps > 0){
-            octorockWalk(zone);
-        }
-        else{
-            this.chooseAndSetAnAction();
-        }
-
-    }
-
-
-
-
     public void chooseandSetNuberOfSteps(){
         Random random = new Random();
         int i = random.nextInt(10)+2;
@@ -55,7 +40,7 @@ public class Octorock extends Enemy{
     }
 
     @Override
-    public boolean collisionWithPlayer(Player player) {
+    public boolean hasEnemyCollidedWithEnemy(Player player) {
 
         Coordinates newPosition = new Coordinates(0,0);
 
@@ -68,6 +53,20 @@ public class Octorock extends Enemy{
 
         return newPosition.equals(player.getPosition());
 
+
+    }
+
+    @Override
+    public void move(Directions direction) {}
+
+    @Override
+    public void move(Zone zone) {
+        if (this.steps > 0){
+            octorockWalk(zone);
+        }
+        else{
+            this.chooseAndSetAnAction();
+        }
 
     }
 

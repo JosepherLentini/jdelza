@@ -17,7 +17,8 @@ public class GameController{
 
     private AnimationTimer gameLoop;
 
-    private boolean upPressed, downPressed, leftPressed, rightPressed;
+    private boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed;
+
 
     private long lastMove = 0;
     private final long MOVE_DELAY = 200_000_000; // 200 ms
@@ -33,6 +34,12 @@ public class GameController{
 
     private long playerInjureAnimation = 0;
     private final long INJURE_DELAY = 200_000_000;
+
+    private long playerAttackAnimation = 0;
+    private final long PLAYER_ATTACK_DELAY = 100_000_000;
+
+    private long swordThrowingAnimation = 0;
+    private final long SWORD_THROWING_DELAY = 100_000_000;
 
 
     /**s
@@ -57,7 +64,7 @@ public class GameController{
             @Override
             public void handle(long l) {
                 update(l);
-
+                System.out.println("inizia il loop");
             }
         };
         gameLoop.start();
@@ -65,27 +72,27 @@ public class GameController{
     }
 
 
+    //Get methodss
+    public AnimationTimer getGameLoop() {return gameLoop;}
+
+
+    public void startGameloop(){
+        this.gameLoop.start();
+    }
+
     /**
      * Method that is called whe a key is pressed
-     * @param ke
+     * @param ke, type KeyEvent
      */
     public void handleKeyPressed(KeyEvent ke){
         KeyCode code = ke.getCode();
-        /*
-        switch (code) {
-            case UP -> movePlayer(Directions.UP);       //gameModel.setPlayerDirection(Directions.UP);
-            case DOWN -> movePlayer(Directions.DOWN);   //gameModel.setPlayerDirection(Directions.DOWN);
-            case LEFT -> movePlayer(Directions.LEFT);   //gameModel.setPlayerDirection(Directions.LEFT);
-            case RIGHT -> movePlayer(Directions.RIGHT); //gameModel.setPlayerDirection(Directions.RIGHT);
-        }
-
-         */
 
         switch (code) {
             case UP    -> upPressed = true;
             case DOWN  -> downPressed = true;
             case LEFT  -> leftPressed = true;
             case RIGHT -> rightPressed = true;
+            case SPACE -> spacePressed = true;
         }
 
     }
@@ -105,6 +112,7 @@ public class GameController{
             case DOWN -> downPressed = false;
             case LEFT -> leftPressed = false;
             case RIGHT -> rightPressed = false;
+            case SPACE -> spacePressed = false;
         }
 
     }
@@ -132,35 +140,53 @@ public class GameController{
         }
 
 
-        if (upPressed && now - lastAnimation >= ANIMATION_DELAY && !gameModel.getPlayer().isHasPlayerInjuring()){
+        if (upPressed && now - lastAnimation >= ANIMATION_DELAY){
             gameView.getGamescreen().getPlayer().changeSprite(Directions.UP);
+            gameModel.getPlayer().setPlayerDirection(Directions.UP);
             lastAnimation = now;
+
         }
-        else if(downPressed && now - lastAnimation >= ANIMATION_DELAY && !gameModel.getPlayer().isHasPlayerInjuring()){
+        else if(downPressed && now - lastAnimation >= ANIMATION_DELAY){
             gameView.getGamescreen().getPlayer().changeSprite(Directions.DOWN);
+            gameModel.getPlayer().setPlayerDirection(Directions.DOWN);
             lastAnimation  = now;
 
-        } else if (leftPressed && now - lastAnimation >= ANIMATION_DELAY && !gameModel.getPlayer().isHasPlayerInjuring()) {
+        } else if (leftPressed && now - lastAnimation >= ANIMATION_DELAY) {
             gameView.getGamescreen().getPlayer().changeSprite(Directions.LEFT);
+            gameModel.getPlayer().setPlayerDirection(Directions.LEFT);
             lastAnimation  = now;
-        } else if (rightPressed && now - lastAnimation >= ANIMATION_DELAY && !gameModel.getPlayer().isHasPlayerInjuring()) {
+
+        } else if (rightPressed && now - lastAnimation >= ANIMATION_DELAY) {
             gameView.getGamescreen().getPlayer().changeSprite(Directions.RIGHT);
+            gameModel.getPlayer().setPlayerDirection(Directions.RIGHT);
             lastAnimation  = now;
+
         }
 
 
     }
 
+    public void playerAttack(){
+        if (spacePressed){
+            if (!gameModel.getPlayer().isWeaponThrowing()){
+                gameModel.getPlayer().setAttacking(true);
+
+            }
+
+        }
+    }
+
 
     public void update(long now){
-        if (!gameView.getGamescreen().isZoneChanging()){movePlayer(now);}
+        if (!gameView.getGamescreen().isZoneChanging() && !gameModel.getPlayer().isAttacking()){movePlayer(now);}
 
-
+        playerAttack();
 
         if (gameView.getGamescreen().getPlayer().isInjuring()){
 
             if (now - playerInjureAnimation >= INJURE_DELAY) {
-                gameView.getGamescreen().getPlayer().playerInjured();
+
+                gameView.getGamescreen().getPlayer().changeInjureColor();
                 playerInjureAnimation = now;
 
             }
@@ -171,14 +197,34 @@ public class GameController{
             gameModel.enemyActions();
 
             enemyAnimation = now;
-            gameView.getGamescreen().changeEnemySprite();
+            gameView.getGamescreen().changeEnemyImage();
         }
-
 
         if (now - weaponAnimation >= WEAPOM_DELAY){
-            gameModel.moveWeapon();
+            gameModel.moveEnemyWeapons();
             weaponAnimation = now;
         }
+
+
+        if (gameModel.getPlayer().isAttacking()){
+            if (now - playerAttackAnimation >= PLAYER_ATTACK_DELAY){
+                //gameView.playerViewAttack();
+                gameModel.playerAttack();
+                playerAttackAnimation = now;
+            }
+
+        }
+
+        if(gameModel.getPlayer().isWeaponThrowing()){
+
+            if (now - swordThrowingAnimation >= SWORD_THROWING_DELAY){
+                //gameView.playerViewAttack();
+                gameModel.throwPlayerWeapon();
+                swordThrowingAnimation = now;
+            }
+        }
+
+
 
 
 

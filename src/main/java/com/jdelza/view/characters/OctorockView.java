@@ -14,8 +14,9 @@ public class OctorockView extends EnemyView{
     private final Map<Directions, Image[]> walkingImage = new HashMap<>();
 
 
-    public OctorockView(Coordinates enemyViewMapPosition, Coordinates enemyViewZonePosition) {
-        super(enemyViewMapPosition, enemyViewZonePosition);
+    public OctorockView(String enemyViewID) {
+        super(enemyViewID);
+
 
         //Inizialize enemy RANDOM direction
         Random random = new Random();

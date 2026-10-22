@@ -23,7 +23,7 @@ public class WorldMap {
     public Zone[][] map;
     public Player player;
     /**
-     * Contructor
+     * Constructor
      */
     public WorldMap(Player player) throws IOException {
 

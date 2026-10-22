@@ -5,6 +5,7 @@ import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.world.Zone;
 import com.jdelza.utils.enums.Dimensions;
+import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.EnemyType;
 import com.jdelza.utils.enums.GameColor;
 import com.jdelza.model.weapons.Weapon;
@@ -20,6 +21,9 @@ public class Tektite extends Enemy implements Movable {
 
 
     @Override
+    public void move(Directions direction) {}
+
+    @Override
     public void move(Zone zone) {
         if (super.getSteps() == 0){
             this.setPosition(chooseNewCoordinates());
@@ -31,7 +35,7 @@ public class Tektite extends Enemy implements Movable {
     }
 
     @Override
-    public boolean collisionWithPlayer(Player player) {
+    public boolean hasEnemyCollidedWithEnemy(Player player) {
         return getPosition().equals(player.getPosition());
     }
 

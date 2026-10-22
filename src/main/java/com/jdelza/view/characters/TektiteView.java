@@ -12,21 +12,19 @@ public class TektiteView extends EnemyView{
 
     private boolean isJumping;
 
-    public TektiteView(Coordinates enemyViewMapPosition, Coordinates enemyViewZonePosition) {
-        super(enemyViewMapPosition, enemyViewZonePosition);
-        String path = "file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/tektite/tektite_0.png";
+    public TektiteView(String enemyViewID) {
+        super(enemyViewID);
+        String path = "file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/tektite/TEKTITE_0.png";
         //"file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/tektite";
 
         this.isJumping = false;
 
         this.walkingImage = new Image[2];
         for (int i = 0; i <2; i++) {
-            Image tek = new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/tektite/tektite_" + i + ".png");
+            Image tek = new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/tektite/TEKTITE_" + i + ".png");
 
             walkingImage[i] = tek;
-        }
-
-        ;
+        };
 
 
         tileImageView = new ImageView();
