@@ -1,13 +1,12 @@
 package com.jdelza.model.world;
 
 import com.jdelza.model.characters.Enemy;
-import com.jdelza.model.characters.Player;
 import com.jdelza.model.enemies.Octorock;
 import com.jdelza.model.enemies.Tektite;
 import com.jdelza.model.entities.Coordinates;
-import com.jdelza.utils.enums.Dimensions;
-import com.jdelza.utils.enums.EnemyType;
-import com.jdelza.utils.enums.GameColor;
+import com.jdelza.model.entities.Position;
+import com.jdelza.utils.enums.*;
+import com.jdelza.utils.interfaces.Environment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,24 +18,26 @@ import java.util.stream.Collectors;
 /**
  * This class represent the current logic view of the game
  */
-public class WorldMap {
-    public Zone[][] map;
-    public Player player;
+public class WorldMap extends GameMap implements Environment {
+
+    private Position entryPosition;
+    private Position exitPosition;
+
     /**
      * Constructor
      */
-    public WorldMap(Player player) throws IOException {
+    public WorldMap() throws IOException {
+        super();
 
-        int mapHeigt = Dimensions.MAP_ROWS.get();
-        int mapWidth = Dimensions.MAP_COLUMNS.get();
+        final int mapHeigt = Dimensions.MAP_ROWS.get();
+        final int mapWidth = Dimensions.MAP_COLUMNS.get();
 
-        this.map = new Zone[mapHeigt][mapWidth ];
-        this.player = player;
+        super.map = new Zone[mapHeigt][mapWidth];
 
         for (int i = 0; i< mapHeigt; i++){
             for (int j=0; j<mapWidth; j++){
                 Coordinates zoneCoordinates = new Coordinates(j,i);
-                map[i][j] = new Zone(player.getPlayerMapPosition().equals(zoneCoordinates) ? player : null, zoneCoordinates);
+                super.map[i][j] = new Zone(zoneCoordinates);
             }
         }
 
@@ -68,18 +69,70 @@ public class WorldMap {
 
         //createEnemiesFromFile().stream().forEach(e-> this.getZone(e.getEnemyMapCoordinates()).addEnemy(e));
 
+        /*
+        addEnvironmentsToTheZones(
+                new ShopMap(
+                        new Portal(new Coordinates(7,7), new Coordinates(4,1)),
+                        NPCType.OLD_MAN,
+                        ItemType.SWORD
+                ),
+
+                new Coordinates(7,7)
+        );
+        addEnvironmentsToTheZones(
+                new ShopMap(
+                        new Portal(new Coordinates(5,7), new Coordinates(2,1)),
+                        NPCType.MERCHANT,
+                        ItemType.LIFE
+                ),
+                new Coordinates(5,7)
+        );
+        addEnvironmentsToTheZones(
+                new ShopMap(new Portal(new Coordinates(6,6), new Coordinates(7,1)),
+                        NPCType.MERCHANT,
+                        ItemType.LIFE
+                ),
+                new Coordinates(6,6)
+        );
+
+         */
+
+
+        addEnvironment(
+                new ShopMap(
+                        new Position(new Coordinates(7,7), new Coordinates(4,1)),
+                        NPCType.OLD_MAN,
+                        ItemType.SWORD,
+                        this
+                )
+        );
+        addEnvironment(
+                new ShopMap(
+                        new Position(new Coordinates(5,7), new Coordinates(2,1)),
+                        NPCType.MERCHANT,
+                        ItemType.LIFE,
+                        this
+                )
+        );
+        addEnvironment(
+                new ShopMap(new Position(new Coordinates(6,6), new Coordinates(7,1)),
+                        NPCType.MERCHANT,
+                        ItemType.LIFE,
+                        this
+                )
+        );
+
+
     }
 
-    //Get methods
-    public Zone[][] getMap() {
-        return map;
-    }
-    public Zone getZone(Coordinates coordinates){return map[coordinates.getY()][coordinates.getX()];}
+
 
     //Set methods
     public void setMap(Zone[][] map) {
         this.map = map;
     }
+
+    public void setEntryPosition(Position entryPosition) {this.entryPosition = entryPosition;}
 
     /**
      * Add zone in to the map by coordinates expressed by an object of type "Coordinates"
@@ -136,8 +189,6 @@ public class WorldMap {
             y = random.nextInt(9)+1;
         }
 
-
-
         return new Coordinates(x,y);
 
     }
@@ -174,44 +225,24 @@ public class WorldMap {
 
              */
 
-
-
             //zoneEnemies.add(new Enemy(newZoneEnemyCoordinates,enemyColor,enemyType).setEnemyMapCoordinates(mapCoordinates).setEnemyID(enemyIdBase+Integer.toString(i)));
 
         }
-
-
-
 
         return zoneEnemies;
 
     }
 
 
-    @Override
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
 
-        for (int h = 0; h < map.length; h++){
+    private void addEnvironment(Environment environment){
 
-            for (int w = 0; w < map[0].length; w++){
-                if (player.getPlayerMapPosition().equals(new Coordinates(w,h))){
-                    sb.append(" # ");
-                }
-                else{
-                    sb.append(" + ");
-                }
-
-            }
-            sb.append("\n");
-
-        }
-
-        return sb.toString();
-
+        getZone(environment.getEnvironmentPosition().getZoneCoordinates())
+                .getTile(environment.getEnvironmentPosition().getCellCoordinates())
+                .setEnvironment(environment);
     }
 
-
+    @Override
     public void setLogicMap(){
         //System.out.println("crea logic");
         String collisionPath = "C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/logic-world/Overworld_collisioni.csv";
@@ -263,5 +294,23 @@ public class WorldMap {
     }
 
 
+    @Override
+    public Position getEntryPosition() {
+        return this.entryPosition;
+    }
 
+    @Override
+    public Position getExitPosition() {
+        return null;
+    }
+
+    @Override
+    public Position getEnvironmentPosition() {
+        return null;
+    }
+
+    @Override
+    public EnvironmentType getEnvironmentType() {
+        return EnvironmentType.OVERWORLD;
+    }
 }

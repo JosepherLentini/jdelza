@@ -1,6 +1,7 @@
 package com.jdelza.view.overworld;
 
 
+import com.jdelza.model.entities.Position;
 import com.jdelza.utils.enums.Dimensions;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -50,8 +51,15 @@ public class Overworld extends Pane {
 
     }
 
-    public void aggiungiVista(ImageView image){
-        this.getChildren().add(image);
+    public void changeOverWorldPosition(Position position){
+        int x = position.getZoneCoordinates().getX();
+        int y = position.getZoneCoordinates().getY();
+
+        this.setLayoutX(-x * Dimensions.MAP_WIDTH.get());
+        this.setLayoutY(-y * Dimensions.MAP_HEIGHT.get());
+
+        this.setTranslateX(0);
+        this.setTranslateY(0);
     }
 
 

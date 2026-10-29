@@ -7,14 +7,17 @@ import javafx.scene.input.KeyEvent;
 
 public class StartController {
     private StartView startView;
-    private GameModel gameModel;
+    private GameController gameController;
 
-    public StartController(StartView startView, GameModel gameModel) {
+    public StartController(StartView startView, GameController gameController) {
         this.startView = startView;
-        this.gameModel = gameModel;
+        this.gameController = gameController;
 
         this.startView.getStartScreen().setOnKeyPressed(e->{
-            if (e.getCode() == KeyCode.ENTER){System.out.println("eeee"); pressStart();}
+            if (e.getCode() == KeyCode.ENTER){
+                pressStart();
+
+            }
         });
 
 
@@ -27,7 +30,9 @@ public class StartController {
 
 
     public void pressStart(){
-        startView.goToGame();
+
+        //startView.goToGame();
+        gameController.startGame();
     }
 
 

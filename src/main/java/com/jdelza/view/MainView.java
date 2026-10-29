@@ -32,6 +32,7 @@ public class MainView implements Observer{
         mainScreen.getChildren().add(startView.getStartScreen());
 
         startView.addObserver(this);
+        gameModel.addObserver(this);
 
     }
 
@@ -46,6 +47,14 @@ public class MainView implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
+
+        if (arg instanceof String stringEvent){
+            switch (stringEvent){
+                case "START_GAME" -> mainScreen.getChildren().setAll(gameView.getGamescreen());
+            }
+        }
+
+        /*
         if (o instanceof StartView){
             if (arg instanceof ChangeScreen){
                 System.out.println(((ChangeScreen) arg).getScreen());
@@ -53,5 +62,7 @@ public class MainView implements Observer{
                 mainScreen.getChildren().setAll(gameView.getGamescreen());
             }
         }
+
+         */
     }
 }

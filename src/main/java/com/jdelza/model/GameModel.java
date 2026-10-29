@@ -3,11 +3,13 @@ package com.jdelza.model;
 import com.jdelza.model.characters.Enemy;
 import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
+import com.jdelza.model.entities.Position;
 import com.jdelza.model.weapons.Weapon;
-import com.jdelza.model.world.Zone;
+import com.jdelza.model.world.*;
 import com.jdelza.utils.enums.*;
-import com.jdelza.model.world.WorldMap;
 import com.jdelza.utils.events.*;
+import com.jdelza.utils.interfaces.Environment;
+import com.jdelza.view.overworld.Overworld;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,43 +21,87 @@ import java.util.Observer;
 public class GameModel extends Observable implements Observer {
 
     private Player player;
-    private WorldMap overworldMap;
+    private GameMap currentMap;
+    private WorldMap overworld;
 
-    public GameModel() throws IOException {
-        this.player = Player.getPlayerInstance();
-        this.overworldMap = new WorldMap(
-                this.player
-        );
+
+
+    public GameModel(Player player) throws IOException {
+        this.player = player;
+        this.overworld = new WorldMap();
+        this.currentMap = overworld;
+
 
     }
 
     //Get methods
     public Player getPlayer() {return player;}
-    public WorldMap getOverworldMap() {return overworldMap;}
+    public GameMap getCurrentMap() {return currentMap;}
 
+    /**
+     * This function calls the view to launch the game screen
+     */
+    public void startGame(){setChanged();notifyObservers("START_GAME");}
 
+    /*
     //Player actions
     public void movePlayer(Directions direction){
 
 
-        if (!player.isPlayerAtTheBorderOfTheMap(direction)){
+        //System.out.println(currentMap.getZone(player.getPlayerMapPosition()));
+
+
+        if (player.isPlayerAtTheBorderOfTheMap(direction, currentMap) && player.hasPlayerShouldReturnToOverworld(currentMap, direction)){
+
+
+            setChanged();
+            notifyObservers(new SwitchEnvironment(player.getOverworldReturnPoint(), EnvironmentType.OVERWORLD));
+
+            player.setPlayerMapPosition(player.getOverworldReturnPoint().getMapCoordinates());
+            player.setPosition(player.getOverworldReturnPoint().getZoneCoordinates());
+
+            this.currentMap = overworld;
+
+        } else if (!player.isPlayerAtTheBorderOfTheMap(direction, currentMap)){
+
             if (player.shouldPlayerChangeZone(direction)){
                 player.changeZone(direction);
                 setChanged();
                 notifyObservers(new PlayerMovement(true,direction)  );
             }else{
 
+                Zone currentZone = currentMap.getZone(player.getPlayerMapPosition());
 
-                Zone currentZone = overworldMap.getZone(player.getPlayerMapPosition());
+                Environment env = player.getEnvironment(currentMap.getZone(player.getPlayerMapPosition()), direction);
 
                 Coordinates nextCoordinates = new Coordinates(
                         player.getPosition().getX() + direction.getX(),
                         player.getPosition().getY() + direction.getY()
                 );
 
-                if ( currentZone.getZone()[nextCoordinates.getY()][nextCoordinates.getX()].isWalkable()){
+                if (env != null){
+                    setChanged();
+                    notifyObservers(new SwitchEnvironment(env.getEntryPortal(), env.getEnvironmentType()));
 
-                    boolean collide = player.hasPlayerCollidedWithEnemy(overworldMap.getZone(player.getPlayerMapPosition()), direction);
+                    if (currentMap instanceof WorldMap){
+
+                        player.setOverworldReturnPoint(new Portal(player.getPlayerMapPosition(), player.getPosition()));
+                    }
+
+                    //this.currentMap = new ShopMap(new Coordinates(4,1));
+                    player.setPlayerMapPosition(env.getEntryPortal().getMapCoordinates());
+                    player.setPosition(env.getEntryPortal().getZoneCoordinates());
+
+                    this.currentMap = (GameMap) env;
+
+
+
+                }
+
+
+                else if ( currentZone.getZone()[nextCoordinates.getY()][nextCoordinates.getX()].isWalkable()){
+
+                    boolean collide = player.hasPlayerCollidedWithEnemy(currentMap.getZone(player.getPlayerMapPosition()), direction);
 
                     if (collide && !player.isHasPlayerInjuring()){
                         //Player has collided
@@ -67,6 +113,7 @@ public class GameModel extends Observable implements Observer {
 
                     player.move(direction);
 
+
                     setChanged();
                     notifyObservers(new PlayerMovement(false,direction)  );
                 }
@@ -75,49 +122,143 @@ public class GameModel extends Observable implements Observer {
             }
         }
 
+        System.out.println(player.getPlayerMapPosition() + " " + player.getPosition() + " " + player.getPlayerDirection());
+
+    }
+
+     */
+
+    public void movePlayer(Directions direction){
+        Environment env = player.getEnvironment(currentMap.getZone(player.getPlayerMapPosition()), direction);
 
 
-        //if(up || down || left || right){return;}
-        /*
+
+        //Start take item part
+
+
+
+
+        //End take item part
+
+
+
+        if (player.hasPlayerShouldReturnToOverworld(currentMap, direction) && player.isPlayerAtTheBorderOfTheMap(direction, currentMap)){
+                returnToOverworld();
+
+        }else if (env != null){
+            enterEnvironment(env);
+        }
+        else if(player.shouldPlayerChangeZone(direction)){
+            switchZone(direction);
+        }
         else{
-            if (player.getPosition().getY() == 0 && direction == Directions.UP){
-
-                player.changeZone(direction);
-                setChanged();
-                notifyObservers(new PlayerMovement(true,direction)  );
-            }
-            else if(player.getPosition().getX() == 0 && direction == Directions.LEFT){
-
-                player.changeZone(direction);
-                setChanged();
-                notifyObservers(new PlayerMovement(true,direction)  );
-            }
-            else if(player.getPosition().getY() == Dimensions.ZONE_ROWS.get()-1 && direction == Directions.DOWN){
-
-                player.changeZone(direction);
-                setChanged();
-                notifyObservers(new PlayerMovement(true,direction)  );
-            }
-            else if(player.getPosition().getX() == Dimensions.ZONE_COLUMNS.get()-1 && direction == Directions.RIGHT){
-
-                player.changeZone(direction);
-                setChanged();
-                notifyObservers(new PlayerMovement(true,direction)  );
-
-            }
-
-         */
-
+            playerWalk(direction);
+        }
+        player.takeItem(currentMap, direction);
 
 
     }
 
     /**
+     * This function is called when player should come back to overworld
+     */
+    private void returnToOverworld(){
+        System.out.println("usciamo va!");
+            setChanged();
+
+            notifyObservers(new EnterOverworld(overworld.getEntryPosition()));
+
+            player.setPlayerMapPosition(overworld.getEntryPosition().getZoneCoordinates());
+            player.setPosition(overworld.getEntryPosition().getCellCoordinates());
+
+            this.currentMap = overworld;
+
+    }
+
+    /**
+     * This function is called when player should go in to another environment
+     * @param env
+     */
+    private void enterEnvironment(Environment env){
+        setChanged();
+
+        //If player go from overworld to another environment
+        if (currentMap instanceof WorldMap wm){
+            //set player position before entry in an environment
+            wm.setEntryPosition(new Position(player.getPlayerMapPosition(), player.getPosition()));
+        }
+
+        switch (env.getEnvironmentType()){
+            case SHOP -> notifyObservers(new EnterTheShop((ShopMap) env));
+            case OVERWORLD -> {notifyObservers(new EnterOverworld(env.getEntryPosition()));}
+        }
+
+        /*
+        if (currentMap instanceof WorldMap) {
+
+            player.setOverworldReturnPoint(new Position(player.getPlayerMapPosition(), player.getPosition()));
+        }
+
+         */
+
+        //this.currentMap = new ShopMap(new Coordinates(4,1));
+        player.setPlayerMapPosition(env.getEntryPosition().getZoneCoordinates());
+        player.setPosition(env.getEntryPosition().getCellCoordinates());
+
+        this.currentMap = (GameMap) env;
+    }
+
+    /**
+     * This function is called when player should change zone
+     * @param direction
+     */
+    private void switchZone(Directions direction){
+
+            player.changeZone(direction);
+            setChanged();
+            notifyObservers(new PlayerMovement(true, direction));
+
+    }
+
+    /**
+     * The player moves to the next square according to the direction given in the input
+     * @param direction direction pressed
+     */
+    private void playerWalk(Directions direction) {
+        Zone currentZone = currentMap.getZone(player.getPlayerMapPosition());
+        Coordinates nextCoordinates = new Coordinates(
+                player.getPosition().getX() + direction.getX(),
+                player.getPosition().getY() + direction.getY()
+        );
+
+        if (currentZone.getZone()[nextCoordinates.getY()][nextCoordinates.getX()].isWalkable()) {
+
+            boolean collide = player.hasPlayerCollidedWithEnemy(currentMap.getZone(player.getPlayerMapPosition()), direction);
+
+            if (collide) {
+                //Player has collided
+                player.takeDamage(DamageType.LIGHT);
+
+                setChanged();
+                notifyObservers(new PlayerCollision(direction));
+            }
+
+            player.move(direction);
+
+
+            setChanged();
+            notifyObservers(new PlayerMovement(false, direction));
+        }
+
+
+    }
+    
+    /**
      * This function controls the enemy’s attack and movement actions
      */
     public void enemyActions(){
         //Set the same zone of the player
-        Zone currentPlayerZone = overworldMap.getZone(getPlayer().getPlayerMapPosition());
+        Zone currentPlayerZone = currentMap.getZone(getPlayer().getPlayerMapPosition());
 
         //Enemies in the zone
         List<Enemy> playerSameZoneEnemies = currentPlayerZone.getEnemies();
@@ -213,7 +354,7 @@ public class GameModel extends Observable implements Observer {
 
             if (!removeEnemy.isEmpty()){
 
-                getOverworldMap().getZone(player.getPlayerMapPosition()).getEnemies().removeAll(removeEnemy);
+                getCurrentMap().getZone(player.getPlayerMapPosition()).getEnemies().removeAll(removeEnemy);
 
                 setChanged();
                 notifyObservers(new EnemyDeath(removeEnemy.getFirst()));
@@ -229,7 +370,7 @@ public class GameModel extends Observable implements Observer {
      */
     public void moveEnemyWeapons(){
         //Set the same zone of the player
-        Zone currentPlayerZone = overworldMap.getZone(getPlayer().getPlayerMapPosition());
+        Zone currentPlayerZone = currentMap.getZone(getPlayer().getPlayerMapPosition());
 
         //Enemies in the zone
         List<Weapon> playerSameZoneWeapons = currentPlayerZone.getWeapons();
@@ -285,7 +426,7 @@ public class GameModel extends Observable implements Observer {
                 //Remove them
                 playerSameZoneWeapons.removeAll(deleteWeapons);
                 //Update the weapon list of the current zone
-                overworldMap.getZone(getPlayer().getPlayerMapPosition()).setWeapons(playerSameZoneWeapons);
+                currentMap.getZone(getPlayer().getPlayerMapPosition()).setWeapons(playerSameZoneWeapons);
 
                 //Notify observer
                 setChanged();
@@ -296,46 +437,55 @@ public class GameModel extends Observable implements Observer {
 
     }
 
+
     /**
      * This method is triggered when you wish to initiate the player’s
      * attack action and carries out all the consequences thereof
      */
+
     public void playerAttack(){
 
-        //If player has all lives throwWeapon will set to true, else false.
-        boolean throwWeapon = player.getLifes() == 3.0;
 
-        //Initialize the attack
-        player.initializeAttackWithWeapon(player.getPlayerDirection(), throwWeapon);
+                //If player has all lives throwWeapon will set to true, else false.
+                boolean throwWeapon = player.getLifes() == 3.0;
 
-        //Store the enemy that was hit and killed in the variable
-        Enemy removeEnemy = player.killedEnemy(overworldMap);
+                //Initialize the attack
+                player.initializeAttackWithWeapon(player.getPlayerDirection());
 
-        //if an enemy is dead
-        if (removeEnemy != null){
-            //remove enemy from current zone enemies list
-            getOverworldMap().getZone(player.getPlayerMapPosition()).getEnemies().remove(removeEnemy);
+                //Store the enemy that was hit and killed in the variable
+                Enemy removeEnemy = player.killedEnemy(currentMap);
 
-            //Remove enemy from the view
-            setChanged();
-            notifyObservers(new EnemyDeath(removeEnemy));
-        }
+                //if an enemy is dead
+                if (removeEnemy != null){
+                    //remove enemy from current zone enemies list
+                    getCurrentMap().getZone(player.getPlayerMapPosition()).getEnemies().remove(removeEnemy);
+
+                    //Remove enemy from the view
+                    setChanged();
+                    notifyObservers(new EnemyDeath(removeEnemy));
+                }
 
 
-        //Create PlayerAttack event
-        PlayerAttack attack =
-                new PlayerAttack(
-                        player.getPlayerWeapon(),
-                        throwWeapon,
-                        StartEndStatus.START
-                );
+                //Create PlayerAttack event
+                PlayerAttack attack =
+                        new PlayerAttack(
+                                player.getPlayerWeapon(),
+                                throwWeapon,
+                                StartEndStatus.START
+                        );
 
-        //View the attack movement
-        setChanged();
-        notifyObservers(attack);
+                //View the attack movement
+                setChanged();
+                notifyObservers(attack);
+
+
+
 
 
     }
+
+
+
 
     /**
      * This function handles the movement and collisions of
@@ -344,7 +494,7 @@ public class GameModel extends Observable implements Observer {
     public void throwPlayerWeapon(){
 
         //player current zone
-        Zone currentPlayerZone = overworldMap.getZone(getPlayer().getPlayerMapPosition());
+        Zone currentPlayerZone = currentMap.getZone(getPlayer().getPlayerMapPosition());
 
         //next player weapon coordinates
         int nextX = player.getPlayerWeapon().getPosition().getX() + player.getPlayerWeapon().getWeaponDirection().getX();
@@ -358,7 +508,10 @@ public class GameModel extends Observable implements Observer {
 
 
         //Store the enemy that was hitted and killed
+
+
         List<Enemy> killedEnemy = new ArrayList<>();
+        System.out.println(player.getPlayerWeapon().getPosition());
 
         //for each enemy in the current zone
         currentPlayerZone.getEnemies().forEach(
@@ -390,7 +543,7 @@ public class GameModel extends Observable implements Observer {
         //If an enemy is killed
         if (!killedEnemy.isEmpty()){
             //remove killed enemy from the zone
-            getOverworldMap().getZone(player.getPlayerMapPosition()).getEnemies().removeAll(killedEnemy);
+            getCurrentMap().getZone(player.getPlayerMapPosition()).getEnemies().removeAll(killedEnemy);
 
             //Remove enemy from the view
             setChanged();

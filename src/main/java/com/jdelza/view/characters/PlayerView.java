@@ -1,13 +1,12 @@
 package com.jdelza.view.characters;
 
+import com.jdelza.model.entities.Position;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.Dimensions;
-import com.jdelza.view.weapons.RockView;
 import com.jdelza.view.weapons.SwordView;
-import com.jdelza.view.weapons.WeaponView;
+import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +21,7 @@ public class PlayerView extends CharacterView {
 
     //Sword
     SwordView playerSword = new SwordView("PLAYER_WEAPON");
-    SwordView throwingWeapon= new SwordView("PLAYER_THROW_WEAPON");
+    SwordView throwingWeapon = new SwordView("PLAYER_THROW_WEAPON");
 
     //Images
     private Map<Directions, Image[]> walkingImage = new HashMap<>();    //Key: direction, Value: Image of direction
@@ -201,6 +200,47 @@ public class PlayerView extends CharacterView {
 
     }
 
+    public void attack2(Directions direction){
+
+        Image[] attackImages = new Image[]{new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/SWORD/SWORD_" +direction.name()+ "_1.png"),
+                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/SWORD/SWORD_" +direction.name()+ "_2.png"),
+                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/SWORD/SWORD_" +direction.name()+ "_3.png")};
+
+
+        Image[] playerAttackImages = new Image[]{new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player-attack/ATTACK_" +direction.name()+ "_1.png"),
+                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player-attack/ATTACK_" +direction.name()+ "_2.png"),
+                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player-attack/ATTACK_" +direction.name()+ "_3.png")};
+
+        AnimationTimer attackAnimation = new AnimationTimer() {
+
+            long current = 0;
+            final long period = 200_000_000;
+            int count = 0;
+
+            @Override
+            public void handle(long l) {
+                if (l - current > period && count < 3){
+
+                    changeHandle();
+                    current = l;
+
+                }else{
+                    stop();
+                }
+            }
+
+            private void changeHandle(){
+                playerSword.changeSwordImage(attackImages[count]);
+                tileImageView.setImage(playerAttackImages[count]);
+                count ++;
+            }
+
+
+        };
+
+        attackAnimation.start();
+    }
+
 
     public void endAttack(){
         setAttacking(false);
@@ -272,7 +312,15 @@ public class PlayerView extends CharacterView {
 
     }
 
+    public void playerChangePosition(Position position){
+        int x = position.getCellCoordinates().getX();
+        int y = position.getCellCoordinates().getY();
 
+        this.setTranslateX(x*Dimensions.TILE_WIDTH.get());
+        this.setTranslateY(y*Dimensions.TILE_HEIGT.get());
+
+
+    }
 
 
 

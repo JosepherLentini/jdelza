@@ -6,6 +6,7 @@ import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.weapons.Weapon;
 import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.Directions;
+import com.jdelza.utils.interfaces.Environment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.List;
 public class Zone {
 
     private Tile[][] zone;
-    private Player player;
 
     //Enemies
     private List<Enemy> enemies;                 //Some zone contains enemies
@@ -24,11 +24,14 @@ public class Zone {
     //Zone position
     private Coordinates zoneMapPosition;        //Zone map coordinates
 
+    //Environments
+    //private List<Environment> environments;
+
+
     /**
      * Zone constructor
-     * @param player    player of the game
      */
-    public Zone(Player player, Coordinates zoneMapPosition) {
+    public Zone(Coordinates zoneMapPosition) {
 
         //Standard and global zone dimensions
         int zoneRows = Dimensions.ZONE_ROWS.get();
@@ -36,10 +39,11 @@ public class Zone {
 
         //Class fields inizialization
         this.zone = new Tile[zoneRows][zoneColumns];
-        this.player = player;
+
         this.zoneMapPosition = zoneMapPosition;
         this.enemies = new ArrayList<>();
         this.weapons = new ArrayList<>();
+        //this.environments = new ArrayList<>();
 
         for (int i = 0; i<zoneRows; i++){
             for (int j=0; j<zoneColumns; j++){
@@ -54,14 +58,15 @@ public class Zone {
         return zone;
     }
     public List<Enemy> getEnemies() {return enemies;}
-    public Player getPlayer() {
-        return player;
-    }
     public Tile getTile(Coordinates coordinates){
         return this.getZone()[coordinates.getY()][coordinates.getX()];
     }
     public List<Weapon> getWeapons() {return weapons;}
+    //public List<Environment> getEnvironments() {return environments;}
 
+    public Coordinates getZoneMapPosition() {
+        return zoneMapPosition;
+    }
 
     //set methods
     public void setWeapons(List<Weapon> weapons) {
@@ -73,6 +78,12 @@ public class Zone {
      * @param e     new enemy
      */
     public void addEnemy(Enemy e){this.enemies.add(e);}
+
+    /**
+     * This function allows to add new environment to the list of environments
+     * @param environment new environment to insert
+     */
+    //public void addEnvironment(Environment environment){environments.add(environment);}
 
     /**
      * Methods to add or set a Tile objent placed in y, coordinates in to the zone
@@ -103,21 +114,14 @@ public class Zone {
 
     @Override
     public String toString(){
-        StringBuilder sb = new StringBuilder();
-        for (int h = 0; h < zone.length; h++){
-            for (int w = 0; w < zone[0].length; w++){
-                if (player != null && player.getPosition().getX() == w && player.getPosition().getY() == h){ // &
-                    sb.append(player.toString());
 
-                } else {sb.append(zone[h][w].isWalkable() ? "0 " : "1 ");}
+        return "Zone: "+ this.zoneMapPosition.getX() + "  " + this.zoneMapPosition.getY();
 
-            }
-            sb.append("\n");
-
-        }
-        sb.append("Zone: "+ this.zoneMapPosition.getX() + "  " + this.zoneMapPosition.getY());
-        return sb.toString();
     }
+
+
+
+
 
 
 }

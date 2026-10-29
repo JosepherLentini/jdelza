@@ -4,6 +4,7 @@ package com.jdelza;
 import com.jdelza.controller.GameController;
 import com.jdelza.controller.StartController;
 import com.jdelza.model.GameModel;
+import com.jdelza.model.characters.Player;
 import com.jdelza.view.MainView;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -44,11 +45,15 @@ public class Main extends Application{
         //ms.getChildren().add(overworld);
 
          */
-        GameModel gameModel = new GameModel();
+
+        Player player = Player.getPlayerInstance();
+
+        GameModel gameModel = new GameModel(player);
         MainView main = new MainView(gameModel);
 
-        StartController startController = new StartController(main.getStartView(), gameModel);
         GameController  gameController  = new GameController(gameModel, main.getGameView());
+        StartController startController = new StartController(main.getStartView(), gameController);
+
 
 
         /*

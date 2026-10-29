@@ -3,9 +3,12 @@ package com.jdelza.view.screen;
 import com.jdelza.model.characters.Enemy;
 import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
+import com.jdelza.model.entities.Position;
 import com.jdelza.model.weapons.Weapon;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.Dimensions;
+import com.jdelza.utils.enums.ItemType;
+import com.jdelza.utils.enums.NPCType;
 import com.jdelza.utils.events.PlayerMovement;
 import com.jdelza.view.characters.EnemyView;
 import com.jdelza.view.characters.PlayerView;
@@ -32,8 +35,9 @@ public class GameScreen extends VBox {
     private final int gameScreenWidth = Dimensions.RENDER_SCREEN_WIDTH.get();
 
     //Main game screen components
-    private Pane overworld;        //This is the container of overwold class (not Overwolrd class)
+    private Overworld overworld;        //This is the container of overwold class (not Overwolrd class)
     private String inventory;
+    private Pane currentEnvironment;
 
     //Player
     private PlayerView player;  //player view
@@ -60,6 +64,8 @@ public class GameScreen extends VBox {
         this.player = player;
         this.allEnemies = new HashSet<>(){};
         this.overworldWrapper = new Pane(overworld);
+
+        this.currentEnvironment = overworld;
 
         this.isZoneChanging = false;
 
@@ -108,7 +114,7 @@ public class GameScreen extends VBox {
 
 
         this.getChildren().addAll(p,overworldWrapper);
-
+        //this.getChildren().addAll(p, new ShopScreen(player));
 
 
         Rectangle clip = new Rectangle(gameScreenWidth, gameScreenHeight);
@@ -118,19 +124,21 @@ public class GameScreen extends VBox {
 
     //Get methods
     public PlayerView getPlayer() {return player;}
-    public Pane       getOverworld() {return overworld;}
+    public Overworld       getOverworld() {return overworld;}
     public boolean    isZoneChanging() {return isZoneChanging;}
     public boolean    isPlayerMoving() {return isPlayerMoving;}
+    public Pane getOverworldWrapper() {return overworldWrapper;}
+    public Pane getCurrentEnvironment() {return currentEnvironment;}
 
-    public Set<EnemyView> getAllEnemies() {
-
-        return overworld.getChildren().stream().filter(n-> n instanceof EnemyView).map(n-> (EnemyView)n).collect(Collectors.toSet());
-    }
 
     //Set methods
     public void setZoneChanging(boolean zoneChanging) {isZoneChanging = zoneChanging;}
     public void setPlayerMoving(Boolean playerMoving){isPlayerMoving = playerMoving;}
+    public Set<EnemyView> getAllEnemies() {return overworld.getChildren().stream().filter(n-> n instanceof EnemyView).map(n-> (EnemyView)n).collect(Collectors.toSet());}
 
+    public void setCurrentEnvironment(Pane currentEnvironment) {
+        this.currentEnvironment = currentEnvironment;
+    }
 
     //Enemies
     public void addAndPlaceEnemy(EnemyView e, Coordinates modelEnemyMapCoordinates, Coordinates modelEnemyZoneCoordinates){
@@ -237,16 +245,6 @@ public class GameScreen extends VBox {
             //When transition ends
             transition.setOnFinished(e-> setPlayerMoving(false));
 
-            /*
-            switch (dir){
-                case UP:    player.setTranslateY(player.getTranslateY()-player.getHeight());break;
-                case DOWN:  player.setTranslateY(player.getTranslateY()+player.getHeight());break;
-                case LEFT:  player.setTranslateX(player.getTranslateX()-player.getWidth());break;
-                case RIGHT: player.setTranslateX(player.getTranslateX()+player.getWidth());break;
-            }
-             */
-
-            //playerModel.setMoving(false);
 
             }
 
@@ -479,6 +477,28 @@ public class GameScreen extends VBox {
 
 
     ;}
+
+
+    public void enterOverworld(Position position){
+        overworld.changeOverWorldPosition(position);
+        getOverworldWrapper().getChildren().remove(player);
+        player.playerChangePosition(position);
+        getOverworldWrapper().getChildren().add(player);
+    }
+
+
+    public void enterTheShopView(Position playerEntryPosition, NPCType npcType, ItemType itemType){
+
+        Pane newEnvironment = new ShopScreen(getPlayer(), npcType, itemType);
+
+        getOverworldWrapper().getChildren().remove(getOverworld());
+        getOverworldWrapper().getChildren().add(newEnvironment);
+        setCurrentEnvironment(newEnvironment);
+
+        player.playerChangePosition(playerEntryPosition);
+
+
+    }
 
 
 
