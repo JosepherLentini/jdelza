@@ -1,20 +1,16 @@
 package com.jdelza.model.characters;
 
 import com.jdelza.model.entities.Entity;
-import com.jdelza.model.world.WorldMap;
-import com.jdelza.model.world.Zone;
-import com.jdelza.utils.enums.DamageType;
-import com.jdelza.utils.enums.Dimensions;
-import com.jdelza.utils.enums.Directions;
+import com.jdelza.model.world.*;
+
+import com.jdelza.utils.enums.*;
 import com.jdelza.model.entities.Coordinates;
-import com.jdelza.utils.enums.WeaponType;
 import com.jdelza.utils.interfaces.Damageable;
+import com.jdelza.utils.interfaces.Environment;
 import com.jdelza.utils.interfaces.Movable;
 import com.jdelza.utils.interfaces.Usable;
 import com.jdelza.model.weapons.Weapon;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -52,7 +48,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
     //weapon & attack
     private Weapon playerWeapon;
     private boolean attacking;
-    private boolean throwWeapon;          //Indicates whether or not the player can shoot his sword
+    private boolean throwWeapon;          //Indicates whether the player can shoot his sword
     private boolean weaponThrowing;
 
     /**
@@ -65,6 +61,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
 
         //Position
         this.playerMapPosition = playerMapPosition;
+
 
         this.lifes = 3.0;
         this.inventory = new Usable[6];
@@ -79,7 +76,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
 
         //weapon & attack
         this.throwWeapon = true;
-        this.playerWeapon = new Weapon(this.getPosition(), WeaponType.SWORD, getPlayerDirection());
+
         this.weaponThrowing = false;
     }
 
@@ -88,7 +85,14 @@ public class Player extends GameCharacter implements Movable, Damageable {
      * @return instance of Player
      */
     public static Player getPlayerInstance(){
-        if (playerInstance == null){ playerInstance= new Player(new Coordinates(7,7), new Coordinates(7,7));}
+        if (playerInstance == null){
+
+            playerInstance= new Player(
+                    new Coordinates(7,7),
+                    new Coordinates(7,7));
+                    //new Coordinates(0,0));
+
+        }
         return playerInstance;
     }
 
@@ -103,6 +107,9 @@ public class Player extends GameCharacter implements Movable, Damageable {
     public boolean isThrowWeapon() {return throwWeapon;}
     public Weapon getPlayerWeapon() {return playerWeapon;}
     public boolean isWeaponThrowing() {return weaponThrowing;}
+    //public Position getOverworldReturnPoint() {return overworldReturnPoint;}
+
+
 
     //Set methods
     public void setLifes(double lifes) {this.lifes = lifes;}
@@ -115,6 +122,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
     public void setAttacking(boolean attacking) {this.attacking = attacking;}
     public void setPlayerWeapon(Weapon playerWeapon) {this.playerWeapon = playerWeapon;}
     public void setWeaponThrowing(boolean weaponThrowing) {this.weaponThrowing = weaponThrowing;}
+    //public void setOverworldReturnPoint(Position overworldReturnPoint) {this.overworldReturnPoint = overworldReturnPoint;}
 
     /**
      * Is player moving?
@@ -159,13 +167,28 @@ public class Player extends GameCharacter implements Movable, Damageable {
         }
     }
 
-    public boolean isPlayerAtTheBorderOfTheMap(Directions direction){
-        boolean up    = getPosition().getY() == 0 && getPlayerMapPosition().getY() == 0 && direction == Directions.UP;
-        boolean down  = getPosition().getY() == Dimensions.ZONE_ROWS.get()-1 && getPlayerMapPosition().getY() == Dimensions.MAP_ROWS.get()-1 && direction == Directions.DOWN;
-        boolean left  = getPosition().getX() == 0 && getPlayerMapPosition().getX() == 0 && direction == Directions.LEFT;
-        boolean right = getPosition().getX() == Dimensions.ZONE_COLUMNS.get()-1 && getPlayerMapPosition().getX() == Dimensions.MAP_COLUMNS.get()-1 && direction == Directions.RIGHT;
+    /*
+    public GameMap getGameMapIfItChange(OverworldEnvironments environments){
+        return environments.getEnvironments().stream().filter(e->{
+            return e.get
+        })
+    }
+
+     */
+
+    public boolean isPlayerAtTheBorderOfTheMap(Directions direction, GameMap map){
+
+        boolean up    = direction == Directions.UP && getPosition().getY() == 0 && getPlayerMapPosition().getY()-1 <= 0;
+        boolean down  = direction == Directions.DOWN && getPosition().getY() == Dimensions.ZONE_ROWS.get()-1 && getPlayerMapPosition().getY()+1 >= map.getMap().length;
+        boolean left  = direction == Directions.LEFT && getPosition().getX() == 0 &&  getPlayerMapPosition().getX()-1 <= 0;
+        boolean right = direction == Directions.RIGHT && getPosition().getX() == Dimensions.ZONE_COLUMNS.get()-1 && getPlayerMapPosition().getX()+1 >= map.getMap()[0].length;
 
         return up || down || left || right;
+
+
+
+
+
 
     }
 
@@ -184,6 +207,53 @@ public class Player extends GameCharacter implements Movable, Damageable {
                 //right border
                 getPosition().getX() == Dimensions.ZONE_COLUMNS.get()-1 && direction == Directions.RIGHT;
 
+    }
+
+    public Environment getEnvironment(Zone currentPlayerZone, Directions direction){
+
+        /*
+            return currentPlayerZone.getEnvironments().stream().filter(e-> e.getEnvironmentPosition().getZoneCoordinates().equals(getPlayerMapPosition()) &&
+                        e.getEnvironmentPosition().getZoneCoordinates().equals(
+                                new Coordinates(getPosition().getX()+direction.getX(),
+                                        getPosition().getY()+direction.getY()))
+                    )
+                    .findFirst().orElse(null);
+
+         */
+
+        int newX = getPosition().getX()+direction.getX();
+        int newY = getPosition().getY()+direction.getY();
+
+
+        return newX >= 0 && newX < Dimensions.ZONE_COLUMNS.get() && newY >= 0 && newY < Dimensions.ZONE_ROWS.get() ?
+                currentPlayerZone.getTile(new Coordinates(newX, newY)).getEnvironment()
+                : null;
+
+    }
+
+    public boolean hasPlayerShouldReturnToOverworld(GameMap map, Directions direction){
+        //System.out.println("usciamo va!");
+
+        if (map.getClass() == ShopMap.class){
+            ShopMap sMap = (ShopMap) map;
+
+            return map.getMap()[0][0].getTile(getPosition()).getEnvironment() instanceof WorldMap && direction == sMap.getExitDirection();
+            /*
+            return( getPosition().equals(sMap.getExitPosition().getZoneCoordinates()) || getPosition().equals(new Coordinates(8,10)))
+                    && direction == sMap.getExitDirection();
+
+             */
+        }
+
+        /*
+        if (map instanceof Environment env){
+            return getPlayerMapPosition().equals(env.getExitPortal().getMapCoordinates()) && getPosition().equals(env.getExitPortal().getZoneCoordinates());
+        }
+
+         */
+
+
+        return false;
     }
 
     /**
@@ -219,7 +289,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
      * @param map   current ame map
      * @return      killed enemy
      */
-    public Enemy killedEnemy(WorldMap map){
+    public Enemy killedEnemy(GameMap map){
 
         AtomicReference<Enemy> killedEnemy = new AtomicReference<>();
 
@@ -271,9 +341,8 @@ public class Player extends GameCharacter implements Movable, Damageable {
     /**
      * Initialize the weapon’s coordinates and specify whether it will be thrown
      * @param direction                 player direction
-     * @param isTheWeaponThrowing       if player has all lives it will be true
      */
-    public void initializeAttackWithWeapon(Directions direction, boolean isTheWeaponThrowing){
+    public void initializeAttackWithWeapon(Directions direction){
 
         //the weapon’s direction is set to match that of the player
         getPlayerWeapon().setWeaponDirection(direction);
@@ -289,6 +358,30 @@ public class Player extends GameCharacter implements Movable, Damageable {
 
         //Set the weapon’s coordinates on the MAP
         getPlayerWeapon().setWeaponMapPosition(getPlayerMapPosition());
+    }
+
+
+
+    public void takeItem(GameMap map, Directions direction){
+
+        int newX = getPosition().getX() + direction.getX();
+        int newY = getPosition().getY() + direction.getY();
+
+        boolean isInBound =  newX >= 0 && newX < Dimensions.ZONE_COLUMNS.get() && newY >= 0 && newY < Dimensions.ZONE_ROWS.get();
+
+        if(isInBound) {
+            ItemType itemType  = map.getZone(new Coordinates(getPlayerMapPosition().getX(), getPlayerMapPosition().getY())).getTile(new Coordinates(newX, newY)).getItemType();
+            if(itemType != null ) {
+
+                switch (itemType){
+                    case SWORD -> this.playerWeapon = new Weapon(this.getPosition(), WeaponType.SWORD, getPlayerDirection());
+                }
+
+
+            }
+        }
+
+
     }
 
 
@@ -315,15 +408,17 @@ public class Player extends GameCharacter implements Movable, Damageable {
 
     @Override
     public void takeDamage(DamageType damageType) {
+        if (!isHasPlayerInjuring()){
+            double newLives = this.getLifes() - damageType.getDamage();
+            setHasPlayerInjuring(true);
 
-        double newLives = this.getLifes() - damageType.getDamage();
-        setHasPlayerInjuring(true);
-
-        if (newLives < 0) {
-            this.setLifes(0.0);
-        } else {
-            this.setLifes(newLives);
+            if (newLives < 0) {
+                this.setLifes(0.0);
+            } else {
+                this.setLifes(newLives);
+            }
         }
+
 
     }
 

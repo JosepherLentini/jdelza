@@ -64,10 +64,10 @@ public class GameController{
             @Override
             public void handle(long l) {
                 update(l);
-                System.out.println("inizia il loop");
+
             }
         };
-        gameLoop.start();
+        //gameLoop.start();
 
     }
 
@@ -76,8 +76,10 @@ public class GameController{
     public AnimationTimer getGameLoop() {return gameLoop;}
 
 
-    public void startGameloop(){
+    public void startGame(){
+
         this.gameLoop.start();
+        gameModel.startGame();
     }
 
     /**
@@ -104,7 +106,7 @@ public class GameController{
      * @param ke
      */
     public void handleKeyReleased(KeyEvent ke){
-        List<Enemy> enemies = gameModel.getOverworldMap().getZone(gameModel.getPlayer().getPlayerMapPosition()).getEnemies();
+        List<Enemy> enemies = gameModel.getCurrentMap().getZone(gameModel.getPlayer().getPlayerMapPosition()).getEnemies();
 
 
         switch (ke.getCode()) {
@@ -167,13 +169,17 @@ public class GameController{
     }
 
     public void playerAttack(){
-        if (spacePressed){
+
+        if (spacePressed && gameModel.getPlayer().getPlayerWeapon() != null){
             if (!gameModel.getPlayer().isWeaponThrowing()){
                 gameModel.getPlayer().setAttacking(true);
 
             }
 
         }
+
+
+
     }
 
 
@@ -215,6 +221,7 @@ public class GameController{
 
         }
 
+
         if(gameModel.getPlayer().isWeaponThrowing()){
 
             if (now - swordThrowingAnimation >= SWORD_THROWING_DELAY){
@@ -223,6 +230,8 @@ public class GameController{
                 swordThrowingAnimation = now;
             }
         }
+
+
 
 
 

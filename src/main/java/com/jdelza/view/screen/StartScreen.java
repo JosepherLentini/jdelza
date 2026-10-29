@@ -27,13 +27,15 @@ public class StartScreen extends Pane {
         );
 
 
+
+
         Button change = new Button();
         change.setPrefSize(200, 70);
         change.setText("Click");
         change.setOnMouseClicked(e-> System.out.println("click"));
 
 
-        //this.getChildren().add(change);
+        //this.getChildren().add(new ShopScreen());
 
 
     }
