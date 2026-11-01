@@ -156,8 +156,9 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
      * @return has enemy collided?
      */
     public boolean collisionWithPlayerWeapon(Player player){
-        //is enemy position equals to player position?
-        return getPosition().equals(player.getPlayerWeapon().getPosition());
+        //is enemy position equals to player position?ù
+
+        return player.getPlayerWeapon() == null || getPosition().equals(player.getPlayerWeapon().getPosition());
     }
 
     @Override

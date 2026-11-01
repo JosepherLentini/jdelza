@@ -1,12 +1,18 @@
 package com.jdelza.view.characters;
 
 import com.jdelza.model.entities.Position;
+import com.jdelza.model.weapons.Weapon;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.Dimensions;
+import com.jdelza.utils.enums.ItemType;
+import com.jdelza.view.items_objects.ItemView;
 import com.jdelza.view.weapons.SwordView;
 import javafx.animation.AnimationTimer;
+import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,18 +27,18 @@ public class PlayerView extends CharacterView {
 
     //Sword
     SwordView playerSword = new SwordView("PLAYER_WEAPON");
-    SwordView throwingWeapon = new SwordView("PLAYER_THROW_WEAPON");
+    SwordView throwingWeapon =  new SwordView("PLAYER_THROW_WEAPON");
 
     //Images
     private Map<Directions, Image[]> walkingImage = new HashMap<>();    //Key: direction, Value: Image of direction
     private Map<Directions, Image[][]> injureImages = new HashMap<>();
-    private Map<Directions, Image[]> attackImages = new HashMap<>();
+    private Map<Directions, Image[]> playerAttackImages = new HashMap<>();
+    private Map<Directions, Image[]> swordAttackImages = new HashMap<>();
 
     //events
     private boolean injuring = false;
     private boolean attacking = false;
-    private boolean isThrowingWeapon = false;
-    private int attackImageIndex = 0;
+
 
     //Direction
     private Directions playerDirection;
@@ -73,6 +79,8 @@ public class PlayerView extends CharacterView {
 
         }
 
+        addAttackImages();
+
         playerDirection = Directions.DOWN;
 
         tileImageView = new ImageView();
@@ -100,14 +108,12 @@ public class PlayerView extends CharacterView {
     public SwordView getPlayerSword() {
         return playerSword;
     }
-    public int getAttackImageIndex() {
-        return attackImageIndex;
-    }
-    public boolean isThrowingWeapon() {return isThrowingWeapon;}
-
     public SwordView getThrowingWeapon() {
         return throwingWeapon;
     }
+    public ImageView getTileImageView() {return tileImageView;}
+    public Map<Directions, Image[]> getPlayerAttackImages() {return playerAttackImages;}
+    public Map<Directions, Image[]> getSwordAttackImages() {return swordAttackImages;}
 
     //Set methods
     public void setInjuring(boolean injuring) {this.injuring = injuring;}
@@ -115,14 +121,7 @@ public class PlayerView extends CharacterView {
     public void setColorFrame(boolean colorFrame) {this.colorFrame = colorFrame;}
     public void setPlayerDirection(Directions playerDirection) {this.playerDirection = playerDirection;}
     public void setAttacking(boolean attacking) {this.attacking = attacking;}
-    public void setAttackImageIndex(int attackImageIndex) {
-        this.attackImageIndex = attackImageIndex;
-    }
-    public void setThrowingWeapon(boolean throwingWeapon) {this.isThrowingWeapon = isThrowingWeapon;}
 
-    public void setThrowingWeapon(SwordView throwingWeapon) {
-        this.throwingWeapon = throwingWeapon;
-    }
 
     /**
      * This method occurs when player hit with weapons or enemies
@@ -152,10 +151,9 @@ public class PlayerView extends CharacterView {
         setPlayerDirection(direction);
         if(injuring && attacking){
             tileImageView.setImage(new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/OKTOROCK_WEAPON.png"));
-            System.out.println("attack&injure");
+
         } else if (injuring){
             playerInjured(direction);
-            System.out.println(attacking);
         }
         else{
             if(frame)
@@ -170,8 +168,29 @@ public class PlayerView extends CharacterView {
 
     }
 
+    private void addAttackImages(){
+
+
+        for (Directions dir : Directions.values()){
+
+            String swordPath = "com/jdelza/view/assets/items_objects/attack_sword/SWORD_";
+            String playerPath = "com/jdelza/view/assets/player/player_attack/ATTACK_";
+
+            Image[] si = new Image[3];
+            Image[] pi = new Image[3];
+
+            for (int i = 0; i < 3; i++){
+                int imgIndex = i+1;
+                si[i] = new Image(swordPath+dir.name()+"_"+imgIndex+".png");
+                pi[i] = new Image(playerPath+dir.name()+"_"+imgIndex+".png");
+            }
+            this.swordAttackImages.put(dir, si);
+            this.playerAttackImages.put(dir, pi);
+
+        }
+    }
+
     public void attack(Directions direction){
-        //com/jdelza/view/assets/player/PLAYER_INJURE/DOWN_1_2.png
 
         if (!isAttacking()){
             showSword(direction);
@@ -179,78 +198,60 @@ public class PlayerView extends CharacterView {
 
         }
 
-        //System.out.println(this.attackImageIndex);
-        Image[] attackImages = new Image[]{new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/SWORD/SWORD_" +direction.name()+ "_1.png"),
-                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/SWORD/SWORD_" +direction.name()+ "_2.png"),
-                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/SWORD/SWORD_" +direction.name()+ "_3.png")};
+    }
+
+    public void addPlayerWeaponToTheScreen(Pane overworld, Weapon weapon){
+
+        getThrowingWeapon().setLayoutY(0);
+        getThrowingWeapon().setLayoutX(0);
+
+        int x = weapon.getWeaponMapPosition().getX()*Dimensions.MAP_COLUMNS.get()/*+weapon.getPosition().getX()*Dimensions.TILE_WIDTH.get()*/;
+        int y = weapon.getWeaponMapPosition().getY()*Dimensions.MAP_ROWS.get()/*+weapon.getPosition().getY()*Dimensions.TILE_HEIGT.get()*/;
+
+        System.out.println(weapon.getPosition().getX() + " " + weapon.getPosition().getY());
+
+        getThrowingWeapon().setLayoutY(weapon.getPosition().getY()*Dimensions.TILE_HEIGT.get());
+        getThrowingWeapon().setLayoutX(weapon.getPosition().getX()*Dimensions.TILE_WIDTH.get());
+
+        overworld.getChildren().add(getThrowingWeapon());
+    }
+
+    public void moveThrownWeaponView(Directions direction){
+
+        getThrowingWeapon().swordThrowingToggleImage(direction);
+
+        TranslateTransition transition = new TranslateTransition();
+        transition.setNode(getThrowingWeapon());
+
+        //Setting transition duration
+        transition.setDuration(Duration.millis(50));
 
 
-        Image[] playerAttackImages = new Image[]{new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player-attack/ATTACK_" +direction.name()+ "_1.png"),
-                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player-attack/ATTACK_" +direction.name()+ "_2.png"),
-                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player-attack/ATTACK_" +direction.name()+ "_3.png")};
+        switch (direction){
+            //Move the player in the indicated direction; translate the player by a certain distance
+            case UP:    transition.setByY(-Dimensions.TILE_HEIGT.get());break;
+            case DOWN:  transition.setByY(+Dimensions.TILE_HEIGT.get());break;
+            case LEFT:  transition.setByX(-Dimensions.TILE_WIDTH.get());break;
+            case RIGHT: transition.setByX(+Dimensions.TILE_WIDTH.get());break;
+        }
 
+        //Start transition
+        transition.play();
 
-        this.playerSword.changeSwordImage(attackImages[attackImageIndex]);
-
-        this.tileImageView.setImage(playerAttackImages[attackImageIndex]);
-
-        this.attackImageIndex += 1;
+        //When transition ends
+        transition.setOnFinished(e->{});
 
 
 
     }
-
-    public void attack2(Directions direction){
-
-        Image[] attackImages = new Image[]{new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/SWORD/SWORD_" +direction.name()+ "_1.png"),
-                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/SWORD/SWORD_" +direction.name()+ "_2.png"),
-                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/SWORD/SWORD_" +direction.name()+ "_3.png")};
-
-
-        Image[] playerAttackImages = new Image[]{new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player-attack/ATTACK_" +direction.name()+ "_1.png"),
-                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player-attack/ATTACK_" +direction.name()+ "_2.png"),
-                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player-attack/ATTACK_" +direction.name()+ "_3.png")};
-
-        AnimationTimer attackAnimation = new AnimationTimer() {
-
-            long current = 0;
-            final long period = 200_000_000;
-            int count = 0;
-
-            @Override
-            public void handle(long l) {
-                if (l - current > period && count < 3){
-
-                    changeHandle();
-                    current = l;
-
-                }else{
-                    stop();
-                }
-            }
-
-            private void changeHandle(){
-                playerSword.changeSwordImage(attackImages[count]);
-                tileImageView.setImage(playerAttackImages[count]);
-                count ++;
-            }
-
-
-        };
-
-        attackAnimation.start();
-    }
-
 
     public void endAttack(){
         setAttacking(false);
         this.getChildren().remove(this.playerSword);
         this.playerSword.setLayoutY(0);
         this.playerSword.setLayoutX(0);
-        setAttackImageIndex(0);
         this.tileImageView.setImage(walkingImage.get(getPlayerDirection())[0]);
     }
-
 
     public void showSword(Directions direction){
 
@@ -265,53 +266,6 @@ public class PlayerView extends CharacterView {
         this.getChildren().add(this.playerSword);
     }
 
-    public void addThrowingWeapon(Directions direction){
-
-        switch (direction){
-            case UP -> this.playerSword.setLayoutY(-super.getTileHeight());
-            case DOWN -> this.playerSword.setLayoutY(super.getTileHeight());
-            case LEFT -> this.playerSword.setLayoutX(-super.getTileWidth());
-            case RIGHT -> this.playerSword.setLayoutX(super.getTileWidth());
-        }
-
-
-        this.getChildren().add(this.throwingWeapon);
-        throwingWeapon.initializeThrowingImage(direction);
-    }
-
-
-
-    public void throwWeapon(Directions direction){
-        //com/jdelza/view/assets/player/PLAYER_INJURE/DOWN_1_2.png
-        Image[] playerAttackImages = new Image[]{new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player-attack/ATTACK_" +direction.name()+ "_1.png"),
-                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player-attack/ATTACK_" +direction.name()+ "_2.png"),
-                new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/player-attack/ATTACK_" +direction.name()+ "_3.png")};
-        this.tileImageView.setImage(playerAttackImages[attackImageIndex]);
-
-        this.attackImageIndex += 1;
-
-    }
-
-    public void endThrowAttack(){
-        setAttacking(false);
-        setAttackImageIndex(0);
-        this.tileImageView.setImage(walkingImage.get(getPlayerDirection())[0]);
-    }
-
-
-    public void endWeaponThrowing(){
-        this.playerSword.setThrowing(false);
-        this.getChildren().remove(this.playerSword);
-
-        this.playerSword.setLayoutY(0);
-        this.playerSword.setLayoutX(0);
-        this.playerSword.setTranslateX(0);
-        this.playerSword.setTranslateY(0);
-
-
-
-    }
-
     public void playerChangePosition(Position position){
         int x = position.getCellCoordinates().getX();
         int y = position.getCellCoordinates().getY();
@@ -321,6 +275,14 @@ public class PlayerView extends CharacterView {
 
 
     }
+
+
+    public void takeItem(ItemView item){
+       getChildren().add(item);
+       setTileImageView(new Image("com/jdelza/view/assets/player/PLAYER_TAKE_ITEM.png"));
+
+    }
+
 
 
 

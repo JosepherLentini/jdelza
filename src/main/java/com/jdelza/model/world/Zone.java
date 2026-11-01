@@ -6,7 +6,9 @@ import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.weapons.Weapon;
 import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.Directions;
+import com.jdelza.utils.enums.ItemType;
 import com.jdelza.utils.interfaces.Environment;
+import javafx.scene.control.skin.TextInputControlSkin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +80,32 @@ public class Zone {
      * @param e     new enemy
      */
     public void addEnemy(Enemy e){this.enemies.add(e);}
+
+    public ItemType itemInTheZoneCell(Player player, Directions direction) {
+
+        int newX = player.getPosition().getX() + direction.getX();
+        int newY = player.getPosition().getY() + direction.getY();
+
+        boolean isInBound = newX >= 0 && newX < Dimensions.ZONE_COLUMNS.get() && newY >= 0 && newY < Dimensions.ZONE_ROWS.get();
+
+        if (isInBound) {
+            return this.getTile(new Coordinates(newX, newY)).getItemType();
+        }
+
+        return null;
+
+    }
+
+    public void removeItem(Player player, Directions direction){
+        int newX = player.getPosition().getX() + direction.getX();
+        int newY = player.getPosition().getY() + direction.getY();
+
+        boolean isInBound = newX >= 0 && newX < Dimensions.ZONE_COLUMNS.get() && newY >= 0 && newY < Dimensions.ZONE_ROWS.get();
+
+        if (isInBound) {
+            this.getTile(new Coordinates(newX, newY)).setItemType(null);
+        }
+    }
 
     /**
      * This function allows to add new environment to the list of environments

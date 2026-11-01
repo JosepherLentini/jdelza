@@ -55,8 +55,8 @@ public class ShopMap extends GameMap implements Environment {
         getMap()[0][0].getTile(new Coordinates(8,10)).setEnvironment(overworld);
 
         //Place the item into a cell
-        getMap()[0][0].getTile(new Coordinates(7,6)).setItemType(itemType);
-        getMap()[0][0].getTile(new Coordinates(8,6)).setItemType(itemType);
+        getMap()[0][0].getTile(new Coordinates(7,5)).setItemType(itemType);
+        getMap()[0][0].getTile(new Coordinates(8,5)).setItemType(itemType);
 
         setLogicMap();
     }
@@ -100,7 +100,11 @@ public class ShopMap extends GameMap implements Environment {
     //Get methods
     public Position getEntryExitPortal() {return entryExitPosition;}
     public NPCType getNpcType() {return npcType;}
-    public ItemType getItemType() {return itemType;}
+    public ItemType getItemType() {
+
+        return getMap()[0][0].getTile(new Coordinates(7,5)).getItemType();
+
+    }
 
     //Set methods
     public void setEntryExitPosition(Position entryExitPosition) {this.entryExitPosition = entryExitPosition;}
