@@ -22,6 +22,7 @@ public class ShopScreen extends Pane {
     private final double altezzaMappa = Dimensions.MAP_HEIGHT.get();
 
     private PlayerView playerView;
+    private ItemView shopItem;
 
 
 
@@ -60,16 +61,23 @@ public class ShopScreen extends Pane {
         this.getChildren().addAll(leftFire, rightFire, npc);
         this.getChildren().add(playerView);
 
-        if(itemType != ItemType.SWORD){
+        if(itemType != ItemType.SWORD && itemType != null){
             ItemView rupia = new ItemView(ItemType.RUPEE);
             rupia.setPosition(3, 6.5);
             this.getChildren().add(rupia);
         }
 
-        ItemView item = new ItemView(itemType);
-        item.setPosition(7.5, 5.5);
-        this.getChildren().add(item);
+        if (itemType != null){
+            shopItem = new ItemView(itemType);
+            shopItem.setPosition(7.5, 5.5);
+            this.getChildren().add(shopItem);
 
+        }
+    }
+
+
+    public void removeShopItem(){
+        this.getChildren().remove(this.shopItem);
     }
 
 

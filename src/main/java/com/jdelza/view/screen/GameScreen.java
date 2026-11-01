@@ -13,6 +13,7 @@ import com.jdelza.utils.events.PlayerMovement;
 import com.jdelza.view.characters.EnemyView;
 import com.jdelza.view.characters.PlayerView;
 import com.jdelza.view.characters.TektiteView;
+import com.jdelza.view.items_objects.ItemView;
 import com.jdelza.view.weapons.RockView;
 import com.jdelza.view.weapons.WeaponView;
 import com.jdelza.view.overworld.Overworld;
@@ -55,14 +56,16 @@ public class GameScreen extends VBox {
 
     /**
      * GameScreen constructor
-     * @param overworld         //current overworld instance
-     * @param player            //current view player instance
-     * @param playerModel       //current logic player
+     *
+     * @param overworld   //current overworld instance
+     * @param player      //current view player instance
+     * @param playerModel //current logic player
      */
     public GameScreen(Overworld overworld, PlayerView player, Player playerModel) {
         this.overworld = overworld;
         this.player = player;
-        this.allEnemies = new HashSet<>(){};
+        this.allEnemies = new HashSet<>() {
+        };
         this.overworldWrapper = new Pane(overworld);
 
         this.currentEnvironment = overworld;
@@ -113,7 +116,7 @@ public class GameScreen extends VBox {
         );
 
 
-        this.getChildren().addAll(p,overworldWrapper);
+        this.getChildren().addAll(p, overworldWrapper);
         //this.getChildren().addAll(p, new ShopScreen(player));
 
 
@@ -123,31 +126,56 @@ public class GameScreen extends VBox {
     }
 
     //Get methods
-    public PlayerView getPlayer() {return player;}
-    public Overworld       getOverworld() {return overworld;}
-    public boolean    isZoneChanging() {return isZoneChanging;}
-    public boolean    isPlayerMoving() {return isPlayerMoving;}
-    public Pane getOverworldWrapper() {return overworldWrapper;}
-    public Pane getCurrentEnvironment() {return currentEnvironment;}
+    public PlayerView getPlayer() {
+        return player;
+    }
+
+    public Overworld getOverworld() {
+        return overworld;
+    }
+
+    public boolean isZoneChanging() {
+        return isZoneChanging;
+    }
+
+    public boolean isPlayerMoving() {
+        return isPlayerMoving;
+    }
+
+    public Pane getOverworldWrapper() {
+        return overworldWrapper;
+    }
+
+    public Pane getCurrentEnvironment() {
+        return currentEnvironment;
+    }
 
 
     //Set methods
-    public void setZoneChanging(boolean zoneChanging) {isZoneChanging = zoneChanging;}
-    public void setPlayerMoving(Boolean playerMoving){isPlayerMoving = playerMoving;}
-    public Set<EnemyView> getAllEnemies() {return overworld.getChildren().stream().filter(n-> n instanceof EnemyView).map(n-> (EnemyView)n).collect(Collectors.toSet());}
+    public void setZoneChanging(boolean zoneChanging) {
+        isZoneChanging = zoneChanging;
+    }
+
+    public void setPlayerMoving(Boolean playerMoving) {
+        isPlayerMoving = playerMoving;
+    }
+
+    public Set<EnemyView> getAllEnemies() {
+        return overworld.getChildren().stream().filter(n -> n instanceof EnemyView).map(n -> (EnemyView) n).collect(Collectors.toSet());
+    }
 
     public void setCurrentEnvironment(Pane currentEnvironment) {
         this.currentEnvironment = currentEnvironment;
     }
 
     //Enemies
-    public void addAndPlaceEnemy(EnemyView e, Coordinates modelEnemyMapCoordinates, Coordinates modelEnemyZoneCoordinates){
+    public void addAndPlaceEnemy(EnemyView e, Coordinates modelEnemyMapCoordinates, Coordinates modelEnemyZoneCoordinates) {
 
-        int x = modelEnemyMapCoordinates.getX()*Dimensions.ZONE_COLUMNS.get()+modelEnemyZoneCoordinates.getX();
-        int y = modelEnemyMapCoordinates.getY()*Dimensions.ZONE_ROWS.get()+modelEnemyZoneCoordinates.getY();
+        int x = modelEnemyMapCoordinates.getX() * Dimensions.ZONE_COLUMNS.get() + modelEnemyZoneCoordinates.getX();
+        int y = modelEnemyMapCoordinates.getY() * Dimensions.ZONE_ROWS.get() + modelEnemyZoneCoordinates.getY();
 
-        int newX = e.getTileWidth()*x;
-        int newY = e.getTileHeight()*y;
+        int newX = e.getTileWidth() * x;
+        int newY = e.getTileHeight() * y;
 
 
         e.setTranslateX(newX);
@@ -161,14 +189,16 @@ public class GameScreen extends VBox {
     }
 
     //Player
+
     /**
      * Player movement and zone changing
+     *
      * @param playerMovement is the player move event
      */
     public void movePlayer(PlayerMovement playerMovement) {
 
         Directions dir = playerMovement.getDirection();
-        if (playerMovement.isZoneChanged()) {
+        /*if (playerMovement.isZoneChanged()) {
             setZoneChanging(true);
 
             //Create traslate transition
@@ -181,7 +211,7 @@ public class GameScreen extends VBox {
 
             //Combine two transition witch works at the same time
             ParallelTransition parallel = new ParallelTransition(
-                    zoneSwitchTransition,playerSwitchTransition
+                    zoneSwitchTransition, playerSwitchTransition
             );
 
             switch (dir) {
@@ -218,38 +248,108 @@ public class GameScreen extends VBox {
             parallel.play();
 
             //When transition ends
-            parallel.setOnFinished(e-> {setZoneChanging(false);});
+            parallel.setOnFinished(e -> {
+                setZoneChanging(false);
+            });
 
 
-        } else {
-            setPlayerMoving(true);  //Player is mmoving
+
+        } else
+         */
+
+
+
+            System.out.println("noo fake");
+            setPlayerMoving(true);  //Player is moving
             getPlayer().setPlayerDirection(dir);
             //Create transition
             TranslateTransition transition = new TranslateTransition();
             transition.setNode(player);
+            player.changeSprite(playerMovement.getDirection());
 
-            switch (dir){
+            switch (dir) {
                 //Move the player in the indicated direction; translate the player by a certain distance
-                case UP:    transition.setByY(-player.getHeight());break;
-                case DOWN:  transition.setByY(+player.getHeight());break;
-                case LEFT:  transition.setByX(-player.getWidth());break;
-                case RIGHT: transition.setByX(+player.getWidth());break;
+                case UP:
+                    transition.setByY(-player.getHeight());
+                    break;
+                case DOWN:
+                    transition.setByY(+player.getHeight());
+                    break;
+                case LEFT:
+                    transition.setByX(-player.getWidth());
+                    break;
+                case RIGHT:
+                    transition.setByX(+player.getWidth());
+                    break;
             }
 
             //Setting transition duration
-            transition.setDuration(Duration.millis(200));
+            transition.setDuration(Duration.millis(160));
 
             //Start transition
             transition.play();
 
             //When transition ends
-            transition.setOnFinished(e-> setPlayerMoving(false));
+            transition.setOnFinished(e -> setPlayerMoving(false));
 
 
+
+    }
+
+public void changeZone(Directions direction){
+
+            setZoneChanging(true);
+
+            //Create traslate transition
+            TranslateTransition zoneSwitchTransition = new TranslateTransition();
+
+            TranslateTransition playerSwitchTransition = new TranslateTransition();
+            //Add node to transition
+            zoneSwitchTransition.setNode(overworld);
+            playerSwitchTransition.setNode(player);
+
+            //Combine two transition witch works at the same time
+            ParallelTransition parallel = new ParallelTransition(
+                    zoneSwitchTransition,playerSwitchTransition
+            );
+
+            switch (direction) {
+                case UP:
+                    //World translation and player movement in tandem with the world
+                    zoneSwitchTransition.setToY(overworld.getTranslateY() + Dimensions.MAP_HEIGHT.get());
+                    playerSwitchTransition.setToY((Dimensions.ZONE_ROWS.get() - 1) * player.getTileHeight());
+                    break;
+
+                case DOWN:
+                    //World translation and player movement in tandem with the world
+                    zoneSwitchTransition.setToY(overworld.getTranslateY() - Dimensions.MAP_HEIGHT.get());
+                    playerSwitchTransition.setToY(0);
+                    break;
+
+                case LEFT:
+                    //World translation and player movement in tandem with the world
+                    zoneSwitchTransition.setToX(overworld.getTranslateX() + Dimensions.MAP_WIDTH.get());
+                    playerSwitchTransition.setToX((Dimensions.ZONE_COLUMNS.get() - 1) * player.getTileWidth());
+                    break;
+
+                case RIGHT:
+                    //World translation and player movement in tandem with the world
+                    zoneSwitchTransition.setToX(overworld.getTranslateX() - Dimensions.MAP_WIDTH.get());
+                    playerSwitchTransition.setToX(0);
+                    break;
             }
 
+            //Transition duration
+            zoneSwitchTransition.setDuration(Duration.millis(1000));
+            playerSwitchTransition.setDuration(Duration.millis(1000));
 
-        }
+            //Start transition
+            parallel.play();
+
+            //When transition ends
+            parallel.setOnFinished(e-> {setZoneChanging(false);});
+
+    }
 
     public void moveEnemies(List<Enemy> enemies){
 
@@ -453,6 +553,7 @@ public class GameScreen extends VBox {
             deadEnemyView.setDead(true);
             //Call enemy death animation
             deadEnemyView.enemyDeath((Overworld) overworld);
+
         }
 
 
@@ -478,14 +579,12 @@ public class GameScreen extends VBox {
 
     ;}
 
-
     public void enterOverworld(Position position){
         overworld.changeOverWorldPosition(position);
         getOverworldWrapper().getChildren().remove(player);
         player.playerChangePosition(position);
         getOverworldWrapper().getChildren().add(player);
     }
-
 
     public void enterTheShopView(Position playerEntryPosition, NPCType npcType, ItemType itemType){
 
@@ -497,6 +596,36 @@ public class GameScreen extends VBox {
 
         player.playerChangePosition(playerEntryPosition);
 
+
+    }
+
+    public void playerTakeItemAnimation(ItemType itemType){
+
+        if(getCurrentEnvironment() instanceof ShopScreen sc){
+            sc.removeShopItem();
+            //player.takeItemAnimation(itemType);
+
+            ItemView item = new ItemView(itemType);
+
+            item.setLayoutY(-Dimensions.TILE_HEIGT.get());
+
+            player.takeItem(item);
+
+            TranslateTransition transition  = new TranslateTransition();
+            transition.setNode(item);
+
+            transition.setDuration(Duration.seconds(1.5));
+
+            transition.play();
+
+            transition.setOnFinished(e->{
+                player.getChildren().remove(item);
+
+
+            });
+
+
+        }
 
     }
 

@@ -4,6 +4,7 @@ import com.jdelza.model.GameModel;
 import com.jdelza.model.weapons.Weapon;
 import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.Directions;
+import com.jdelza.utils.enums.ItemType;
 import com.jdelza.utils.enums.StartEndStatus;
 import com.jdelza.utils.events.*;
 import com.jdelza.utils.interfaces.EnvironmentSwitcher;
@@ -11,10 +12,14 @@ import com.jdelza.view.characters.EnemyView;
 import com.jdelza.view.characters.OctorockView;
 import com.jdelza.view.characters.PlayerView;
 import com.jdelza.view.characters.TektiteView;
+import com.jdelza.view.items_objects.ItemView;
 import com.jdelza.view.overworld.Overworld;
 import com.jdelza.view.screen.GameScreen;
+import com.jdelza.view.screen.ShopScreen;
 import com.jdelza.view.weapons.SwordView;
+import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
+import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 import java.util.*;
@@ -80,6 +85,7 @@ public class GameView extends Observable implements Observer{
     //Get methods
     public GameScreen getGamescreen() {return gamescreen;}
 
+    /*
     public void injuring(Directions direction){
         gamescreen.getPlayer().setInjuring(true);
         TranslateTransition transition = new TranslateTransition();
@@ -102,158 +108,210 @@ public class GameView extends Observable implements Observer{
 
     }
 
-    public void playerViewAttack(Weapon weapon, boolean throwWeapon){
+     */
+
+    public void injuring(Directions direction){
+
+        gamescreen.getPlayer().setInjuring(true);
+        AnimationTimer injureAnimation = new AnimationTimer() {
+
+            final long period = 200_000_000;
+            final long end = 2_000_000_000;
+
+            long current = 0;
+            long start = 0;
 
 
-        int index = gamescreen.getPlayer().getAttackImageIndex();
+            @Override
+            public void handle(long l) {
+                if (start == 0)start = l;
 
-        //System.out.println(throwWeapon);
+                if (l- start > end){
+                    stop();
 
-        if (index < 3){
-            gamescreen.getPlayer().attack(weapon.getWeaponDirection());
+                    gamescreen.getPlayer().setTileImageView(gamescreen.getPlayer().getWalkingImage().get(gamescreen.getPlayer().getPlayerDirection())[0]);
+                    gamescreen.getPlayer().setInjuring(false);
 
-        }else{
-            //System.out.println("Siamo fuori");
-            if (throwWeapon){
-                addPlayerWeaponToGameScreen(weapon);
+                    setChanged();
+                    notifyObservers(new PlayerCollision(false));
+
+                } else if(l - current > period){
+
+                    player.changeInjureColor();
+                    current = l;
+
+                }
+
             }
 
-            gamescreen.getPlayer().endAttack();
 
-            setChanged();
-            notifyObservers(new PlayerAttack(weapon, throwWeapon, StartEndStatus.END));
-        }
+        };
+
+        injureAnimation.start();
+    }
+
+    public void playerViewAttack(Weapon weapon, boolean throwing){
+
+        Directions direction = weapon.getWeaponDirection();
+        player.attack(direction);
+
+        AnimationTimer attackAnimation = new AnimationTimer() {
+
+            final long period = 200_000_000;
+
+            long current = 0;
+            int count = 0;
+
+            @Override
+            public void handle(long l) {
 
 
+                if (count == 0){
+                    if(l - current > period){
+                        changeHandle();
+                        count ++;
+                        current = l;
 
+                        if (throwing && !gamescreen.getOverworldWrapper().getChildren().contains(player.getThrowingWeapon())){
+                            System.out.println("muovi");
+                            player.addPlayerWeaponToTheScreen(gamescreen.getOverworldWrapper(), weapon);
+                            setChanged();
+                            notifyObservers(new SwordThrowing(direction, StartEndStatus.START));
+                        }
+                    }
+                }else if(count > 0 && count < 3){
+                    if(l - current > period){
+                        changeHandle();
+                        count ++;
+                        current = l;
+
+
+                    }
+
+                }
+                else{
+
+                    stop();
+
+
+                    player.endAttack();
+                    setChanged();
+                    notifyObservers(new PlayerAttack(weapon, throwing, StartEndStatus.END));
+
+
+                }
+
+
+            }
+
+            private void changeHandle(){
+
+                player.getPlayerSword().changeSwordImage(player.getSwordAttackImages().get(direction)[count]);
+                player.setTileImageView(player.getPlayerAttackImages().get(direction)[count]);
+            }
+
+        };
+
+        attackAnimation.start();
 
     }
 
+    public void endMoveThrownWeaponView(){
 
-    public void addPlayerWeaponToGameScreen(Weapon weapon){
-
-        int x = weapon.getWeaponMapPosition().getX()*Dimensions.ZONE_COLUMNS.get()+weapon.getPosition().getX();
-        int y = weapon.getWeaponMapPosition().getY()*Dimensions.ZONE_ROWS.get()+weapon.getPosition().getY();
-
-
-        gamescreen.getPlayer().getThrowingWeapon().setTranslateX(Dimensions.TILE_WIDTH.get()*x);
-        gamescreen.getPlayer().getThrowingWeapon().setTranslateY(Dimensions.TILE_HEIGT.get()*y);
-        gamescreen.getPlayer().getThrowingWeapon().setWeaponDirection(weapon.getWeaponDirection());
-        gamescreen.getPlayer().getThrowingWeapon().initializeThrowingImage(weapon.getWeaponDirection());
-        gamescreen.getOverworld().getChildren().add(gamescreen.getPlayer().getThrowingWeapon());
-
-
-
-    }
-
-    public void test(Directions direction){
-
-
-        gamescreen.getPlayer().getThrowingWeapon().swordThrowingToggleImage(direction);
-
-
-        TranslateTransition transition = new TranslateTransition();
-        transition.setNode(gamescreen.getPlayer().getThrowingWeapon());
-
-        //Setting transition duration
-        transition.setDuration(Duration.millis(100));
-
-
-        switch (direction){
-            //Move the player in the indicated direction; translate the player by a certain distance
-            case UP:    transition.setByY(-gamescreen.getPlayer().getThrowingWeapon().getHeight());break;
-            case DOWN:  transition.setByY(+gamescreen.getPlayer().getThrowingWeapon().getHeight());break;
-            case LEFT:  transition.setByX(-gamescreen.getPlayer().getThrowingWeapon().getWidth());break;
-            case RIGHT: transition.setByX(+gamescreen.getPlayer().getThrowingWeapon().getWidth());break;
-        }
-
-
-
-        //Start transition
-        transition.play();
-
-        //When transition ends
-        transition.setOnFinished(e->{});
-
-
-
-    }
-
-    public void testEnd(){
-
-        gamescreen.getPlayer().getPlayerSword().setThrowing(false);
-
-
-        gamescreen.getPlayer().getThrowingWeapon().getChildren().remove(gamescreen.getPlayer().getThrowingWeapon().getSwordImageView());
-        gamescreen.getPlayer().getThrowingWeapon().swordCollision(gamescreen.getOverworld(), gamescreen.getPlayer().getThrowingWeapon());
-
+        gamescreen.getPlayer().getThrowingWeapon().swordCollision(gamescreen.getOverworldWrapper(), player);
 
         setChanged();
         notifyObservers(new SwordThrowing(Directions.DOWN, StartEndStatus.END));
 
-
-
-
-
-
-
     }
 
+    public void playerTakeItemAnimation(ItemType itemType){
+
+        if(gamescreen.getCurrentEnvironment() instanceof ShopScreen sc){
+            sc.removeShopItem();
+            //player.takeItemAnimation(itemType);
+
+            ItemView item = new ItemView(itemType);
+
+            item.setLayoutY(-Dimensions.TILE_HEIGT.get()-10);
+
+            player.takeItem(item);
+            //player.setLayoutY( -Dimensions.TILE_HEIGT.get());
+
+            TranslateTransition transition  = new TranslateTransition();
+            transition.setNode(item);
+
+            transition.setDuration(Duration.seconds(1));
+
+            transition.play();
+
+            transition.setOnFinished(e->{
+                player.getChildren().remove(item);
+                player.setTileImageView(player.getWalkingImage().get(Directions.DOWN)[0]);
+
+                setChanged();
+                notifyObservers(new PlayerTakeItem(itemType, StartEndStatus.END));
+
+            });
 
 
+        }
 
+    }
 
 
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof PlayerMovement){
-            PlayerMovement pm = (PlayerMovement) arg;
+        if (arg instanceof PlayerMovement pm){
             gamescreen.movePlayer(pm);
         }
-        else if (arg instanceof EnemyMovement){
-            EnemyMovement em = (EnemyMovement)arg;
+        if (arg instanceof WalkMovement walkMovement){
+            player.changeSprite(walkMovement.getDirection());
+        }
+
+        if (arg instanceof ChangeZone cz){
+            gamescreen.changeZone(cz.getDirection());
+        }
+
+        else if (arg instanceof EnemyMovement em){
             gamescreen.moveEnemies(em.getEnemies());
 
         }
-        else if (arg instanceof Attack){
-            Attack a = (Attack) arg;
+        else if (arg instanceof Attack a){
             gamescreen.moveWeapons(a.getWeapons());
         }
 
-        else if(arg instanceof Weapon){
-            Weapon w = (Weapon) arg;
+        else if(arg instanceof Weapon w){
             gamescreen.addWeapon(w);
 
-        } else if (arg instanceof RemoveWeapons) {
-            RemoveWeapons remove = (RemoveWeapons)arg;
+        } else if (arg instanceof RemoveWeapons remove) {
             gamescreen.removeEnemyWeapon(remove.getDeleteWeapons());
 
-        }else if(arg instanceof PlayerCollision){
-            PlayerCollision pc = (PlayerCollision) arg;
+        }else if(arg instanceof PlayerCollision pc){
             injuring(pc.getPlayerDirection());
 
-        }else if(arg instanceof PlayerAttack){
-
-            PlayerAttack pa = (PlayerAttack)arg;
-            playerViewAttack(pa.getPlayerWeapon(), pa.isThrowWeapon());
-
-        }else if (arg instanceof SwordThrowing) {
-            SwordThrowing s = (SwordThrowing) arg;
-            if (s.getStatus() == StartEndStatus.END){
-
-                testEnd();
-
-            }else{
-
-                test(s.getDirection());
-            }
-
-        }else if(arg instanceof EnemyDeath){
-            EnemyDeath ed = (EnemyDeath)arg;
-            gamescreen.removeEnemies(ed.getDeathEnemy());
         }
 
+        if(arg instanceof PlayerAttack pa){
+            playerViewAttack(pa.getPlayerWeapon(), pa.isThrowWeapon());
+        }
+
+        if (arg instanceof SwordThrowing) {
+            SwordThrowing s = (SwordThrowing) arg;
+            if (s.getStatus() == StartEndStatus.END){
+                endMoveThrownWeaponView();
+            }else{
+
+                player.moveThrownWeaponView(s.getDirection());
+            }
+
+        }
+
+        if(arg instanceof EnemyDeath ed){
+            gamescreen.removeEnemies(ed.getDeathEnemy());
+
+        }
 
         if (arg instanceof EnvironmentSwitcher env){
             switch (env.getEnvironmentType()){
@@ -272,6 +330,13 @@ public class GameView extends Observable implements Observer{
                 }
             }
         }
+
+        if (arg instanceof PlayerTakeItem pti){
+            playerTakeItemAnimation(pti.getItem());
+        }
+
+
+
 
 
     }

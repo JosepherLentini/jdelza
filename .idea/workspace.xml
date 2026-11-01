@@ -5,25 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea1cf717-d1a5-4c4e-b4fe-dc6545168066" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/model_assets/Shop_walkable.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/StartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/StartController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/GameModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/GameModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Enemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/ShopMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/ShopMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/WorldMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/WorldMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Zone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Zone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/behaviours/OcktorockMovement.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/interfaces/Healer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/interfaces/MovementBehaviour.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/enums/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/enums/Action.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/PlayerMovement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/PlayerMovement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/GameView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/GameView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/MainView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/MainView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/PlayerView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/PlayerView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/Overworld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/Overworld.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/items_objects/FIreView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/items_objects/FIreView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/GameScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/GameScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/StartScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/StartScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/ShopScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/ShopScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/weapons/SwordView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/weapons/SwordView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,34 +48,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.TestFX.executor&quot;: &quot;Coverage&quot;,
-    &quot;Application.jdelza.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/shop&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Giuseppe Lentini/Documents/Progetti universitari Java/jdelza/src/main/java/com/jdelza/view/assets/items_objects&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.TestFX.executor": "Coverage",
+    "Application.jdelza.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "refactor/player-attack",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Giuseppe Lentini/Documents/Progetti universitari Java/jdelza/src/main/java/com/jdelza/view/assets/player",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "editor.preferences.tabs"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\player" />
       <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\items_objects" />
       <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\items_objects\rupie" />
       <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\model\model_assets" />
       <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\model\model_assets\logic_maps" />
-      <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\player" />
     </key>
   </component>
   <component name="RunManager">

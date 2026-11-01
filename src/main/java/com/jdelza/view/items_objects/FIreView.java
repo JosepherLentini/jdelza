@@ -55,7 +55,7 @@ public class FIreView extends Pane {
     }
 
     private void fireAnimation(){
-
+        /*
         TranslateTransition transition = new TranslateTransition();
 
         transition.setDuration(Duration.millis(200));
@@ -63,6 +63,9 @@ public class FIreView extends Pane {
 
         transition.setAutoReverse(true);
         transition.setCycleCount(TranslateTransition.INDEFINITE);
+
+         */
+
         AnimationTimer fireAnimation = new AnimationTimer() {
 
             long current = 0;

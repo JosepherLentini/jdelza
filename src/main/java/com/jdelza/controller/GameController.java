@@ -21,7 +21,7 @@ public class GameController{
 
 
     private long lastMove = 0;
-    private final long MOVE_DELAY = 200_000_000; // 200 ms
+    private final long MOVE_DELAY = 160_000_000; // 200 ms
 
     private long lastAnimation = 0;
     private final long ANIMATION_DELAY = 100_000_000;
@@ -39,7 +39,7 @@ public class GameController{
     private final long PLAYER_ATTACK_DELAY = 100_000_000;
 
     private long swordThrowingAnimation = 0;
-    private final long SWORD_THROWING_DELAY = 100_000_000;
+    private final long SWORD_THROWING_DELAY = 50_000_000;
 
 
     /**s
@@ -56,8 +56,8 @@ public class GameController{
         gameModel.addObserver(gameView);
 
         //Gameview: on key pressed event
-        gameView.getGamescreen().setOnKeyPressed( e -> this.handleKeyPressed(e));
-        gameView.getGamescreen().setOnKeyReleased(e -> handleKeyReleased(e));
+        gameView.getGamescreen().setOnKeyPressed(this::handleKeyPressed);
+        gameView.getGamescreen().setOnKeyReleased(this::handleKeyReleased);
 
         //Game loop created by javafx animation timer
         gameLoop = new AnimationTimer() {
@@ -141,7 +141,7 @@ public class GameController{
             }
         }
 
-
+        /*
         if (upPressed && now - lastAnimation >= ANIMATION_DELAY){
             gameView.getGamescreen().getPlayer().changeSprite(Directions.UP);
             gameModel.getPlayer().setPlayerDirection(Directions.UP);
@@ -165,21 +165,15 @@ public class GameController{
 
         }
 
+         */
+
 
     }
 
     public void playerAttack(){
-
-        if (spacePressed && gameModel.getPlayer().getPlayerWeapon() != null){
-            if (!gameModel.getPlayer().isWeaponThrowing()){
-                gameModel.getPlayer().setAttacking(true);
-
-            }
-
+        if (spacePressed){
+            gameModel.playerAttack();
         }
-
-
-
     }
 
 
@@ -187,17 +181,6 @@ public class GameController{
         if (!gameView.getGamescreen().isZoneChanging() && !gameModel.getPlayer().isAttacking()){movePlayer(now);}
 
         playerAttack();
-
-        if (gameView.getGamescreen().getPlayer().isInjuring()){
-
-            if (now - playerInjureAnimation >= INJURE_DELAY) {
-
-                gameView.getGamescreen().getPlayer().changeInjureColor();
-                playerInjureAnimation = now;
-
-            }
-
-        }
 
         if (now - enemyAnimation >= ENEMY_MOVE_DELAY) {
             gameModel.enemyActions();
@@ -230,13 +213,6 @@ public class GameController{
                 swordThrowingAnimation = now;
             }
         }
-
-
-
-
-
-
-
 
 
 

@@ -1,16 +1,17 @@
 package com.jdelza.utils.events;
 
 import com.jdelza.model.entities.Coordinates;
+import com.jdelza.utils.enums.Action;
 import com.jdelza.utils.enums.Directions;
 
 public class PlayerMovement {
 
-    private boolean zoneChanged;
+
     private Directions direction;
 
 
-    public PlayerMovement(boolean zoneChanged, Directions direction) {
-        this.zoneChanged = zoneChanged;
+    public PlayerMovement(Directions direction) {
+
         this.direction = direction;
     }
 
@@ -20,7 +21,5 @@ public class PlayerMovement {
         return direction;
     }
 
-    public boolean isZoneChanged() {
-        return zoneChanged;
-    }
+
 }

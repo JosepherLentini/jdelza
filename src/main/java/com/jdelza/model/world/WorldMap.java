@@ -53,6 +53,11 @@ public class WorldMap extends GameMap implements Environment {
                         .setEnemyMapCoordinates(new Coordinates(6, 6)).setEnemyID("1")
         );
 
+        this.getZone(new Coordinates(6, 6)).addEnemy(
+                new Octorock(new Coordinates(8, 8), GameColor.BLUE, EnemyType.OCTOROK)
+                        .setEnemyMapCoordinates(new Coordinates(6, 6)).setEnemyID("8")
+        );
+
 
         /*
         this.getZone(new Coordinates(6, 7)).addEnemy(
@@ -67,35 +72,18 @@ public class WorldMap extends GameMap implements Environment {
                         .setEnemyMapCoordinates(new Coordinates(6, 7)).setEnemyID("3")
         );
 
+        this.getZone(new Coordinates(6, 7)).addEnemy(
+                new Tektite(new Coordinates(7, 4), GameColor.BLUE, EnemyType.TEKTITE)
+                        .setEnemyMapCoordinates(new Coordinates(6, 7)).setEnemyID("4")
+        );
+
+        this.getZone(new Coordinates(6, 7)).addEnemy(
+                new Tektite(new Coordinates(3, 5), GameColor.BLUE, EnemyType.TEKTITE)
+                        .setEnemyMapCoordinates(new Coordinates(6, 7)).setEnemyID("5")
+        );
+
         //createEnemiesFromFile().stream().forEach(e-> this.getZone(e.getEnemyMapCoordinates()).addEnemy(e));
 
-        /*
-        addEnvironmentsToTheZones(
-                new ShopMap(
-                        new Portal(new Coordinates(7,7), new Coordinates(4,1)),
-                        NPCType.OLD_MAN,
-                        ItemType.SWORD
-                ),
-
-                new Coordinates(7,7)
-        );
-        addEnvironmentsToTheZones(
-                new ShopMap(
-                        new Portal(new Coordinates(5,7), new Coordinates(2,1)),
-                        NPCType.MERCHANT,
-                        ItemType.LIFE
-                ),
-                new Coordinates(5,7)
-        );
-        addEnvironmentsToTheZones(
-                new ShopMap(new Portal(new Coordinates(6,6), new Coordinates(7,1)),
-                        NPCType.MERCHANT,
-                        ItemType.LIFE
-                ),
-                new Coordinates(6,6)
-        );
-
-         */
 
 
         addEnvironment(
