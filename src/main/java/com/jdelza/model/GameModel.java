@@ -47,6 +47,7 @@ public class GameModel extends Observable implements Observer {
     public void movePlayer(Directions direction){
         Environment env = player.getEnvironment(currentMap.getZone(player.getPlayerMapPosition()), direction);
 
+        player.setPlayerDirection(direction);
 
         if (player.hasPlayerShouldReturnToOverworld(currentMap, direction) && player.isPlayerAtTheBorderOfTheMap(direction, currentMap)){
             returnToOverworld();
