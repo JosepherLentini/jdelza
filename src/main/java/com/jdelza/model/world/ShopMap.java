@@ -25,6 +25,8 @@ public class ShopMap extends GameMap implements Environment {
     //shopMap exit
     private Position entryExitPosition;
 
+    private List<Position> exitPositions;
+
     //NPC
     private NPCType npcType;
 
@@ -35,7 +37,7 @@ public class ShopMap extends GameMap implements Environment {
     private final Directions exitDirection = Directions.DOWN;
 
 
-    public ShopMap(Position shopMapPosition, NPCType npc, ItemType item, WorldMap overworld) {
+    public ShopMap(Position shopMapPosition, NPCType npc, ItemType item) {
 
         this.shopMapPosition = shopMapPosition;
         this.npcType = npc;
@@ -51,8 +53,14 @@ public class ShopMap extends GameMap implements Environment {
         super.map[0][0] = new Zone(zoneCoordinates);
 
         //!!!BISOGNA SETTARE ANCHE ENVIRONMENT DI RITORNO QUANDO SI ESCE DA UNO SHOP O DA UN DUNGEON !!!
-        getMap()[0][0].getTile(new Coordinates(7,10)).setEnvironment(overworld);
-        getMap()[0][0].getTile(new Coordinates(8,10)).setEnvironment(overworld);
+        //getMap()[0][0].getTile(new Coordinates(7,10)).setEnvironment(overworld);
+        //getMap()[0][0].getTile(new Coordinates(8,10)).setEnvironment(overworld);
+
+        exitPositions =  new ArrayList<>(List.of(
+                new Position(new Coordinates(0,0), new Coordinates(7, 10)),
+                new Position(new Coordinates(0,0), new Coordinates(8, 10))
+        ));
+
 
         //Place the item into a cell
         getMap()[0][0].getTile(new Coordinates(7,5)).setItemType(itemType);
@@ -117,8 +125,8 @@ public class ShopMap extends GameMap implements Environment {
     }
 
     @Override
-    public Position getExitPosition() {
-        return this.entryExitPosition;
+    public List<Position> getExitPosition() {
+        return this.exitPositions;
     }
 
     @Override

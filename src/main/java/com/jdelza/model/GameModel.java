@@ -45,17 +45,25 @@ public class GameModel extends Observable implements Observer {
 
 
     public void movePlayer(Directions direction){
-        Environment env = player.getEnvironment(currentMap.getZone(player.getPlayerMapPosition()), direction);
-
         player.setPlayerDirection(direction);
 
+        Environment env = player.getEnvironment(currentMap.getZone(player.getPlayerMapPosition()), direction);
+
         if (player.hasPlayerShouldReturnToOverworld(currentMap, direction) && player.isPlayerAtTheBorderOfTheMap(direction, currentMap)){
-            returnToOverworld();
+            returnToOverworld(direction);
+
+        }
+        else if(player.hasPlayerShouldReturnToOverworld(currentMap, direction)){
+
+            returnToOverworld(direction);
+
+
 
         }else if (env != null){
-            enterEnvironment(env);
+            enterEnvironment(env, direction);
+
         }
-        else if(player.shouldPlayerChangeZone(direction)){
+        else if(player.shouldPlayerChangeZone(direction) || player.shouldPlayerChangeDungeonZone(direction,currentMap)){
             switchZone(direction);
         }
         else{
@@ -70,11 +78,11 @@ public class GameModel extends Observable implements Observer {
     /**
      * This function is called when player should come back to overworld
      */
-    private void returnToOverworld(){
+    private void returnToOverworld(Directions direction){
 
             setChanged();
 
-            notifyObservers(new EnterOverworld(overworld.getEntryPosition()));
+            notifyObservers(new EnterOverworld(overworld.getEntryPosition(), direction));
 
             player.setPlayerMapPosition(overworld.getEntryPosition().getZoneCoordinates());
             player.setPosition(overworld.getEntryPosition().getCellCoordinates());
@@ -87,10 +95,9 @@ public class GameModel extends Observable implements Observer {
      * This function is called when player should go in to another environment
      * @param env next environment
      */
-    private void enterEnvironment(Environment env){
+    private void enterEnvironment(Environment env, Directions direction){
+
         setChanged();
-
-
 
         //If player go from overworld to another environment
         if (currentMap instanceof WorldMap wm){
@@ -99,8 +106,9 @@ public class GameModel extends Observable implements Observer {
         }
 
         switch (env.getEnvironmentType()){
-            case SHOP -> notifyObservers(new EnterTheShop((ShopMap) env));
-            case OVERWORLD -> {notifyObservers(new EnterOverworld(env.getEntryPosition()));}
+            case SHOP -> notifyObservers(new EnterTheShop((ShopMap) env, direction));
+            case OVERWORLD -> notifyObservers(new EnterOverworld(env.getEntryPosition(), direction));
+            case DUNGEON -> notifyObservers(new EnterDungeon((DungeonMap)env, direction));
         }
 
 
@@ -108,7 +116,10 @@ public class GameModel extends Observable implements Observer {
         player.setPlayerMapPosition(env.getEntryPosition().getZoneCoordinates());
         player.setPosition(env.getEntryPosition().getCellCoordinates());
 
+
         this.currentMap = (GameMap) env;
+
+
     }
 
     /**
@@ -117,7 +128,7 @@ public class GameModel extends Observable implements Observer {
      */
     private void switchZone(Directions direction){
 
-            player.changeZone(direction);
+            player.changeZone(direction, (Environment) currentMap);
             setChanged();
             //notifyObservers(new PlayerMovement(true, direction));
             notifyObservers(new ChangeZone(direction));
@@ -158,6 +169,8 @@ public class GameModel extends Observable implements Observer {
      */
     private void playerWalk(Directions direction) {
         Zone currentZone = currentMap.getZone(player.getPlayerMapPosition());
+
+
         Coordinates nextCoordinates = new Coordinates(
                 player.getPosition().getX() + direction.getX(),
                 player.getPosition().getY() + direction.getY()
@@ -380,52 +393,7 @@ public class GameModel extends Observable implements Observer {
      * This method is triggered when you wish to initiate the player’s
      * attack action and carries out all the consequences thereof
      */
-    /*
     public void playerAttack(){
-
-
-                //If player has all lives throwWeapon will set to true, else false.
-                boolean throwWeapon = player.getLifes() == 3.0;
-
-                //Initialize the attack
-                player.initializeAttackWithWeapon(player.getPlayerDirection());
-
-                //Store the enemy that was hit and killed in the variable
-                Enemy removeEnemy = player.killedEnemy(currentMap);
-
-                //if an enemy is dead
-                if (removeEnemy != null){
-                    //remove enemy from current zone enemies list
-                    getCurrentMap().getZone(player.getPlayerMapPosition()).getEnemies().remove(removeEnemy);
-
-                    //Remove enemy from the view
-                    setChanged();
-                    notifyObservers(new EnemyDeath(removeEnemy));
-                }
-
-
-                //Create PlayerAttack event
-                PlayerAttack attack =
-                        new PlayerAttack(
-                                player.getPlayerWeapon(),
-                                throwWeapon,
-                                StartEndStatus.START
-                        );
-
-                //View the attack movement
-                setChanged();
-                notifyObservers(attack);
-
-
-
-
-
-    }
-
-     */
-
-
-   public void playerAttack(){
        if (player.getPlayerWeapon() != null && !player.isAttacking() && !player.isWeaponThrowing()){
 
            player.initializeAttackWithWeapon(player.getPlayerDirection());
@@ -455,7 +423,6 @@ public class GameModel extends Observable implements Observer {
        }
 
    }
-
 
 
     /**
@@ -551,8 +518,6 @@ public class GameModel extends Observable implements Observer {
 
 
     }
-
-
 
 
     @Override

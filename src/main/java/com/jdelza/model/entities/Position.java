@@ -1,5 +1,7 @@
 package com.jdelza.model.entities;
 
+import java.util.Objects;
+
 /**
  * Position represent the position in the map
  * the position is indicated by zone coordinates and cell coordinates
@@ -23,5 +25,22 @@ public class Position {
 
     public Coordinates getCellCoordinates() {
         return cellCoordinates;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return Objects.equals(zoneCoordinates, position.zoneCoordinates) && Objects.equals(cellCoordinates, position.cellCoordinates);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(zoneCoordinates, cellCoordinates);
+    }
+
+    @Override
+    public String toString(){
+        return getZoneCoordinates().toString() + " | " + getCellCoordinates().toString();
     }
 }

@@ -1,14 +1,12 @@
 package com.jdelza.model.characters;
 
 import com.jdelza.model.entities.Entity;
+import com.jdelza.model.entities.Position;
 import com.jdelza.model.world.*;
 
 import com.jdelza.utils.enums.*;
 import com.jdelza.model.entities.Coordinates;
-import com.jdelza.utils.interfaces.Damageable;
-import com.jdelza.utils.interfaces.Environment;
-import com.jdelza.utils.interfaces.Movable;
-import com.jdelza.utils.interfaces.Usable;
+import com.jdelza.utils.interfaces.*;
 import com.jdelza.model.weapons.Weapon;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -94,8 +92,8 @@ public class Player extends GameCharacter implements Movable, Damageable {
 
             playerInstance= new Player(
                     new Coordinates(7,7),
+                    //new Coordinates(7,3));
                     new Coordinates(7,7));
-                    //new Coordinates(0,0));
 
         }
         return playerInstance;
@@ -146,39 +144,35 @@ public class Player extends GameCharacter implements Movable, Damageable {
         if (index<inventory.length){inventory[index] = item;}
     }
 
-    public void changeZone(Directions direction){
+    public void changeZone(Directions direction, Environment env){
+
+        int dungeonAddPosition = env.getEnvironmentType() == EnvironmentType.DUNGEON ? 1 : 0;
+
         switch (direction){
             case UP: {
-                super.setPosition(new Coordinates(super.getPosition().getX(), Dimensions.ZONE_ROWS.get()-1));
+                super.setPosition(new Coordinates(super.getPosition().getX(), Dimensions.ZONE_ROWS.get()-1  - dungeonAddPosition ));
                 playerMapPosition.setY(playerMapPosition.getY()-1);
 
             }; break;
             case DOWN:{
-                super.setPosition(new Coordinates(super.getPosition().getX(), 0));
+                super.setPosition(new Coordinates(super.getPosition().getX(), dungeonAddPosition));
                 playerMapPosition.setY(playerMapPosition.getY()+1);
 
             }; break;
             case LEFT:{
-                super.setPosition(new Coordinates(Dimensions.ZONE_COLUMNS.get()-1, super.getPosition().getY()));
+                super.setPosition(new Coordinates(Dimensions.ZONE_COLUMNS.get()-1-dungeonAddPosition, super.getPosition().getY()));
                 playerMapPosition.setX(playerMapPosition.getX()-1);
 
             }; break;
             case RIGHT:{
-                super.setPosition(new Coordinates(0, super.getPosition().getY()));
+                super.setPosition(new Coordinates(dungeonAddPosition, super.getPosition().getY()));
                 playerMapPosition.setX(playerMapPosition.getX()+1);
 
             }; break;
         }
     }
 
-    /*
-    public GameMap getGameMapIfItChange(OverworldEnvironments environments){
-        return environments.getEnvironments().stream().filter(e->{
-            return e.get
-        })
-    }
 
-     */
 
     /**
      * This function is used to indicate if player is at the border of the map
@@ -214,6 +208,30 @@ public class Player extends GameCharacter implements Movable, Damageable {
 
     }
 
+    public boolean shouldPlayerChangeDungeonZone(Directions direction, GameMap currentMap){
+
+
+                            //top border
+        boolean border =  (getPosition().getY() == 1 && direction == Directions.UP ||
+                //left border
+                getPosition().getX() == 1 && direction == Directions.LEFT ||
+                //bottom border
+                getPosition().getY() == Dimensions.ZONE_ROWS.get()-2 && direction == Directions.DOWN ||
+                //right border
+                getPosition().getX() == Dimensions.ZONE_COLUMNS.get()-2 && direction == Directions.RIGHT);
+
+        int nextCurrentMapX = playerMapPosition.getX() + direction.getX();
+        int nextCurrentMapY = playerMapPosition.getY() + direction.getY();
+
+        boolean inBound = nextCurrentMapX >= 0 && nextCurrentMapX < currentMap.getMap()[0].length && nextCurrentMapY >=0 && nextCurrentMapY < currentMap.getMap().length;
+
+        if (currentMap instanceof Environment env){
+            return inBound && border && env.getEnvironmentType() == EnvironmentType.DUNGEON;
+        }
+
+        return false;
+    }
+
 
     public Environment getEnvironment(Zone currentPlayerZone, Directions direction){
 
@@ -222,35 +240,33 @@ public class Player extends GameCharacter implements Movable, Damageable {
         int newY = getPosition().getY()+direction.getY();
 
 
+
+
+        if (newX >= 0 && newX < Dimensions.ZONE_COLUMNS.get() && newY >= 0 && newY < Dimensions.ZONE_ROWS.get()){
+            return currentPlayerZone.getTile(new Coordinates(newX, newY)).getEnvironment();
+
+        }
+        /*
         return newX >= 0 && newX < Dimensions.ZONE_COLUMNS.get() && newY >= 0 && newY < Dimensions.ZONE_ROWS.get() ?
                 currentPlayerZone.getTile(new Coordinates(newX, newY)).getEnvironment()
                 : null;
 
+         */
+        return null;
+
     }
 
     public boolean hasPlayerShouldReturnToOverworld(GameMap map, Directions direction){
-        //System.out.println("usciamo va!");
 
-        if (map.getClass() == ShopMap.class){
-            ShopMap sMap = (ShopMap) map;
+        if(map instanceof Environment env){
 
-            return map.getMap()[0][0].getTile(getPosition()).getEnvironment() instanceof WorldMap && direction == sMap.getExitDirection();
-            /*
-            return( getPosition().equals(sMap.getExitPosition().getZoneCoordinates()) || getPosition().equals(new Coordinates(8,10)))
-                    && direction == sMap.getExitDirection();
-
-             */
+            boolean isExit = env.getExitPosition().stream().anyMatch(p-> p.equals(new Position(getPlayerMapPosition(), getPosition())));
+            return isExit && playerDirection == Directions.DOWN;
         }
-
-        /*
-        if (map instanceof Environment env){
-            return getPlayerMapPosition().equals(env.getExitPortal().getMapCoordinates()) && getPosition().equals(env.getExitPortal().getZoneCoordinates());
-        }
-
-         */
 
 
         return false;
+
     }
 
     /**
@@ -358,20 +374,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
         getPlayerWeapon().setWeaponMapPosition(getPlayerMapPosition());
     }
 
-    public ItemType itemInTheZoneCell(Zone currentZone, Directions direction) {
 
-        int newX = getPosition().getX() + direction.getX();
-        int newY = getPosition().getY() + direction.getY();
-
-        boolean isInBound = newX >= 0 && newX < Dimensions.ZONE_COLUMNS.get() && newY >= 0 && newY < Dimensions.ZONE_ROWS.get();
-
-        if (isInBound) {
-            return currentZone.getTile(new Coordinates(newX, newY)).getItemType();
-        }
-
-        return null;
-
-    }
 
     public void takeItem(ItemType itemType){
 
@@ -389,7 +392,6 @@ public class Player extends GameCharacter implements Movable, Damageable {
 
     @Override
     public void move(Directions direction) {
-
         //set player direction
         setPlayerDirection(direction);
 
@@ -413,7 +415,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
         if (!isHasPlayerInjuring()){
             double newLives = this.getLifes() - damageType.getDamage();
             setHasPlayerInjuring(true);
-            System.out.println("damagia");
+
             if (newLives < 0) {
                 this.setLifes(0.0);
             } else {

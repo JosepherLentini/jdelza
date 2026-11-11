@@ -5,10 +5,7 @@ import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.entities.Position;
 import com.jdelza.model.weapons.Weapon;
-import com.jdelza.utils.enums.Directions;
-import com.jdelza.utils.enums.Dimensions;
-import com.jdelza.utils.enums.ItemType;
-import com.jdelza.utils.enums.NPCType;
+import com.jdelza.utils.enums.*;
 import com.jdelza.utils.events.PlayerMovement;
 import com.jdelza.view.characters.EnemyView;
 import com.jdelza.view.characters.PlayerView;
@@ -37,12 +34,12 @@ public class GameScreen extends VBox {
 
     //Main game screen components
     private Overworld overworld;        //This is the container of overwold class (not Overwolrd class)
-    private String inventory;
+
     private Pane currentEnvironment;
 
     //Player
     private PlayerView player;  //player view
-    private Player playerModel; //Instance of the player in the game
+
 
     //Overworld
     private Pane overworldWrapper;
@@ -59,9 +56,8 @@ public class GameScreen extends VBox {
      *
      * @param overworld   //current overworld instance
      * @param player      //current view player instance
-     * @param playerModel //current logic player
      */
-    public GameScreen(Overworld overworld, PlayerView player, Player playerModel) {
+    public GameScreen(Overworld overworld, PlayerView player) {
         this.overworld = overworld;
         this.player = player;
         this.allEnemies = new HashSet<>() {
@@ -198,68 +194,8 @@ public class GameScreen extends VBox {
     public void movePlayer(PlayerMovement playerMovement) {
 
         Directions dir = playerMovement.getDirection();
-        /*if (playerMovement.isZoneChanged()) {
-            setZoneChanging(true);
-
-            //Create traslate transition
-            TranslateTransition zoneSwitchTransition = new TranslateTransition();
-
-            TranslateTransition playerSwitchTransition = new TranslateTransition();
-            //Add node to transition
-            zoneSwitchTransition.setNode(overworld);
-            playerSwitchTransition.setNode(player);
-
-            //Combine two transition witch works at the same time
-            ParallelTransition parallel = new ParallelTransition(
-                    zoneSwitchTransition, playerSwitchTransition
-            );
-
-            switch (dir) {
-                case UP:
-                    //World translation and player movement in tandem with the world
-                    zoneSwitchTransition.setToY(overworld.getTranslateY() + Dimensions.MAP_HEIGHT.get());
-                    playerSwitchTransition.setToY((Dimensions.ZONE_ROWS.get() - 1) * player.getTileHeight());
-                    break;
-
-                case DOWN:
-                    //World translation and player movement in tandem with the world
-                    zoneSwitchTransition.setToY(overworld.getTranslateY() - Dimensions.MAP_HEIGHT.get());
-                    playerSwitchTransition.setToY(0);
-                    break;
-
-                case LEFT:
-                    //World translation and player movement in tandem with the world
-                    zoneSwitchTransition.setToX(overworld.getTranslateX() + Dimensions.MAP_WIDTH.get());
-                    playerSwitchTransition.setToX((Dimensions.ZONE_COLUMNS.get() - 1) * player.getTileWidth());
-                    break;
-
-                case RIGHT:
-                    //World translation and player movement in tandem with the world
-                    zoneSwitchTransition.setToX(overworld.getTranslateX() - Dimensions.MAP_WIDTH.get());
-                    playerSwitchTransition.setToX(0);
-                    break;
-            }
-
-            //Transition duration
-            zoneSwitchTransition.setDuration(Duration.millis(1000));
-            playerSwitchTransition.setDuration(Duration.millis(1000));
-
-            //Start transition
-            parallel.play();
-
-            //When transition ends
-            parallel.setOnFinished(e -> {
-                setZoneChanging(false);
-            });
 
 
-
-        } else
-         */
-
-
-
-            System.out.println("noo fake");
             setPlayerMoving(true);  //Player is moving
             getPlayer().setPlayerDirection(dir);
             //Create transition
@@ -295,219 +231,304 @@ public class GameScreen extends VBox {
 
 
     }
-
+    /*
 public void changeZone(Directions direction){
 
-            setZoneChanging(true);
 
-            //Create traslate transition
-            TranslateTransition zoneSwitchTransition = new TranslateTransition();
 
-            TranslateTransition playerSwitchTransition = new TranslateTransition();
-            //Add node to transition
-            zoneSwitchTransition.setNode(overworld);
-            playerSwitchTransition.setNode(player);
+          setZoneChanging(true);
 
-            //Combine two transition witch works at the same time
-            ParallelTransition parallel = new ParallelTransition(
-                    zoneSwitchTransition,playerSwitchTransition
-            );
+          //Create traslate transition
+          TranslateTransition zoneSwitchTransition = new TranslateTransition();
 
-            switch (direction) {
-                case UP:
-                    //World translation and player movement in tandem with the world
-                    zoneSwitchTransition.setToY(overworld.getTranslateY() + Dimensions.MAP_HEIGHT.get());
-                    playerSwitchTransition.setToY((Dimensions.ZONE_ROWS.get() - 1) * player.getTileHeight());
-                    break;
+          TranslateTransition playerSwitchTransition = new TranslateTransition();
+          //Add node to transition
+          zoneSwitchTransition.setNode(currentEnvironment);
+          playerSwitchTransition.setNode(player);
 
-                case DOWN:
-                    //World translation and player movement in tandem with the world
-                    zoneSwitchTransition.setToY(overworld.getTranslateY() - Dimensions.MAP_HEIGHT.get());
-                    playerSwitchTransition.setToY(0);
-                    break;
+          //Combine two transition witch works at the same time
+          ParallelTransition parallel = new ParallelTransition(
+                  zoneSwitchTransition,playerSwitchTransition
+          );
 
-                case LEFT:
-                    //World translation and player movement in tandem with the world
-                    zoneSwitchTransition.setToX(overworld.getTranslateX() + Dimensions.MAP_WIDTH.get());
-                    playerSwitchTransition.setToX((Dimensions.ZONE_COLUMNS.get() - 1) * player.getTileWidth());
-                    break;
+          switch (direction) {
+              case UP:
+                  //World translation and player movement in tandem with the world
+                  zoneSwitchTransition.setToY(overworld.getTranslateY() + Dimensions.MAP_HEIGHT.get());
+                  playerSwitchTransition.setToY((Dimensions.ZONE_ROWS.get() - 1) * player.getTileHeight());
+                  break;
 
-                case RIGHT:
-                    //World translation and player movement in tandem with the world
-                    zoneSwitchTransition.setToX(overworld.getTranslateX() - Dimensions.MAP_WIDTH.get());
-                    playerSwitchTransition.setToX(0);
-                    break;
-            }
+              case DOWN:
+                  //World translation and player movement in tandem with the world
+                  zoneSwitchTransition.setToY(overworld.getTranslateY() - Dimensions.MAP_HEIGHT.get());
+                  playerSwitchTransition.setToY(0);
+                  break;
 
-            //Transition duration
-            zoneSwitchTransition.setDuration(Duration.millis(1000));
-            playerSwitchTransition.setDuration(Duration.millis(1000));
+              case LEFT:
+                  //World translation and player movement in tandem with the world
+                  zoneSwitchTransition.setToX(overworld.getTranslateX() + Dimensions.MAP_WIDTH.get());
+                  playerSwitchTransition.setToX((Dimensions.ZONE_COLUMNS.get() - 1) * player.getTileWidth());
+                  break;
 
-            //Start transition
-            parallel.play();
-
-            //When transition ends
-            parallel.setOnFinished(e-> {setZoneChanging(false);});
-
-    }
-
-    public void moveEnemies(List<Enemy> enemies){
-
-        List<String> ids = enemies.stream().map(e-> e.getEnemyID()).collect(Collectors.toCollection(ArrayList::new));
+              case RIGHT:
+                  //World translation and player movement in tandem with the world
+                  zoneSwitchTransition.setToX(overworld.getTranslateX() - Dimensions.MAP_WIDTH.get());
+                  playerSwitchTransition.setToX(0);
+                  break;
+          }
 
 
 
-        overworld.getChildren().stream().forEach(node-> {
-            if (node instanceof EnemyView){
-                EnemyView ew = (EnemyView) node;
+          //Transition duration
+          zoneSwitchTransition.setDuration(Duration.millis(1000));
+          playerSwitchTransition.setDuration(Duration.millis(1000));
 
+          //Start transition
+          parallel.play();
 
-                if (ids.contains(ew.getEnemyViewID())){
+          //When transition ends
+          parallel.setOnFinished(e-> {setZoneChanging(false);});
 
+  }
 
-                    //System.out.println(ew);
-                    Enemy enemy = enemies.stream().reduce((e,f)-> e.getEnemyID().equals(ew.getEnemyViewID())  ? e : f).get();
+     */
 
-                    int x = enemy.getEnemyMapCoordinates().getX()*Dimensions.ZONE_COLUMNS.get()+enemy.getPosition().getX();
-                    int y = enemy.getEnemyMapCoordinates().getY()*Dimensions.ZONE_ROWS.get()+enemy.getPosition().getY();
+    public void changeZone(Directions direction, Pane currentEnvironment){
 
-                    x = ew.getTileWidth()*x;
-                    y = ew.getTileHeight()*y;
+        int addPlayerPositionIfInDungeon = 0;
 
+        if (currentEnvironment instanceof DungeonScreen){
+            player.setOpacity(0);
+            addPlayerPositionIfInDungeon = 1;
+        }
 
+        setZoneChanging(true);
 
-                    double newX = x-ew.getTranslateX();
-                    double newY = y-ew.getTranslateY();
+        //Create traslate transition
+        TranslateTransition zoneSwitchTransition = new TranslateTransition();
 
-
-
-                    //System.out.println("from: " + ew.getPrevX()+" ,"+ew.getPrevY());
-                    //System.out.println((ew.getTranslateX())+" "+(ew.getTranslateY()));
-                    //System.out.println("to: " + x+" ,"+y);
-
-                    //ew.setTranslateX(x);
-                    //ew.setTranslateY(y);
-
-
-                    if (ew.getClass() == TektiteView.class){
-                        TektiteView tk = (TektiteView)ew;
+        TranslateTransition playerSwitchTransition = new TranslateTransition();
 
 
 
-                        // 3. Creazione e configurazione della PathTransition
-                        TranslateTransition transition = new TranslateTransition();
+        //Add node to transition
+        zoneSwitchTransition.setNode(currentEnvironment);
+        playerSwitchTransition.setNode(player);
 
-                        transition.setDuration(Duration.millis(300.0));
-                        transition.setByX(newX);
-                        transition.setByY(newY);
-                        transition.setNode(tk);
+        //Combine two transition witch works at the same time
+        ParallelTransition parallel = new ParallelTransition(
+                zoneSwitchTransition,playerSwitchTransition
+        );
 
+        switch (direction) {
+            case UP:
+                //World translation and player movement in tandem with the world
+                zoneSwitchTransition.setToY(currentEnvironment.getTranslateY() + Dimensions.MAP_HEIGHT.get());
+                playerSwitchTransition.setToY((Dimensions.ZONE_ROWS.get() - 1 - addPlayerPositionIfInDungeon) * player.getTileHeight() );
 
-                        // Avvia la transizione
-                        transition.play();
+                break;
 
+            case DOWN:
+                //World translation and player movement in tandem with the world
 
-
-
-                    }else{
-                        TranslateTransition transition = new TranslateTransition();
-                        transition.setNode(ew);
-
-                        if ((int)newX == 0 && newY > 0){
-                            ew.setEnemyDirection(Directions.DOWN);
-                        }
-                        else if((int)newX == 0 && newY < 0){
-                            ew.setEnemyDirection(Directions.UP);
-                        }
-                        else if ((int)newY == 0 && newX>0){
-                            ew.setEnemyDirection(Directions.RIGHT);
-                        }
-                        else if(((int)newY == 0 && newX<0)){
-                            ew.setEnemyDirection(Directions.LEFT);
-
-                        }
-
-                        transition.setByX(newX);
-                        transition.setByY(newY);
+                zoneSwitchTransition.setToY(currentEnvironment.getTranslateY() - Dimensions.MAP_HEIGHT.get());
+                playerSwitchTransition.setToY(  addPlayerPositionIfInDungeon*player.getTileHeight());
 
 
+                break;
 
-                        //Setting transition duration
-                        transition.setDuration(Duration.millis(250));
+            case LEFT:
+                //World translation and player movement in tandem with the world
+                zoneSwitchTransition.setToX(currentEnvironment.getTranslateX() + Dimensions.MAP_WIDTH.get());
+                playerSwitchTransition.setToX((Dimensions.ZONE_COLUMNS.get() - 1 - addPlayerPositionIfInDungeon) * player.getTileWidth() );
+                break;
 
-                        //Start transition
-                        transition.play();
-                    }
+            case RIGHT:
+                //World translation and player movement in tandem with the world
+                zoneSwitchTransition.setToX(currentEnvironment.getTranslateX() - Dimensions.MAP_WIDTH.get() );
+                playerSwitchTransition.setToX(addPlayerPositionIfInDungeon*player.getTileWidth() );
 
-
-                }
+                break;
+        }
 
 
 
+        //Transition duration
+        zoneSwitchTransition.setDuration(Duration.millis(1000));
+        playerSwitchTransition.setDuration(Duration.millis(1000));
 
-            }
+        //Start transition
+        parallel.play();
+
+        //When transition ends
+        parallel.setOnFinished(e-> {
+            setZoneChanging(false);
+
+            player.setOpacity(100);
+            player.changeSprite(direction);
+
         });
 
 
-
     }
 
-    public void addWeapon(Weapon weapon){
+  public void moveEnemies(List<Enemy> enemies){
 
-        WeaponView weaponView = null;
-
-        switch (weapon.getWeaponType()){
-            case ROCK -> weaponView  = new RockView(weapon.getWeaponID());
-        }
-
-        int x = weapon.getWeaponMapPosition().getX()*Dimensions.ZONE_COLUMNS.get()+weapon.getPosition().getX();
-        int y = weapon.getWeaponMapPosition().getY()*Dimensions.ZONE_ROWS.get()+weapon.getPosition().getY();
-
-        weaponView.setTranslateX(Dimensions.TILE_WIDTH.get()*x);
-        weaponView.setTranslateY(Dimensions.TILE_HEIGT.get()*y);
-
-        weaponView.setWeaponDirection(weapon.getWeaponDirection());
-        this.overworld.getChildren().add(weaponView);
-    }
-
-    public void moveWeapons(List<Weapon> weapons) {
+      List<String> ids = enemies.stream().map(e-> e.getEnemyID()).collect(Collectors.toCollection(ArrayList::new));
 
 
-        if (!weapons.isEmpty()) {
-            overworld.getChildren().forEach(node -> {
-                if (node instanceof WeaponView wv) {
 
-                    // Find the weapon with the same ID directly in the list
-                    weapons.stream()
-                            .filter(w -> w.getWeaponID().equals(wv.getWeaponID()))
-                            .findFirst()
-                            .ifPresent(updatedWeapon -> {
-
-                                // Create transition
-                                TranslateTransition transition = new TranslateTransition(Duration.millis(100), wv);
-
-                                //Apply the changes
-                                switch (wv.getWeaponDirection()) {
-                                    case UP -> transition.setByY(-Dimensions.TILE_HEIGT.get());
-                                    case DOWN -> transition.setByY(Dimensions.TILE_HEIGT.get());
-                                    case LEFT -> transition.setByX(-Dimensions.TILE_WIDTH.get());
-                                    case RIGHT -> transition.setByX(Dimensions.TILE_WIDTH.get());
-                                }
-
-                                //Play the transition
-                                transition.play();
-                            });
-                }
-            });
-        }
+      overworld.getChildren().stream().forEach(node-> {
+          if (node instanceof EnemyView){
+              EnemyView ew = (EnemyView) node;
 
 
-    }
+              if (ids.contains(ew.getEnemyViewID())){
 
-    /**
-     * This function allows you to remove the required weapons
-     * @param weapons      weapons from model
-     */
+
+                  //System.out.println(ew);
+                  Enemy enemy = enemies.stream().reduce((e,f)-> e.getEnemyID().equals(ew.getEnemyViewID())  ? e : f).get();
+
+                  int x = enemy.getEnemyMapCoordinates().getX()*Dimensions.ZONE_COLUMNS.get()+enemy.getPosition().getX();
+                  int y = enemy.getEnemyMapCoordinates().getY()*Dimensions.ZONE_ROWS.get()+enemy.getPosition().getY();
+
+                  x = ew.getTileWidth()*x;
+                  y = ew.getTileHeight()*y;
+
+
+
+                  double newX = x-ew.getTranslateX();
+                  double newY = y-ew.getTranslateY();
+
+
+
+                  //System.out.println("from: " + ew.getPrevX()+" ,"+ew.getPrevY());
+                  //System.out.println((ew.getTranslateX())+" "+(ew.getTranslateY()));
+                  //System.out.println("to: " + x+" ,"+y);
+
+                  //ew.setTranslateX(x);
+                  //ew.setTranslateY(y);
+
+
+                  if (ew.getClass() == TektiteView.class){
+                      TektiteView tk = (TektiteView)ew;
+
+
+
+                      // 3. Creazione e configurazione della PathTransition
+                      TranslateTransition transition = new TranslateTransition();
+
+                      transition.setDuration(Duration.millis(300.0));
+                      transition.setByX(newX);
+                      transition.setByY(newY);
+                      transition.setNode(tk);
+
+
+                      // Avvia la transizione
+                      transition.play();
+
+
+
+
+                  }else{
+                      TranslateTransition transition = new TranslateTransition();
+                      transition.setNode(ew);
+
+                      if ((int)newX == 0 && newY > 0){
+                          ew.setEnemyDirection(Directions.DOWN);
+                      }
+                      else if((int)newX == 0 && newY < 0){
+                          ew.setEnemyDirection(Directions.UP);
+                      }
+                      else if ((int)newY == 0 && newX>0){
+                          ew.setEnemyDirection(Directions.RIGHT);
+                      }
+                      else if(((int)newY == 0 && newX<0)){
+                          ew.setEnemyDirection(Directions.LEFT);
+
+                      }
+
+                      transition.setByX(newX);
+                      transition.setByY(newY);
+
+
+
+                      //Setting transition duration
+                      transition.setDuration(Duration.millis(250));
+
+                      //Start transition
+                      transition.play();
+                  }
+
+
+              }
+
+
+
+
+          }
+      });
+
+
+
+  }
+
+  public void addWeapon(Weapon weapon){
+
+      WeaponView weaponView = null;
+
+      switch (weapon.getWeaponType()){
+          case ROCK -> weaponView  = new RockView(weapon.getWeaponID());
+      }
+
+      int x = weapon.getWeaponMapPosition().getX()*Dimensions.ZONE_COLUMNS.get()+weapon.getPosition().getX();
+      int y = weapon.getWeaponMapPosition().getY()*Dimensions.ZONE_ROWS.get()+weapon.getPosition().getY();
+
+      weaponView.setTranslateX(Dimensions.TILE_WIDTH.get()*x);
+      weaponView.setTranslateY(Dimensions.TILE_HEIGT.get()*y);
+
+      weaponView.setWeaponDirection(weapon.getWeaponDirection());
+      this.overworld.getChildren().add(weaponView);
+  }
+
+  public void moveWeapons(List<Weapon> weapons) {
+
+
+      if (!weapons.isEmpty()) {
+          overworld.getChildren().forEach(node -> {
+              if (node instanceof WeaponView wv) {
+
+                  // Find the weapon with the same ID directly in the list
+                  weapons.stream()
+                          .filter(w -> w.getWeaponID().equals(wv.getWeaponID()))
+                          .findFirst()
+                          .ifPresent(updatedWeapon -> {
+
+                              // Create transition
+                              TranslateTransition transition = new TranslateTransition(Duration.millis(100), wv);
+
+                              //Apply the changes
+                              switch (wv.getWeaponDirection()) {
+                                  case UP -> transition.setByY(-Dimensions.TILE_HEIGT.get());
+                                  case DOWN -> transition.setByY(Dimensions.TILE_HEIGT.get());
+                                  case LEFT -> transition.setByX(-Dimensions.TILE_WIDTH.get());
+                                  case RIGHT -> transition.setByX(Dimensions.TILE_WIDTH.get());
+                              }
+
+                              //Play the transition
+                              transition.play();
+                          });
+              }
+          });
+      }
+
+
+  }
+
+  /**
+   * This function allows you to remove the required weapons
+   * @param weapons      weapons from model
+   */
     public void removeEnemyWeapon(List<Weapon> weapons){
 
         //list of IDs from the model’s weapons to be removed
@@ -579,23 +600,54 @@ public void changeZone(Directions direction){
 
     ;}
 
-    public void enterOverworld(Position position){
+    public void enterOverworld(Position position, Directions direction){
+
+        getOverworldWrapper().getChildren().remove(getCurrentEnvironment());
+        getOverworldWrapper().getChildren().add(getOverworld());
+        setCurrentEnvironment(getOverworld());
+
         overworld.changeOverWorldPosition(position);
         getOverworldWrapper().getChildren().remove(player);
         player.playerChangePosition(position);
         getOverworldWrapper().getChildren().add(player);
+
+        player.changePlayerDirection(direction);
+
     }
 
-    public void enterTheShopView(Position playerEntryPosition, NPCType npcType, ItemType itemType){
+    public void enterTheShopView(Position playerEntryPosition, NPCType npcType, ItemType itemType, Directions direction){
 
-        Pane newEnvironment = new ShopScreen(getPlayer(), npcType, itemType);
+        Pane newEnvironment = new ShopScreen(npcType, itemType);
 
         getOverworldWrapper().getChildren().remove(getOverworld());
         getOverworldWrapper().getChildren().add(newEnvironment);
         setCurrentEnvironment(newEnvironment);
 
+        overworldWrapper.getChildren().remove(player);
         player.playerChangePosition(playerEntryPosition);
+        overworldWrapper.getChildren().add(player);
 
+        player.changePlayerDirection(direction);
+    }
+
+
+    public void enterDungeon(Position playerEntryPosition, Level dungeonLevel, Directions direction){
+
+        Pane newEnvironment = new DungeonScreen(dungeonLevel);
+
+        getOverworldWrapper().getChildren().remove(getOverworld());
+        getOverworldWrapper().getChildren().add(newEnvironment);
+        setCurrentEnvironment(newEnvironment);
+
+        currentEnvironment.setTranslateX(-playerEntryPosition.getZoneCoordinates().getX()*Dimensions.MAP_WIDTH.get());
+        currentEnvironment.setTranslateY(-playerEntryPosition.getZoneCoordinates().getY()*Dimensions.MAP_HEIGHT.get());
+
+
+        overworldWrapper.getChildren().remove(player);
+        player.playerChangePosition(playerEntryPosition);
+        overworldWrapper.getChildren().add(player);
+
+        player.changePlayerDirection(direction);
 
     }
 

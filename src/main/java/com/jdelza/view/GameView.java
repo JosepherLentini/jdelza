@@ -40,7 +40,7 @@ public class GameView extends Observable implements Observer{
 
         this.player = new PlayerView();
 
-        this.gamescreen = new GameScreen(new Overworld(), player, gameModel.getPlayer());
+        this.gamescreen = new GameScreen(new Overworld(), player);
         gamescreen.getOverworld().setLayoutX(-gameModel.getPlayer().getPlayerMapPosition().getX() * Dimensions.MAP_WIDTH.get());
         gamescreen.getOverworld().setLayoutY(-gameModel.getPlayer().getPlayerMapPosition().getY() * Dimensions.MAP_HEIGHT.get());
 
@@ -271,7 +271,7 @@ public class GameView extends Observable implements Observer{
         }
 
         if (arg instanceof ChangeZone cz){
-            gamescreen.changeZone(cz.getDirection());
+            gamescreen.changeZone(cz.getDirection(), gamescreen.getCurrentEnvironment());
         }
 
         else if (arg instanceof EnemyMovement em){
@@ -317,16 +317,17 @@ public class GameView extends Observable implements Observer{
             switch (env.getEnvironmentType()){
                 case SHOP -> {
                     EnterTheShop esh = (EnterTheShop) env;
-                    gamescreen.enterTheShopView(esh.getPlayerEntryPosition(), esh.getNpcType(), esh.getItemType());
+                    gamescreen.enterTheShopView(esh.getPlayerEntryPosition(), esh.getNpcType(), esh.getItemType(), esh.getPlayerDirection());
                 }
-                case DUNGEON -> {}
+                case DUNGEON -> {
+
+                    EnterDungeon edu = (EnterDungeon) env;
+                    gamescreen.enterDungeon(edu.getEntryPosition(), edu.getDungeonLevel(), edu.getPlayerDirection());
+                }
                 case OVERWORLD -> {
 
                     EnterOverworld eov = (EnterOverworld) env;
-                    gamescreen.getOverworldWrapper().getChildren().remove(gamescreen.getCurrentEnvironment());
-                    gamescreen.getOverworldWrapper().getChildren().add(gamescreen.getOverworld());
-                    //gamescreen.setOverworldPosition(eov.getPlayerEntryPosition());
-                    gamescreen.enterOverworld(eov.getPlayerEntryPosition());
+                    gamescreen.enterOverworld(eov.getPlayerEntryPosition(), eov.getPlayerDirection());
                 }
             }
         }
