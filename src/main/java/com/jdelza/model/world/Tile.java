@@ -32,8 +32,16 @@ public class Tile extends Entity {
     public void setEnvironment(Environment environment) {this.environment = environment;setPortal(true);}
     public void setItemType(ItemType itemType) {this.itemType = itemType;}
 
+    /*
     @Override
     public String toString(){
         return walkable ? "." : "X";
+    }
+
+     */
+
+    @Override
+    public String toString(){
+        return this.getPosition().toString();
     }
 }

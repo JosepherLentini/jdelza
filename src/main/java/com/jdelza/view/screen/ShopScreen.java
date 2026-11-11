@@ -26,7 +26,7 @@ public class ShopScreen extends Pane {
 
 
 
-    public ShopScreen(PlayerView playerView, NPCType npcType, ItemType itemType) {
+    public ShopScreen(NPCType npcType, ItemType itemType) {
 
         this.playerView = playerView;
 
@@ -59,7 +59,7 @@ public class ShopScreen extends Pane {
 
         this.getChildren().add(iw);
         this.getChildren().addAll(leftFire, rightFire, npc);
-        this.getChildren().add(playerView);
+        //this.getChildren().add(playerView);
 
         if(itemType != ItemType.SWORD && itemType != null){
             ItemView rupia = new ItemView(ItemType.RUPEE);

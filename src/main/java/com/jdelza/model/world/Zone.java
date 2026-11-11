@@ -3,6 +3,7 @@ package com.jdelza.model.world;
 import com.jdelza.model.characters.Enemy;
 import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
+import com.jdelza.model.items.Item;
 import com.jdelza.model.weapons.Weapon;
 import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.Directions;
@@ -11,6 +12,7 @@ import com.jdelza.utils.interfaces.Environment;
 import javafx.scene.control.skin.TextInputControlSkin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Zone {
@@ -89,6 +91,9 @@ public class Zone {
         boolean isInBound = newX >= 0 && newX < Dimensions.ZONE_COLUMNS.get() && newY >= 0 && newY < Dimensions.ZONE_ROWS.get();
 
         if (isInBound) {
+
+
+
             return this.getTile(new Coordinates(newX, newY)).getItemType();
         }
 
@@ -102,8 +107,18 @@ public class Zone {
 
         boolean isInBound = newX >= 0 && newX < Dimensions.ZONE_COLUMNS.get() && newY >= 0 && newY < Dimensions.ZONE_ROWS.get();
 
+
         if (isInBound) {
-            this.getTile(new Coordinates(newX, newY)).setItemType(null);
+
+            ItemType itemInTheNextCell = this.getTile(new Coordinates(newX, newY)).getItemType();
+
+            Arrays.stream(this.getZone()).flatMap(Arrays::stream).forEach(t-> {
+                if(itemInTheNextCell  != null && t.getItemType() == itemInTheNextCell){
+                    t.setItemType(null);
+                }
+            });
+
+
         }
     }
 
@@ -146,10 +161,6 @@ public class Zone {
         return "Zone: "+ this.zoneMapPosition.getX() + "  " + this.zoneMapPosition.getY();
 
     }
-
-
-
-
 
 
 }

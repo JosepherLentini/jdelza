@@ -90,24 +90,38 @@ public class WorldMap extends GameMap implements Environment {
                 new ShopMap(
                         new Position(new Coordinates(7,7), new Coordinates(4,1)),
                         NPCType.OLD_MAN,
-                        ItemType.SWORD,
-                        this
+                        ItemType.SWORD
+
                 )
         );
         addEnvironment(
                 new ShopMap(
                         new Position(new Coordinates(5,7), new Coordinates(2,1)),
                         NPCType.MERCHANT,
-                        ItemType.LIFE,
-                        this
+                        ItemType.LIFE
+
                 )
         );
         addEnvironment(
                 new ShopMap(new Position(new Coordinates(6,6), new Coordinates(7,1)),
                         NPCType.MERCHANT,
-                        ItemType.LIFE,
-                        this
+                        ItemType.LIFE
                 )
+        );
+
+
+        //dungeon
+        addEnvironment(
+                new DungeonMap(
+                        new Position(new Coordinates(7,3), new Coordinates(7, 4)),
+                        Level.FIRST,
+                        new Position(new Coordinates(1,2), new Coordinates(7, 9)),
+                        new ArrayList<>(List.of(
+                                new Position(new Coordinates(1, 2), new Coordinates(7, 9)),
+                                new Position(new Coordinates(1, 2), new Coordinates(8, 9))
+                        ))
+                )
+
         );
 
 
@@ -288,8 +302,8 @@ public class WorldMap extends GameMap implements Environment {
     }
 
     @Override
-    public Position getExitPosition() {
-        return null;
+    public List<Position> getExitPosition() {
+        return new ArrayList<>();
     }
 
     @Override
@@ -300,5 +314,10 @@ public class WorldMap extends GameMap implements Environment {
     @Override
     public EnvironmentType getEnvironmentType() {
         return EnvironmentType.OVERWORLD;
+    }
+
+    @Override
+    public Directions getExitDirection() {
+        return null;
     }
 }

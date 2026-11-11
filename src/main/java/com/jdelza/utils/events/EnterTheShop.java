@@ -2,6 +2,7 @@ package com.jdelza.utils.events;
 
 import com.jdelza.model.entities.Position;
 import com.jdelza.model.world.ShopMap;
+import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.EnvironmentType;
 import com.jdelza.utils.enums.ItemType;
 import com.jdelza.utils.enums.NPCType;
@@ -16,13 +17,15 @@ public class EnterTheShop implements EnvironmentSwitcher {
     private NPCType npcType;
     private ItemType itemType;
     private Position playerEntryPosition;
+    private Directions playerDirection;
 
 
-    public EnterTheShop(ShopMap shopMap) {
+    public EnterTheShop(ShopMap shopMap, Directions playerDirection) {
         this.environmentType = shopMap.getEnvironmentType();
         this.npcType = shopMap.getNpcType();
         this.itemType = shopMap.getItemType();
         this.playerEntryPosition = shopMap.getEntryPosition();
+        this.playerDirection = playerDirection;
     }
 
     @Override
@@ -41,4 +44,6 @@ public class EnterTheShop implements EnvironmentSwitcher {
     public Position getPlayerEntryPosition() {
         return playerEntryPosition;
     }
+
+    public Directions getPlayerDirection() {return playerDirection;}
 }

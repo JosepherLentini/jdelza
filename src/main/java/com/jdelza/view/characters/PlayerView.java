@@ -283,6 +283,10 @@ public class PlayerView extends CharacterView {
 
     }
 
+    public void changePlayerDirection(Directions direction){
+        setTileImageView(walkingImage.get(direction)[frame ? 1 : 0]);
+    }
+
 
 
 
