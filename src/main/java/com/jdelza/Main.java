@@ -3,16 +3,25 @@ package com.jdelza;
 
 import com.jdelza.controller.GameController;
 import com.jdelza.controller.StartController;
+import com.jdelza.controller.UserController;
 import com.jdelza.model.GameModel;
+import com.jdelza.model.StartModel;
+import com.jdelza.model.UserModel;
 import com.jdelza.model.characters.Player;
+import com.jdelza.model.game_data.GameDataStorage;
+import com.jdelza.utils.enums.Directions;
 import com.jdelza.view.MainView;
+import com.jdelza.view.UserView;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-
+import java.awt.*;
 
 
 public class Main extends Application{
@@ -27,46 +36,37 @@ public class Main extends Application{
     public void start(Stage stage) throws Exception {
 
 
-        /*
-        MainScreen ms = new MainScreen();
-
-        GameModel model = new GameModel();
-        GameView view = new GameView(model);
-        GameScreen gs = view.getGamescreen();
-        GameController gc = new GameController(model, view);
-
-         ms.getChildren().add(new StartScreen());
-        //StackPane non forza il ridimensionamento del figlio
-        StackPane root = new StackPane(ms);
-
-
-        // Imposta l'allineamento in alto così lo spazio vuoto rimane in basso
-        StackPane.setAlignment(ms, Pos.CENTER);
-        //ms.getChildren().add(overworld);
-
-         */
-
+        //Game data
+        GameDataStorage gameDataStorage = new GameDataStorage();
         Player player = Player.getPlayerInstance();
 
-        GameModel gameModel = new GameModel(player);
+
+        GameModel gameModel = new GameModel(player, gameDataStorage);
+        UserModel userModel = new UserModel(gameDataStorage);
+
+
         MainView main = new MainView(gameModel);
+        //UserView userView = new UserView();
 
         GameController  gameController  = new GameController(gameModel, main.getGameView());
-        StartController startController = new StartController(main.getStartView(), gameController);
+
+        //Initializing userController
+        UserController userController = new UserController(userModel, main.getUserView());
 
 
+        StartModel startModel  = new StartModel(main, gameController);
+        StartController startController = new StartController(main.getStartView(), gameController, startModel);
 
-        /*
-        GameView gameView = new GameView(gameModel);
+        //Observer initialization
+        userModel.addObserver(main.getUserView());
+        userModel.addObserver(main);
 
-        StartController startController = new StartController();
-        GameController gameController = new GameController(gameModel, gameView);
+        main.addObserver(gameController);
 
-        main.getMainScreen().getChildren().add(startController.getStartView().getStartScreen());
-
-         */
 
         StackPane root = main.getMainScreen();
+        root.setStyle( "-fx-background-color: black;");
+
 
         // Prende l'altezza visibile dello schermo principale (escludendo la barra delle applicazioni)
         double bounds = Screen.getPrimary().getVisualBounds().getHeight();
@@ -74,6 +74,7 @@ public class Main extends Application{
 
 
         Scene scene = new Scene(root);
+
         stage.setScene(scene);
         stage.setTitle("Jdelza");
         stage.setMaximized(true);

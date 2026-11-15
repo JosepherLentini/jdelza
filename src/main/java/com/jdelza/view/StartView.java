@@ -3,15 +3,20 @@ package com.jdelza.view;
 import com.jdelza.utils.enums.Screen;
 import com.jdelza.utils.events.ChangeScreen;
 import com.jdelza.view.screen.StartScreen;
+import javafx.animation.TranslateTransition;
+import javafx.scene.image.Image;
+import javafx.util.Duration;
 
 import java.util.Observable;
+import java.util.Observer;
 
-public class StartView extends Observable{
+public class StartView extends Observable implements Observer {
 
-    private StartScreen startScreen;
+    private final StartScreen startScreen;
 
     public StartView() {
         this.startScreen = new StartScreen();
+        
 
     }
 
@@ -22,10 +27,10 @@ public class StartView extends Observable{
     }
 
 
-    public void goToGame(){
-            setChanged();
-            notifyObservers(new ChangeScreen(Screen.GAME));
+
+
+    @Override
+    public void update(Observable o, Object arg) {
 
     }
-
 }

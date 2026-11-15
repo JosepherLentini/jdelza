@@ -85,6 +85,7 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
     public void setLifePoints(double lifePoints) {this.lifePoints = lifePoints;}
     public Enemy setEnemyMapCoordinates(Coordinates enemyMapCoordinates) {this.enemyMapCoordinates = enemyMapCoordinates;return this;}
     public Enemy setEnemyID(String enemyID) {this.enemyID = enemyID;return this;}
+    public Enemy setEnemyID() {this.enemyID = generateID();return this;}
     public void setEnemyDirection(Directions enemyDirection) {this.enemyDirection = enemyDirection;}
     public void setSteps(int steps) {
         this.steps = steps;
@@ -170,6 +171,11 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
     @Override
     public String toString(){
         return "@" + this.enemyType.getName();
+    }
+
+
+    public String generateID(){
+        return getEnemyMapCoordinates().toString() + " | " +getPosition();
     }
 
 

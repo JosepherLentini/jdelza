@@ -146,6 +146,13 @@ public class Zone {
         this.weapons.add(newWeapon);
     }
 
+
+    public int countWalkableCell(){
+        return Arrays.stream(getZone())
+                .flatMap(Arrays::stream)
+                .map(t-> t.isWalkable() ? 1:0).reduce(Integer::sum).get();
+    }
+
     /**
      * This method allow to remove a weapon
      * @param weapon

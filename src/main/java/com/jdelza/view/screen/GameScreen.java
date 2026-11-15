@@ -302,7 +302,7 @@ public void changeZone(Directions direction){
             addPlayerPositionIfInDungeon = 1;
         }
 
-        setZoneChanging(true);
+        //setZoneChanging(true);
 
         //Create traslate transition
         TranslateTransition zoneSwitchTransition = new TranslateTransition();
@@ -382,6 +382,7 @@ public void changeZone(Directions direction){
           if (node instanceof EnemyView){
               EnemyView ew = (EnemyView) node;
 
+              //if(!ew.isDead())ew.changeSprite(ew.getEnemyDirection());
 
               if (ids.contains(ew.getEnemyViewID())){
 
@@ -389,31 +390,19 @@ public void changeZone(Directions direction){
                   //System.out.println(ew);
                   Enemy enemy = enemies.stream().reduce((e,f)-> e.getEnemyID().equals(ew.getEnemyViewID())  ? e : f).get();
 
+                  if (!(ew.getClass() == TektiteView.class))ew.setEnemyDirection(enemy.getEnemyDirection());
+
                   int x = enemy.getEnemyMapCoordinates().getX()*Dimensions.ZONE_COLUMNS.get()+enemy.getPosition().getX();
                   int y = enemy.getEnemyMapCoordinates().getY()*Dimensions.ZONE_ROWS.get()+enemy.getPosition().getY();
 
                   x = ew.getTileWidth()*x;
                   y = ew.getTileHeight()*y;
 
-
-
                   double newX = x-ew.getTranslateX();
                   double newY = y-ew.getTranslateY();
 
-
-
-                  //System.out.println("from: " + ew.getPrevX()+" ,"+ew.getPrevY());
-                  //System.out.println((ew.getTranslateX())+" "+(ew.getTranslateY()));
-                  //System.out.println("to: " + x+" ,"+y);
-
-                  //ew.setTranslateX(x);
-                  //ew.setTranslateY(y);
-
-
                   if (ew.getClass() == TektiteView.class){
                       TektiteView tk = (TektiteView)ew;
-
-
 
                       // 3. Creazione e configurazione della PathTransition
                       TranslateTransition transition = new TranslateTransition();
@@ -428,12 +417,12 @@ public void changeZone(Directions direction){
                       transition.play();
 
 
-
-
-                  }else{
+                  }
+                  else{
                       TranslateTransition transition = new TranslateTransition();
                       transition.setNode(ew);
 
+                      /*
                       if ((int)newX == 0 && newY > 0){
                           ew.setEnemyDirection(Directions.DOWN);
                       }
@@ -447,6 +436,8 @@ public void changeZone(Directions direction){
                           ew.setEnemyDirection(Directions.LEFT);
 
                       }
+
+                       */
 
                       transition.setByX(newX);
                       transition.setByY(newY);
@@ -472,6 +463,7 @@ public void changeZone(Directions direction){
 
 
   }
+
 
   public void addWeapon(Weapon weapon){
 

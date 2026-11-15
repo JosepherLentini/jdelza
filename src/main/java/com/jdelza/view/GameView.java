@@ -14,12 +14,15 @@ import com.jdelza.view.characters.PlayerView;
 import com.jdelza.view.characters.TektiteView;
 import com.jdelza.view.items_objects.ItemView;
 import com.jdelza.view.overworld.Overworld;
+import com.jdelza.view.screen.DungeonScreen;
 import com.jdelza.view.screen.GameScreen;
 import com.jdelza.view.screen.ShopScreen;
 import com.jdelza.view.weapons.SwordView;
 import javafx.animation.AnimationTimer;
+import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.util.*;
@@ -84,31 +87,6 @@ public class GameView extends Observable implements Observer{
 
     //Get methods
     public GameScreen getGamescreen() {return gamescreen;}
-
-    /*
-    public void injuring(Directions direction){
-        gamescreen.getPlayer().setInjuring(true);
-        TranslateTransition transition = new TranslateTransition();
-        transition.setNode(gamescreen.getPlayer());
-
-        //Setting transition duration
-        transition.setDuration(Duration.millis(2000));
-
-        //Start transition
-        transition.play();
-
-        //When transition ends
-        transition.setOnFinished(e->{
-            gamescreen.getPlayer().setTileImageView(gamescreen.getPlayer().getWalkingImage().get(gamescreen.getPlayer().getPlayerDirection())[0]);
-            gamescreen.getPlayer().setInjuring(false);
-
-            setChanged();
-            notifyObservers(new PlayerCollision(false));
-        });
-
-    }
-
-     */
 
     public void injuring(Directions direction){
 
@@ -259,6 +237,89 @@ public class GameView extends Observable implements Observer{
 
     }
 
+    public void changeZone(Directions direction, Pane currentEnvironment){
+
+        int addPlayerPositionIfInDungeon = 0;
+
+        if (currentEnvironment instanceof DungeonScreen){
+            player.setOpacity(0);
+            addPlayerPositionIfInDungeon = 1;
+        }
+
+        //setZoneChanging(true);
+
+        //Create traslate transition
+        TranslateTransition zoneSwitchTransition = new TranslateTransition();
+
+        TranslateTransition playerSwitchTransition = new TranslateTransition();
+
+
+
+        //Add node to transition
+        zoneSwitchTransition.setNode(currentEnvironment);
+        playerSwitchTransition.setNode(player);
+
+        //Combine two transition witch works at the same time
+        ParallelTransition parallel = new ParallelTransition(
+                zoneSwitchTransition,playerSwitchTransition
+        );
+
+        switch (direction) {
+            case UP:
+                //World translation and player movement in tandem with the world
+                zoneSwitchTransition.setToY(currentEnvironment.getTranslateY() + Dimensions.MAP_HEIGHT.get());
+                playerSwitchTransition.setToY((Dimensions.ZONE_ROWS.get() - 1 - addPlayerPositionIfInDungeon) * player.getTileHeight() );
+
+                break;
+
+            case DOWN:
+                //World translation and player movement in tandem with the world
+
+                zoneSwitchTransition.setToY(currentEnvironment.getTranslateY() - Dimensions.MAP_HEIGHT.get());
+                playerSwitchTransition.setToY(  addPlayerPositionIfInDungeon*player.getTileHeight());
+
+
+                break;
+
+            case LEFT:
+                //World translation and player movement in tandem with the world
+                zoneSwitchTransition.setToX(currentEnvironment.getTranslateX() + Dimensions.MAP_WIDTH.get());
+                playerSwitchTransition.setToX((Dimensions.ZONE_COLUMNS.get() - 1 - addPlayerPositionIfInDungeon) * player.getTileWidth() );
+                break;
+
+            case RIGHT:
+                //World translation and player movement in tandem with the world
+                zoneSwitchTransition.setToX(currentEnvironment.getTranslateX() - Dimensions.MAP_WIDTH.get() );
+                playerSwitchTransition.setToX(addPlayerPositionIfInDungeon*player.getTileWidth() );
+
+                break;
+        }
+
+
+
+        //Transition duration
+        zoneSwitchTransition.setDuration(Duration.millis(1000));
+        playerSwitchTransition.setDuration(Duration.millis(1000));
+
+        //Start transition
+        parallel.play();
+
+        //When transition ends
+        parallel.setOnFinished(e-> {
+            //setZoneChanging(false);
+            setChanged();
+            notifyObservers(new ChangeZone(direction, StartEndStatus.END));
+
+            player.setOpacity(100);
+            player.changeSprite(direction);
+
+
+
+        });
+
+
+    }
+
 
 
     @Override
@@ -271,7 +332,7 @@ public class GameView extends Observable implements Observer{
         }
 
         if (arg instanceof ChangeZone cz){
-            gamescreen.changeZone(cz.getDirection(), gamescreen.getCurrentEnvironment());
+            changeZone(cz.getDirection(), gamescreen.getCurrentEnvironment());
         }
 
         else if (arg instanceof EnemyMovement em){
