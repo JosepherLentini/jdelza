@@ -4,6 +4,7 @@ import com.jdelza.model.characters.Enemy;
 import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.entities.Position;
+import com.jdelza.model.game_data.GameDataStorage;
 import com.jdelza.model.weapons.Weapon;
 import com.jdelza.model.world.*;
 import com.jdelza.utils.enums.*;
@@ -22,12 +23,16 @@ public class GameModel extends Observable implements Observer {
     private final Player player;
     private GameMap currentMap;
     private final WorldMap overworld;
+    private final GameDataStorage storage;
 
 
-
-    public GameModel(Player player) throws IOException {
+    public GameModel(Player player, GameDataStorage storage) throws IOException {
         this.player = player;
-        this.overworld = new WorldMap();
+        //this.overworld = new WorldMap();
+        //this.currentMap = overworld;
+        this.storage = storage;
+
+        this.overworld = storage.getSelectedPlayerData().getWorldMap();
         this.currentMap = overworld;
 
 
@@ -127,29 +132,16 @@ public class GameModel extends Observable implements Observer {
      * @param direction next zone
      */
     private void switchZone(Directions direction){
-
+            currentMap.setZoneChanging(true);
             player.changeZone(direction, (Environment) currentMap);
             setChanged();
             //notifyObservers(new PlayerMovement(true, direction));
-            notifyObservers(new ChangeZone(direction));
+            notifyObservers(new ChangeZone(direction, StartEndStatus.START));
     }
 
     public void playerTakeItem(Directions direction){
         Zone currentZone = currentMap.getZone(new Coordinates(player.getPlayerMapPosition().getX(), player.getPlayerMapPosition().getY()));
 
-        /*
-        ItemType itemInTheZone = player.itemInTheZoneCell(currentZone, direction);
-
-        if (itemInTheZone != null){
-            player.takeItem(itemInTheZone);
-
-
-
-            setChanged();
-            notifyObservers(new PlayerTakeItem(itemInTheZone, StartEndStatus.START));
-        }
-
-         */
         ItemType itemInTheZone = currentZone.itemInTheZoneCell(player, direction);
 
         if (itemInTheZone != null){
@@ -168,37 +160,40 @@ public class GameModel extends Observable implements Observer {
      * @param direction direction pressed
      */
     private void playerWalk(Directions direction) {
-        Zone currentZone = currentMap.getZone(player.getPlayerMapPosition());
+
+        if(!currentMap.isZoneChanging()){
+            Zone currentZone = currentMap.getZone(player.getPlayerMapPosition());
 
 
-        Coordinates nextCoordinates = new Coordinates(
-                player.getPosition().getX() + direction.getX(),
-                player.getPosition().getY() + direction.getY()
-        );
+            Coordinates nextCoordinates = new Coordinates(
+                    player.getPosition().getX() + direction.getX(),
+                    player.getPosition().getY() + direction.getY()
+            );
 
-        if (currentZone.getZone()[nextCoordinates.getY()][nextCoordinates.getX()].isWalkable() && !player.isTakingItem()) {
+            if (currentZone.getZone()[nextCoordinates.getY()][nextCoordinates.getX()].isWalkable() && !player.isTakingItem()) {
 
-            boolean collide = player.hasPlayerCollidedWithEnemy(currentMap.getZone(player.getPlayerMapPosition()), direction);
+                boolean collide = player.hasPlayerCollidedWithEnemy(currentMap.getZone(player.getPlayerMapPosition()), direction);
 
-            if (collide) {
-                //Player has collided
-                player.takeDamage(DamageType.LIGHT);
+                if (collide) {
+                    //Player has collided
+                    player.takeDamage(DamageType.LIGHT);
 
-                setChanged();
-                notifyObservers(new PlayerCollision(direction));
-            }
+                    setChanged();
+                    notifyObservers(new PlayerCollision(direction));
+                }
 
                 player.move(direction);
 
                 setChanged();
                 notifyObservers(new PlayerMovement(direction));
 
-        }
+            }
 
-        if (!currentZone.getZone()[nextCoordinates.getY()][nextCoordinates.getX()].isWalkable()){
+            if (!currentZone.getZone()[nextCoordinates.getY()][nextCoordinates.getX()].isWalkable()){
 
-            setChanged();
-            notifyObservers(new WalkMovement(direction));
+                setChanged();
+                notifyObservers(new WalkMovement(direction));
+            }
         }
 
 
@@ -547,6 +542,10 @@ public class GameModel extends Observable implements Observer {
 
         if (arg instanceof PlayerTakeItem pti){
             if(pti.getStatus() == StartEndStatus.END )  player.setTakingItem(false);
+        }
+
+        if(arg instanceof ChangeZone changeZone){
+            currentMap.setZoneChanging(!(changeZone.getStatus() == StartEndStatus.END));
         }
 
 

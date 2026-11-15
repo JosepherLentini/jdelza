@@ -5,15 +5,18 @@ import com.jdelza.model.characters.Enemy;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.view.GameView;
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class GameController{
+public class GameController implements Observer {
 
     private final GameModel gameModel;
-    private final GameView gameView;
+    //private final GameView gameView;
 
     private AnimationTimer gameLoop;
 
@@ -45,19 +48,24 @@ public class GameController{
     /**s
      * GameController contructor
      * @param gameModel
-     * @param gameView
      */
     public GameController(GameModel gameModel, GameView gameView) {
 
         this.gameModel = gameModel;
-        this.gameView = gameView;
 
         //Add a gameview as an observer of the model
         gameModel.addObserver(gameView);
 
-        //Gameview: on key pressed event
+
+
+        //Game view: on key pressed event
         gameView.getGamescreen().setOnKeyPressed(this::handleKeyPressed);
         gameView.getGamescreen().setOnKeyReleased(this::handleKeyReleased);
+
+
+
+
+
 
         //Game loop created by javafx animation timer
         gameLoop = new AnimationTimer() {
@@ -124,6 +132,7 @@ public class GameController{
      * @param now
      */
     public void movePlayer(long now){
+        /*
         if (!gameView.getGamescreen().isPlayerMoving()){
             if (upPressed && now - lastMove >= MOVE_DELAY) {
                 gameModel.movePlayer(Directions.UP);
@@ -141,31 +150,23 @@ public class GameController{
             }
         }
 
-        /*
-        if (upPressed && now - lastAnimation >= ANIMATION_DELAY){
-            gameView.getGamescreen().getPlayer().changeSprite(Directions.UP);
-            gameModel.getPlayer().setPlayerDirection(Directions.UP);
-            lastAnimation = now;
-
-        }
-        else if(downPressed && now - lastAnimation >= ANIMATION_DELAY){
-            gameView.getGamescreen().getPlayer().changeSprite(Directions.DOWN);
-            gameModel.getPlayer().setPlayerDirection(Directions.DOWN);
-            lastAnimation  = now;
-
-        } else if (leftPressed && now - lastAnimation >= ANIMATION_DELAY) {
-            gameView.getGamescreen().getPlayer().changeSprite(Directions.LEFT);
-            gameModel.getPlayer().setPlayerDirection(Directions.LEFT);
-            lastAnimation  = now;
-
-        } else if (rightPressed && now - lastAnimation >= ANIMATION_DELAY) {
-            gameView.getGamescreen().getPlayer().changeSprite(Directions.RIGHT);
-            gameModel.getPlayer().setPlayerDirection(Directions.RIGHT);
-            lastAnimation  = now;
-
-        }
-
          */
+
+        if (upPressed && now - lastMove >= MOVE_DELAY) {
+            gameModel.movePlayer(Directions.UP);
+            lastMove = now;
+        } else if (downPressed && now - lastMove >= MOVE_DELAY) {
+            gameModel.movePlayer(Directions.DOWN);
+            lastMove = now;
+
+        } else if (leftPressed && now - lastMove >= MOVE_DELAY) {
+            gameModel.movePlayer(Directions.LEFT);
+            lastMove = now;
+        } else if (rightPressed && now - lastMove >= MOVE_DELAY) {
+            gameModel.movePlayer(Directions.RIGHT);
+            lastMove = now;
+        }
+
 
 
     }
@@ -178,7 +179,10 @@ public class GameController{
 
 
     public void update(long now){
-        if (!gameView.getGamescreen().isZoneChanging() && !gameModel.getPlayer().isAttacking()){movePlayer(now);}
+
+        //if (!gameView.getGamescreen().isZoneChanging() && !gameModel.getPlayer().isAttacking()){movePlayer(now);}
+
+        if ( !gameModel.getCurrentMap().isZoneChanging() && !gameModel.getPlayer().isAttacking()){movePlayer(now); }
 
         playerAttack();
 
@@ -186,7 +190,7 @@ public class GameController{
             gameModel.enemyActions();
 
             enemyAnimation = now;
-            gameView.getGamescreen().changeEnemyImage();
+
         }
 
         if (now - weaponAnimation >= WEAPOM_DELAY){
@@ -197,7 +201,7 @@ public class GameController{
 
         if (gameModel.getPlayer().isAttacking()){
             if (now - playerAttackAnimation >= PLAYER_ATTACK_DELAY){
-                //gameView.playerViewAttack();
+
                 gameModel.playerAttack();
                 playerAttackAnimation = now;
             }
@@ -208,7 +212,7 @@ public class GameController{
         if(gameModel.getPlayer().isWeaponThrowing()){
 
             if (now - swordThrowingAnimation >= SWORD_THROWING_DELAY){
-                //gameView.playerViewAttack();
+
                 gameModel.throwPlayerWeapon();
                 swordThrowingAnimation = now;
             }
@@ -219,4 +223,13 @@ public class GameController{
     }
 
 
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof String stringEvent){
+            switch (stringEvent) {
+                case "START_GAME" -> startGame();
+            }
+
+            }
+    }
 }

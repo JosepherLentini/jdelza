@@ -113,6 +113,7 @@ public class Player extends GameCharacter implements Movable, Damageable {
     //public Position getOverworldReturnPoint() {return overworldReturnPoint;}
     public boolean isTakingItem() {return takingItem;}
 
+
     //Set methods
     public void setLifes(double lifes) {this.lifes = lifes;}
     public void setNumberOfRupies(int numberOfRupies) {this.numberOfRupies = numberOfRupies;}

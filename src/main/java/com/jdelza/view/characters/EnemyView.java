@@ -4,6 +4,7 @@ import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.view.overworld.Overworld;
 import com.jdelza.view.screen.GameScreen;
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,6 +31,9 @@ public abstract class EnemyView extends CharacterView{
     private boolean dead = false;
 
 
+    private AnimationTimer movementAnimation;
+
+
 
     public EnemyView(String enemyViewID) {
 
@@ -49,7 +53,25 @@ public abstract class EnemyView extends CharacterView{
 
          */
 
+        this.movementAnimation = new AnimationTimer() {
 
+            long current = 0;
+            final long period = 200_000_000;
+            int imageIndex = 1;
+
+            @Override
+            public void handle(long l) {
+                if (l - current > period){
+
+                    changeSprite(enemyDirection);
+                    current = l;
+
+                }
+            }
+
+        };
+
+        movementAnimation.start();
         this.toFront();
     }
 
@@ -77,6 +99,7 @@ public abstract class EnemyView extends CharacterView{
     }
 
     public void enemyDeath(Overworld ow){
+        movementAnimation.stop();
         Timer timer = new Timer();
         TimerTask collisionTask = new TimerTask() {
 
@@ -104,6 +127,11 @@ public abstract class EnemyView extends CharacterView{
 
 
         timer.scheduleAtFixedRate(collisionTask, 0, 100);
+    }
+
+
+    public void enemyMovementAnimation(){
+
     }
 
     @Override
