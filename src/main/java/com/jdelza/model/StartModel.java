@@ -6,14 +6,12 @@ import com.jdelza.view.MainView;
 import java.util.Observable;
 import java.util.Observer;
 
-public class StartModel extends Observable implements Observer {
+public class StartModel extends Observable  {
 
     private boolean storyScreen = false;
 
 
     public StartModel(MainView mainView, GameController gameController) {
-
-
         addObserver(mainView);
         addObserver(gameController);
 
@@ -39,12 +37,11 @@ public class StartModel extends Observable implements Observer {
     private void goToStoryScene(){
         setChanged();
         notifyObservers("STORY");
-        storyScreen = true;
+
     }
 
 
-    @Override
-    public void update(Observable o, Object arg) {
-
+    public void setStoryScreen(boolean storyScreen) {
+        this.storyScreen = storyScreen;
     }
 }

@@ -66,6 +66,9 @@ public class MainView extends Observable implements Observer{
 
             //System.out.println("finito");
             startView.getStartScreen().goToStorySection();
+
+            setChanged();
+            notifyObservers("STORY");
         }
 
         );

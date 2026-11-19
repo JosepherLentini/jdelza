@@ -6,7 +6,10 @@ import com.jdelza.view.StartView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class StartController {
+import java.util.Observable;
+import java.util.Observer;
+
+public class StartController implements Observer {
     private StartView startView;
     private GameController gameController;
 
@@ -45,5 +48,12 @@ public class StartController {
     }
 
 
-
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof String stringEvent){
+         switch (stringEvent){
+             case "STORY" -> startModel.setStoryScreen(true);
+         }
+        }
+    }
 }

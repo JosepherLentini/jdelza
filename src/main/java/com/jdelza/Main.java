@@ -56,6 +56,7 @@ public class Main extends Application{
 
         StartModel startModel  = new StartModel(main, gameController);
         StartController startController = new StartController(main.getStartView(), gameController, startModel);
+        main.addObserver(startController);
 
         //Observer initialization
         userModel.addObserver(main.getUserView());

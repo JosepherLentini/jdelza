@@ -6,83 +6,36 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
-
+/**
+ * This class contains a user’s details on the user registration screen
+ */
 public class UserLine extends HBox {
 
+    private NameBar nameBar;
+
+    private LifeBox lifeBox;
+    private PointsBox pointsBox;
 
     public UserLine() {
 
+        //Initialize class status
+        this.nameBar = new NameBar();
+        this.lifeBox = new LifeBox();
+        this.pointsBox = new PointsBox();
 
+        //Initialize current class dimensions
         this.setPrefSize(Dimensions.RENDER_SCREEN_WIDTH.get()-80, 200); //704
         this.setMaxSize(Dimensions.RENDER_SCREEN_WIDTH.get()-80, 200);
         this.setMinSize(Dimensions.RENDER_SCREEN_WIDTH.get()-80, 200);
 
-
-        //StackPane selectLine = new StackPane();
-        StackPane nameLine = new StackPane();
+        //Creation of the node that will contain the user image
         StackPane imageLine = new StackPane();
-        StackPane lifeLine = new StackPane();
-        StackPane pointsLine = new StackPane();
 
-        /*
-        selectLine.setPrefSize(80, 200); //704
-        selectLine.setMaxSize(80, 200);
-        selectLine.setMinSize(80, 200);
-
-         */
-
-        imageLine.setPrefSize(120, 200); //704
+        //ImageLine dimensions
+        imageLine.setPrefSize(120, 200);
         imageLine.setMaxSize(120, 200);
         imageLine.setMinSize(120, 200);
 
-        nameLine.setPrefSize(552, 200); //704
-        nameLine.setMaxSize(552, 200);
-        nameLine.setMinSize(552, 200);
-
-
-        lifeLine.setPrefSize(200, 200); //704
-        lifeLine.setMaxSize(200, 200);
-        lifeLine.setMinSize(200, 200);
-
-
-        pointsLine.setPrefSize(200, 200); //704
-        pointsLine.setMaxSize(200, 200);
-        pointsLine.setMinSize(200, 200);
-
-
-        ImageView nameLineImageView = new ImageView();
-        nameLineImageView.setImage(new Image("com/jdelza/view/assets/user_section/REGISTER_YOUR_NAME.png"));
-        nameLineImageView.setFitWidth(552);
-        nameLineImageView.setFitHeight(100);
-        nameLine.getChildren().add(nameLineImageView);
-
-        /*
-        this.setStyle(
-                "-fx-background-color: brown;"
-        );
-
-        /*
-        selectLine.setStyle(
-                "-fx-background-color: black;"
-        );
-
-
-        imageLine.setStyle(
-                "-fx-background-color: grey;"
-        );
-        nameLine.setStyle(
-                "-fx-background-color: purple;"
-        );
-        pointsLine.setStyle(
-                "-fx-background-color: blue;"
-        );
-        lifeLine.setStyle(
-                "-fx-background-color: red;"
-        );
-
-          */
-
-        //selectLine.getChildren().add(selectImage);
 
         //imageLIne imageView
         ImageView userImage = new ImageView(new Image("com/jdelza/view/assets/user_section/USER.png"));
@@ -90,8 +43,31 @@ public class UserLine extends HBox {
         userImage.setFitWidth(80);
         imageLine.getChildren().add(userImage);
 
+        //Add children nodes to the class
+        this.getChildren().addAll(imageLine, nameBar, pointsBox, lifeBox);
 
-
-        this.getChildren().addAll(imageLine, nameLine, pointsLine, lifeLine);
     }
+
+
+
+    public NameBar getNameBar() {
+        return nameBar;
+    }
+
+
+    /**
+     * This function is called when the user has registered,
+     * at which point information about their scores and lives will be displayed.
+     */
+    public void initializeLifeAndPoints(){
+
+        //Set points visible
+        this.pointsBox.addPointsLine();
+
+        //Set life visible
+        this.lifeBox.addLifeLine();
+    }
+
+
+
 }
