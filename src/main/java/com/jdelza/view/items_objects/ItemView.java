@@ -17,7 +17,7 @@ public class ItemView extends Pane {
         switch (itemType){
             case SWORD -> imagePath = "com/jdelza/view/assets/items_objects/SWORD.png";
             case RUPEE -> imagePath = "com/jdelza/view/assets/items_objects/rupie/RUPIA_BLUE.png";
-            case LIFE -> imagePath = "com/jdelza/view/assets/items_objects/LIFE.png";
+            case LIFE ->  imagePath = "com/jdelza/view/assets/items_objects/LIFE.png";
         }
 
         this.setMinSize(Dimensions.TILE_WIDTH.get(), Dimensions.TILE_HEIGT.get());

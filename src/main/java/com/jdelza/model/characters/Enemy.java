@@ -35,6 +35,9 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
     //Action settings
     protected Action enemyAction;
 
+    //Rupies
+    protected int amountOfRupies;
+
 
     /**
      * Constructor
@@ -47,11 +50,10 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
         super(enemyZonePosition);
         this.lifePoints = enemyType.getLifePoints();
         this.damageType = enemyType.getCollisionDamage();
-        //this.weapon = weapon;
         this.color = color;
         this.enemyType = enemyType;
-
         this.hasWeapon = enemyType == EnemyType.TEKTITE;
+        this.amountOfRupies = generateRupies(this.enemyType);
 
         //Initialize new random direction
         chooseAndSetDirection();
@@ -80,6 +82,7 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
         return enemyAction;
     }
     public boolean hasWeapon() {return hasWeapon;}
+    public int getAmountOfRupies() {return amountOfRupies;}
 
     //Set methods
     public void setLifePoints(double lifePoints) {this.lifePoints = lifePoints;}
@@ -97,6 +100,8 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
     public void setColor(GameColor color) {
         this.color = color;
     }
+
+
 
     //Abstract methods
     public abstract boolean hasEnemyCollidedWithEnemy(Player player);
@@ -157,15 +162,23 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
      * @return has enemy collided?
      */
     public boolean collisionWithPlayerWeapon(Player player){
-        //is enemy position equals to player position?ù
-
+        //is enemy position equals to player position?
         return player.getPlayerWeapon() == null || getPosition().equals(player.getPlayerWeapon().getPosition());
+    }
+
+
+    private int generateRupies(EnemyType enemyType){
+        switch (enemyType){
+            case OCTOROK -> {return 1;}
+            case TEKTITE -> {return 2;}
+            case MOLBLIN -> {return 3;}
+            default -> {return 0;}
+        }
     }
 
     @Override
     public void takeDamage(DamageType damage){
         setLifePoints(getLifePoints() - damage.getDamage());
-
     }
 
     @Override
@@ -175,7 +188,7 @@ public abstract class Enemy extends GameCharacter implements Movable, Damageable
 
 
     public String generateID(){
-        return getEnemyMapCoordinates().toString() + " | " +getPosition();
+        return getEnemyMapCoordinates().toString() + " | " + getPosition();
     }
 
 

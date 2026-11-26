@@ -1,21 +1,22 @@
 package com.jdelza.utils.events;
 
 import com.jdelza.model.entities.Position;
+import com.jdelza.model.world.WorldMap;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.EnvironmentType;
-import com.jdelza.utils.enums.ItemType;
-import com.jdelza.utils.enums.NPCType;
-import com.jdelza.utils.interfaces.EnvironmentSwitcher;
 
-public class EnterOverworld implements EnvironmentSwitcher {
+
+public class EnterOverworld extends EnterEnvironment {
 
     private EnvironmentType environmentType;
     private Position playerEntryPosition;
-    private Directions playerDirection;
 
-    public EnterOverworld(Position playerEntryPosition, Directions playerDirection) {
-        this.playerEntryPosition = playerEntryPosition;
-        this.playerDirection = playerDirection;
+
+
+    public EnterOverworld(WorldMap overworld, Directions playerDirection) {
+        super(overworld, playerDirection);
+        this.playerEntryPosition = overworld.getEntryPosition();
+
         this.environmentType = EnvironmentType.OVERWORLD;
     }
 
@@ -28,5 +29,5 @@ public class EnterOverworld implements EnvironmentSwitcher {
         return playerEntryPosition;
     }
 
-    public Directions getPlayerDirection() {return playerDirection;}
+
 }

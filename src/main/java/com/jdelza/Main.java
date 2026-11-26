@@ -58,11 +58,19 @@ public class Main extends Application{
         StartController startController = new StartController(main.getStartView(), gameController, startModel);
         main.addObserver(startController);
 
-        //Observer initialization
-        userModel.addObserver(main.getUserView());
-        userModel.addObserver(main);
 
-        main.addObserver(gameController);
+
+        //OBSERVERS INITIALIZATION
+
+            //MainView observers
+            main.addObserver(gameController);
+
+            //UserModel observers
+            userModel.addObserver(main.getUserView());
+            userModel.addObserver(main);
+
+            //GameView observers
+            main.getGameView().addObserver(gameController);
 
 
         StackPane root = main.getMainScreen();

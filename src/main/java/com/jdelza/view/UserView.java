@@ -7,13 +7,15 @@ import com.jdelza.view.screen.UserScreen;
 import java.util.Observable;
 import java.util.Observer;
 
-
+/**
+ * This class handles all changes to the userscreen
+ */
 public class UserView implements Observer {
 
     private final UserScreen userScreen;
 
-    public UserView() {
 
+    public UserView() {
         this.userScreen = new UserScreen();
     }
 
@@ -22,8 +24,16 @@ public class UserView implements Observer {
         return userScreen;
     }
 
+    public void saveNewPlayerName(String playerName, int playerIndex){
+        userScreen.getUserRegistrationScreen().resetTypedName();
+        userScreen.getUserSelect().addNameToSelectedUSer(playerName, playerIndex);
+        userScreen.getUserSelect().getUsersLine().get(playerIndex-1).initializeLifeAndPoints();
+        userScreen.goToSelectScreen();
+    }
+
     @Override
     public void update(Observable o, Object arg) {
+
         if (arg instanceof Integer selected){
             this.getUserScreen().getUserSelect().getSelectionBar().selectUser(selected);
             this.getUserScreen().getUserSelect().setFocusTraversable(true);
@@ -37,15 +47,12 @@ public class UserView implements Observer {
 
 
         if (arg instanceof String str){
-
             if(str.equals("REGISTER")){
                 this.userScreen.goToUserRegistrationScreen();
             }
 
 
-
             if (str.equals("CANCEL")){
-
                 this.userScreen.getUserRegistrationScreen().cancelLastChar();
             }
 
@@ -55,10 +62,8 @@ public class UserView implements Observer {
 
 
         if(arg instanceof SaveNewPlayerName save){
-            userScreen.getUserRegistrationScreen().resetTypedName();
-            userScreen.getUserSelect().addNameToSelectedUSer(save.getPlayerName(), save.getSelectedUser());
-            userScreen.getUserSelect().getUsersLine().get(save.getSelectedUser()-1).initializeLifeAndPoints();
-            userScreen.goToSelectScreen();
+
+            saveNewPlayerName(save.getPlayerName(), save.getSelectedUser());
 
         }
 

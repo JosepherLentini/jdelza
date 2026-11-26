@@ -28,19 +28,6 @@ public class DungeonScreen extends Pane implements EnvironmentSwitcher {
 
         drawDungeon(dungeonLevel);
 
-        /*
-        ImageView im = new ImageView(new Image("file:///C:/Users/Giuseppe Lentini/OneDrive/Immagini/Zelda/Shop.png"));
-
-        im.setFitHeight(altezzaMappa);
-        im.setFitWidth(larghezzaMappa);
-
-        this.getChildren().add(im);
-
-         */
-
-
-
-
     }
 
 

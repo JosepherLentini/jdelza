@@ -3,6 +3,8 @@ package com.jdelza.view.overworld;
 
 import com.jdelza.model.entities.Position;
 import com.jdelza.utils.enums.Dimensions;
+import com.jdelza.utils.enums.ItemType;
+import com.jdelza.view.items_objects.ItemView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
@@ -61,6 +63,8 @@ public class Overworld extends Pane {
         this.setTranslateX(0);
         this.setTranslateY(0);
     }
+
+
 
 
 }

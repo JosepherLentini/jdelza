@@ -5,5 +5,5 @@ import com.jdelza.utils.enums.DamageType;
 
 public interface Damageable {
     void takeDamage(DamageType damageType);
-    Coordinates getPosition();
+    //Coordinates getPosition();
 }

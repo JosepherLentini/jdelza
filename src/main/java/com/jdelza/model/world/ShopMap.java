@@ -2,14 +2,19 @@ package com.jdelza.model.world;
 
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.entities.Position;
+import com.jdelza.model.items.Item;
+import com.jdelza.model.items.Life;
+import com.jdelza.model.items.Sword;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.EnvironmentType;
 import com.jdelza.utils.enums.ItemType;
 import com.jdelza.utils.enums.NPCType;
+import com.jdelza.utils.interfaces.Buyable;
 import com.jdelza.utils.interfaces.Environment;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -36,12 +41,20 @@ public class ShopMap extends GameMap implements Environment {
     //Exit direction
     private final Directions exitDirection = Directions.DOWN;
 
+    //Cost
+    private int cost;
 
-    public ShopMap(Position shopMapPosition, NPCType npc, ItemType item) {
+
+    public ShopMap(Position shopMapPosition, NPCType npc, Item item) {
 
         this.shopMapPosition = shopMapPosition;
         this.npcType = npc;
-        this.itemType = item;
+        this.itemType = item.getItemType();
+
+        if (item instanceof Buyable buyable){
+            this.cost = buyable.getCost();
+        }
+
 
         //exit coordinates
         this.entryExitPosition = new Position(new Coordinates(0,0), new Coordinates(7,10));
@@ -62,9 +75,7 @@ public class ShopMap extends GameMap implements Environment {
         ));
 
 
-        //Place the item into a cell
-        getMap()[0][0].getTile(new Coordinates(7,5)).setItemType(itemType);
-        getMap()[0][0].getTile(new Coordinates(8,5)).setItemType(itemType);
+        addItemIntoTheShop(itemType);
 
         setLogicMap();
     }
@@ -110,14 +121,48 @@ public class ShopMap extends GameMap implements Environment {
     public NPCType getNpcType() {return npcType;}
     public ItemType getItemType() {
 
-        return getMap()[0][0].getTile(new Coordinates(7,5)).getItemType();
+        if (getMap()[0][0].getTile(new Coordinates(7,5)).getItem() != null){
+            return getMap()[0][0].getTile(new Coordinates(7,5)).getItem().getItemType();
+        }
+        return null;
 
     }
+    public int getCost() {return cost;}
 
     //Set methods
     public void setEntryExitPosition(Position entryExitPosition) {this.entryExitPosition = entryExitPosition;}
     public void setNpcType(NPCType npcType) {this.npcType = npcType;}
     public void setItemType(ItemType itemType) {this.itemType = itemType;}
+
+
+    public void removeItem(){
+        Arrays.stream(getMap()[0][0].getZone()).flatMap(Arrays::stream).forEach(tile -> tile.setItem(null));
+    }
+
+    public void addItemIntoTheShop(ItemType itemType){
+
+        Position leftitemPosition = new Position(
+                new Coordinates(0,0),
+                new Coordinates(7,5)
+        );
+
+        Position rightItemPosition = new Position(
+                new Coordinates(0,0),
+                new Coordinates(8,5)
+        );
+
+        switch (itemType){
+            case SWORD -> {
+                getMap()[0][0].getTile(new Coordinates(7,5)).setItem(new Sword(leftitemPosition));
+                getMap()[0][0].getTile(new Coordinates(8,5)).setItem(new Sword(rightItemPosition));
+            }
+            case LIFE -> {
+                getMap()[0][0].getTile(new Coordinates(7,5)).setItem(new Life(leftitemPosition));
+                getMap()[0][0].getTile(new Coordinates(8,5)).setItem(new Life(rightItemPosition));
+            }
+
+        }
+    }
 
     @Override
     public Position getEntryPosition() {

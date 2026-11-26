@@ -6,6 +6,7 @@ package com.jdelza.model.entities;
 public abstract class Entity {
     private Coordinates position;
 
+
     public Entity(Coordinates position) {
         this.position = position;
     }

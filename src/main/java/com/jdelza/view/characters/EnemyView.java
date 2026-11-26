@@ -130,9 +130,6 @@ public abstract class EnemyView extends CharacterView{
     }
 
 
-    public void enemyMovementAnimation(){
-
-    }
 
     @Override
     public String toString(){
