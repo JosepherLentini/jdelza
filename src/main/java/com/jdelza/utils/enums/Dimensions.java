@@ -7,9 +7,12 @@ public enum Dimensions {
     MAP_COLUMNS(16),
     ZONE_ROWS(11),
     ZONE_COLUMNS(16),
-    LOGICAL_TILE_SIZE(16),
-    LOGICAL_SCREEN_WIDTH(256),
-    LOGICAL_SCREEN_HEIGHT(176),
+
+    SHOP_ROWS(1),
+    SHOP_COLUMNS(1),
+
+    DUNGEON_1_ROWS(3),
+    DUNGEON_1_COLUMNS(3),
 
     // 2. RENDERING CONSTANTS (Used ONLY by the View)
     SCALE(4),
@@ -22,7 +25,14 @@ public enum Dimensions {
 
     //3. Tile sizes
     TILE_WIDTH(72),
-    TILE_HEIGT(45);
+    TILE_HEIGT(45),
+
+
+    //Status dimensions
+    STATUS_BAR_HEIGT(208),
+    STATUS_MAP_HEIGT(168),
+    STATUS_MAP_WIDTH(308);
+
 
 
     private final int value;

@@ -5,6 +5,8 @@ import com.jdelza.model.enemies.Octorock;
 import com.jdelza.model.enemies.Tektite;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.entities.Position;
+import com.jdelza.model.items.Life;
+import com.jdelza.model.items.Sword;
 import com.jdelza.utils.enums.*;
 import com.jdelza.utils.interfaces.Environment;
 
@@ -90,23 +92,27 @@ public class WorldMap extends GameMap implements Environment {
                 new ShopMap(
                         new Position(new Coordinates(7,7), new Coordinates(4,1)),
                         NPCType.OLD_MAN,
-                        ItemType.SWORD
+                        new Sword(new Position(new Coordinates(0,0), new Coordinates(7,5))
 
-                )
+
+                ))
         );
+
         addEnvironment(
                 new ShopMap(
                         new Position(new Coordinates(5,7), new Coordinates(2,1)),
                         NPCType.MERCHANT,
-                        ItemType.LIFE
+                        new Life(new Position(new Coordinates(0,0), new Coordinates(7,5))
 
-                )
+                ))
         );
+
+
         addEnvironment(
                 new ShopMap(new Position(new Coordinates(6,6), new Coordinates(7,1)),
                         NPCType.MERCHANT,
-                        ItemType.LIFE
-                )
+                        new Life(new Position(new Coordinates(0,0), new Coordinates(7,5))
+                ))
         );
 
 

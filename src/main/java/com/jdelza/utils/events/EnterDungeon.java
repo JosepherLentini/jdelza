@@ -5,18 +5,18 @@ import com.jdelza.model.world.DungeonMap;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.EnvironmentType;
 import com.jdelza.utils.enums.Level;
-import com.jdelza.utils.interfaces.EnvironmentSwitcher;
 
-public class EnterDungeon implements EnvironmentSwitcher {
+
+public class EnterDungeon extends EnterEnvironment {
 
     private Level dungeonLevel;
     private Position entryPosition;
-    private Directions playerDirection;
 
     public EnterDungeon(DungeonMap dungeon, Directions playerDirection) {
+        super(dungeon, playerDirection);
         this.dungeonLevel = dungeon.getDungeonLevel();
         this.entryPosition = dungeon.getEntryPosition();
-        this.playerDirection = playerDirection;
+
     }
 
     public Level getDungeonLevel() {
@@ -32,7 +32,5 @@ public class EnterDungeon implements EnvironmentSwitcher {
         return EnvironmentType.DUNGEON;
     }
 
-    public Directions getPlayerDirection() {
-        return playerDirection;
-    }
+
 }

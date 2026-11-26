@@ -5,57 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea1cf717-d1a5-4c4e-b4fe-dc6545168066" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_-.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_..png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_8.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_9.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_A.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_B.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_C.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_D.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_E.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_F.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_G.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_H.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_I.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_J.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_K.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_L.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_M.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_N.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_O.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_P.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_Q.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_R.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_S.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_T.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_U.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_V.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_W.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_X.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_Y.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/assets/user_section/alphabet_font/CHAR_Z.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/StartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/StartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/StartModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/StartModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/UserModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/UserModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/game_data/PlayerInitializationData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/game_data/PlayerInitializationData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/MainView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/MainView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/GameModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/GameModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Enemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/characters/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enemies/Octorock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enemies/Octorock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enemies/Tektite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/enemies/Tektite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/entities/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/entities/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Bomb.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Life.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Rupie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/items/Rupie.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/GameMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/GameMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/ShopMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/ShopMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/WorldMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/WorldMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Zone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/model/world/Zone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/enums/Dimensions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/enums/Dimensions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/ChangeZone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/ChangeZone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/EnemyDeath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/EnemyDeath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/EnterDungeon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/EnterDungeon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/EnterOverworld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/EnterOverworld.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/EnterTheShop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/EnterTheShop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/PlayerCollision.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/PlayerTakeDamage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/PlayerTakeItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/events/PlayerTakeItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/interfaces/Damageable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/interfaces/Damageable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/interfaces/Storable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/utils/interfaces/Storable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/GameView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/GameView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/UserView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/UserView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/UserScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/user/SelectionBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/user/SelectionBar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/user/UserLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/user/UserLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/user/UserSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/user/UserSelect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/EnemyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/EnemyView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/PlayerView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/characters/PlayerView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/items_objects/ItemView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/items_objects/ItemView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/Overworld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/overworld/Overworld.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/DungeonScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/DungeonScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/GameScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/GameScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/ShopScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jdelza/view/screen/ShopScreen.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,8 +50,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -94,9 +79,9 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "feature/user",
+    "git-widget-placeholder": "feature/game-status-bar",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Giuseppe Lentini/Documents/Progetti universitari Java/jdelza/src/main/java/com/jdelza/view/assets/items_objects/hearth",
+    "last_opened_file_path": "C:/Users/Giuseppe Lentini/Documents/Progetti universitari Java/jdelza/src/main/java/com/jdelza/view/assets/status_bar_assets",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
@@ -106,13 +91,14 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\status_bar_assets" />
+      <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\items_objects" />
       <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\items_objects\hearth" />
       <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\user_section" />
       <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\player" />
-      <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\start_data" />
-      <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\items_objects" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\status_bar_assets" />
       <recent name="C:\Users\Giuseppe Lentini\Documents\Progetti universitari Java\jdelza\src\main\java\com\jdelza\view\assets\user_section" />
     </key>
   </component>

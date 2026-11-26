@@ -8,7 +8,6 @@ import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.EnemyType;
 import com.jdelza.utils.enums.GameColor;
-import com.jdelza.model.weapons.Weapon;
 import com.jdelza.utils.interfaces.Movable;
 
 import java.util.Random;

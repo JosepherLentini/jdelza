@@ -5,7 +5,6 @@ import com.jdelza.model.characters.Player;
 import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.world.Zone;
 import com.jdelza.utils.enums.*;
-import com.jdelza.model.weapons.Weapon;
 
 import java.util.Random;
 

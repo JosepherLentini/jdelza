@@ -7,9 +7,6 @@ import com.jdelza.model.items.Item;
 import com.jdelza.model.weapons.Weapon;
 import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.Directions;
-import com.jdelza.utils.enums.ItemType;
-import com.jdelza.utils.interfaces.Environment;
-import javafx.scene.control.skin.TextInputControlSkin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,9 +24,6 @@ public class Zone {
 
     //Zone position
     private Coordinates zoneMapPosition;        //Zone map coordinates
-
-    //Environments
-    //private List<Environment> environments;
 
 
     /**
@@ -83,7 +77,7 @@ public class Zone {
      */
     public void addEnemy(Enemy e){this.enemies.add(e);}
 
-    public ItemType itemInTheZoneCell(Player player, Directions direction) {
+    public Item itemInTheShopCell(Player player, Directions direction) {
 
         int newX = player.getPosition().getX() + direction.getX();
         int newY = player.getPosition().getY() + direction.getY();
@@ -91,30 +85,43 @@ public class Zone {
         boolean isInBound = newX >= 0 && newX < Dimensions.ZONE_COLUMNS.get() && newY >= 0 && newY < Dimensions.ZONE_ROWS.get();
 
         if (isInBound) {
-
-
-
-            return this.getTile(new Coordinates(newX, newY)).getItemType();
+            return this.getTile(new Coordinates(newX, newY)).getItem();
         }
 
         return null;
 
     }
 
-    public void removeItem(Player player, Directions direction){
-        int newX = player.getPosition().getX() + direction.getX();
-        int newY = player.getPosition().getY() + direction.getY();
+    public Item itemInTheSamePlayerCell(Player player){
 
-        boolean isInBound = newX >= 0 && newX < Dimensions.ZONE_COLUMNS.get() && newY >= 0 && newY < Dimensions.ZONE_ROWS.get();
+        boolean isInBound = player.getPosition().getX() >= 0 && player.getPosition().getX() < Dimensions.ZONE_COLUMNS.get() &&
+                player.getPosition().getY() >= 0 && player.getPosition().getY() < Dimensions.ZONE_ROWS.get();
+
+        if (isInBound) {
+            return this.getTile(new Coordinates(player.getPosition().getX(), player.getPosition().getY())).getItem();
+        }
+
+        return null;
+    }
+
+    public void removeItem(Player player){
+
+        boolean isInBound = player.getPosition().getX() >= 0 && player.getPosition().getX() < Dimensions.ZONE_COLUMNS.get() &&
+                player.getPosition().getY() >= 0 && player.getPosition().getY() < Dimensions.ZONE_ROWS.get();
 
 
         if (isInBound) {
 
-            ItemType itemInTheNextCell = this.getTile(new Coordinates(newX, newY)).getItemType();
+            Item itemInTheNextCell = this.getTile(new Coordinates(player.getPosition().getX(),player.getPosition().getY())).getItem();
 
             Arrays.stream(this.getZone()).flatMap(Arrays::stream).forEach(t-> {
-                if(itemInTheNextCell  != null && t.getItemType() == itemInTheNextCell){
-                    t.setItemType(null);
+                if(itemInTheNextCell != null && t.getItem() != null){
+
+                    if(t.getItem().equals(itemInTheNextCell)){
+
+                        t.setItem(null);
+                    }
+
                 }
             });
 
@@ -164,9 +171,7 @@ public class Zone {
 
     @Override
     public String toString(){
-
         return "Zone: "+ this.zoneMapPosition.getX() + "  " + this.zoneMapPosition.getY();
-
     }
 
 

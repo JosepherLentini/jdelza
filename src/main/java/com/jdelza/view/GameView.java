@@ -1,13 +1,13 @@
 package com.jdelza.view;
 
 import com.jdelza.model.GameModel;
+import com.jdelza.model.entities.Coordinates;
 import com.jdelza.model.weapons.Weapon;
 import com.jdelza.utils.enums.Dimensions;
 import com.jdelza.utils.enums.Directions;
 import com.jdelza.utils.enums.ItemType;
 import com.jdelza.utils.enums.StartEndStatus;
 import com.jdelza.utils.events.*;
-import com.jdelza.utils.interfaces.EnvironmentSwitcher;
 import com.jdelza.view.characters.EnemyView;
 import com.jdelza.view.characters.OctorockView;
 import com.jdelza.view.characters.PlayerView;
@@ -17,11 +17,9 @@ import com.jdelza.view.overworld.Overworld;
 import com.jdelza.view.screen.DungeonScreen;
 import com.jdelza.view.screen.GameScreen;
 import com.jdelza.view.screen.ShopScreen;
-import com.jdelza.view.weapons.SwordView;
 import javafx.animation.AnimationTimer;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
@@ -50,7 +48,7 @@ public class GameView extends Observable implements Observer{
         //gamescreen.addEnemy(new EnemyView(new Coordinates(7,7),new Coordinates(5,5)));
 
         this.gameModel = gameModel;
-        addObserver(gameModel);
+
 
         gamescreen.getPlayer().setTranslateX(gamescreen.getPlayer().getTileWidth()  * gameModel.getPlayer().getPosition().getX());
         gamescreen.getPlayer().setTranslateY(gamescreen.getPlayer().getTileHeight() * gameModel.getPlayer().getPosition().getY());
@@ -88,7 +86,7 @@ public class GameView extends Observable implements Observer{
     //Get methods
     public GameScreen getGamescreen() {return gamescreen;}
 
-    public void injuring(Directions direction){
+    public void injuring(){
 
         gamescreen.getPlayer().setInjuring(true);
         AnimationTimer injureAnimation = new AnimationTimer() {
@@ -111,7 +109,7 @@ public class GameView extends Observable implements Observer{
                     gamescreen.getPlayer().setInjuring(false);
 
                     setChanged();
-                    notifyObservers(new PlayerCollision(false));
+                    notifyObservers(new PlayerTakeDamage(false));
 
                 } else if(l - current > period){
 
@@ -143,7 +141,6 @@ public class GameView extends Observable implements Observer{
             @Override
             public void handle(long l) {
 
-
                 if (count == 0){
                     if(l - current > period){
                         changeHandle();
@@ -151,7 +148,7 @@ public class GameView extends Observable implements Observer{
                         current = l;
 
                         if (throwing && !gamescreen.getOverworldWrapper().getChildren().contains(player.getThrowingWeapon())){
-                            System.out.println("muovi");
+
                             player.addPlayerWeaponToTheScreen(gamescreen.getOverworldWrapper(), weapon);
                             setChanged();
                             notifyObservers(new SwordThrowing(direction, StartEndStatus.START));
@@ -162,8 +159,6 @@ public class GameView extends Observable implements Observer{
                         changeHandle();
                         count ++;
                         current = l;
-
-
                     }
 
                 }
@@ -171,12 +166,9 @@ public class GameView extends Observable implements Observer{
 
                     stop();
 
-
                     player.endAttack();
                     setChanged();
                     notifyObservers(new PlayerAttack(weapon, throwing, StartEndStatus.END));
-
-
                 }
 
 
@@ -246,14 +238,10 @@ public class GameView extends Observable implements Observer{
             addPlayerPositionIfInDungeon = 1;
         }
 
-        //setZoneChanging(true);
 
-        //Create traslate transition
+        //Create traslate transitions
         TranslateTransition zoneSwitchTransition = new TranslateTransition();
-
         TranslateTransition playerSwitchTransition = new TranslateTransition();
-
-
 
         //Add node to transition
         zoneSwitchTransition.setNode(currentEnvironment);
@@ -274,11 +262,8 @@ public class GameView extends Observable implements Observer{
 
             case DOWN:
                 //World translation and player movement in tandem with the world
-
                 zoneSwitchTransition.setToY(currentEnvironment.getTranslateY() - Dimensions.MAP_HEIGHT.get());
                 playerSwitchTransition.setToY(  addPlayerPositionIfInDungeon*player.getTileHeight());
-
-
                 break;
 
             case LEFT:
@@ -295,8 +280,6 @@ public class GameView extends Observable implements Observer{
                 break;
         }
 
-
-
         //Transition duration
         zoneSwitchTransition.setDuration(Duration.millis(1000));
         playerSwitchTransition.setDuration(Duration.millis(1000));
@@ -306,20 +289,17 @@ public class GameView extends Observable implements Observer{
 
         //When transition ends
         parallel.setOnFinished(e-> {
-            //setZoneChanging(false);
+
             setChanged();
-            notifyObservers(new ChangeZone(direction, StartEndStatus.END));
+            notifyObservers(new ChangeZone(new Coordinates(0,0), direction, StartEndStatus.END));
 
             player.setOpacity(100);
             player.changeSprite(direction);
-
-
 
         });
 
 
     }
-
 
 
     @Override
@@ -333,6 +313,7 @@ public class GameView extends Observable implements Observer{
 
         if (arg instanceof ChangeZone cz){
             changeZone(cz.getDirection(), gamescreen.getCurrentEnvironment());
+            gamescreen.getStatusBar().getStatusMap().moveIndicatorToCurrentPlayerPosition(cz.getZonePosition().getY(), cz.getZonePosition().getX());
         }
 
         else if (arg instanceof EnemyMovement em){
@@ -349,9 +330,9 @@ public class GameView extends Observable implements Observer{
         } else if (arg instanceof RemoveWeapons remove) {
             gamescreen.removeEnemyWeapon(remove.getDeleteWeapons());
 
-        }else if(arg instanceof PlayerCollision pc){
-            injuring(pc.getPlayerDirection());
-
+        }else if(arg instanceof PlayerTakeDamage pc){
+            injuring();
+            gamescreen.getStatusBar().getStatusLifeBar().drawHearts(pc.getTotalLives(), pc.getLivesLeft());
         }
 
         if(arg instanceof PlayerAttack pa){
@@ -363,7 +344,6 @@ public class GameView extends Observable implements Observer{
             if (s.getStatus() == StartEndStatus.END){
                 endMoveThrownWeaponView();
             }else{
-
                 player.moveThrownWeaponView(s.getDirection());
             }
 
@@ -371,34 +351,84 @@ public class GameView extends Observable implements Observer{
 
         if(arg instanceof EnemyDeath ed){
             gamescreen.removeEnemies(ed.getDeathEnemy());
-
+            gamescreen.getStatusBar().getStatusScoreBar().incrementPlayerScore(ed.getPlayerScore());
+            gamescreen.addItemInToTheMap(ed.getDeathEnemyPosition(), ItemType.RUPEE);
         }
 
-        if (arg instanceof EnvironmentSwitcher env){
+        if (arg instanceof EnterEnvironment env){
+
+
             switch (env.getEnvironmentType()){
                 case SHOP -> {
                     EnterTheShop esh = (EnterTheShop) env;
-                    gamescreen.enterTheShopView(esh.getPlayerEntryPosition(), esh.getNpcType(), esh.getItemType(), esh.getPlayerDirection());
+                    gamescreen.enterTheShopView(esh.getPlayerEntryPosition(), esh.getNpcType(), esh.getItemType(), esh.getPlayerDirection(), esh.getCost());
+                    gamescreen.getStatusBar().getStatusMap().drawMap(
+                            env.getEnvironmentRows(),
+                            env.getEnvironmentColumns(),
+                            esh.getPlayerEntryPosition().getZoneCoordinates().getX(),
+                            esh.getPlayerEntryPosition().getZoneCoordinates().getY()
+                    );
                 }
                 case DUNGEON -> {
 
                     EnterDungeon edu = (EnterDungeon) env;
                     gamescreen.enterDungeon(edu.getEntryPosition(), edu.getDungeonLevel(), edu.getPlayerDirection());
+                    gamescreen.getStatusBar().getStatusMap().drawMap(
+                            env.getEnvironmentRows(),
+                            env.getEnvironmentColumns(),
+                            edu.getEntryPosition().getZoneCoordinates().getX(),
+                            edu.getEntryPosition().getZoneCoordinates().getY()
+                    );
                 }
                 case OVERWORLD -> {
 
                     EnterOverworld eov = (EnterOverworld) env;
                     gamescreen.enterOverworld(eov.getPlayerEntryPosition(), eov.getPlayerDirection());
+                    gamescreen.getStatusBar().getStatusMap().drawMap(
+                            env.getEnvironmentRows(),
+                            env.getEnvironmentColumns(),
+                            eov.getPlayerEntryPosition().getZoneCoordinates().getX(),
+                            eov.getPlayerEntryPosition().getZoneCoordinates().getY()
+                    );
                 }
             }
+
+
+
         }
 
         if (arg instanceof PlayerTakeItem pti){
-            playerTakeItemAnimation(pti.getItem());
+
+            if (pti.isShop()){
+                if(pti.getItem() == ItemType.SWORD){
+
+                    gamescreen.getStatusBar().getStatusWeaponBar().addSword();
+                }else{
+                    playerTakeItemAnimation(pti.getItem());
+
+                }
+                playerTakeItemAnimation(pti.getItem());
+
+            }else{
+                gamescreen.deleteItem(pti.getPosition());
+                gamescreen.getStatusBar().getItemsBar().getRupie().incrementItemQuantity(pti.getItemQuantity());
+            }
+
         }
 
 
+        if (arg instanceof DeleteItems di){
+            gamescreen.deleteItem(di.getItemPosition());
+        }
 
+        if (arg instanceof BuyItemEvent buyItemEvent){
+            gamescreen.getStatusBar().getItemsBar().getRupie().incrementItemQuantity(buyItemEvent.getRemainingRupies());
+        }
+        if (arg instanceof IncrementItems incItem){
+            switch(incItem.getItemType()){
+                case LIFE -> gamescreen.getStatusBar().getStatusLifeBar().drawHearts(incItem.getMaxQuantity(), incItem.getFinalItemQuantity());
+            }
+        }
 
 
     }

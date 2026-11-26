@@ -3,9 +3,10 @@ package com.jdelza.controller;
 import com.jdelza.model.GameModel;
 import com.jdelza.model.characters.Enemy;
 import com.jdelza.utils.enums.Directions;
+import com.jdelza.utils.enums.StartEndStatus;
+import com.jdelza.utils.events.*;
 import com.jdelza.view.GameView;
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -56,15 +57,9 @@ public class GameController implements Observer {
         //Add a gameview as an observer of the model
         gameModel.addObserver(gameView);
 
-
-
         //Game view: on key pressed event
         gameView.getGamescreen().setOnKeyPressed(this::handleKeyPressed);
         gameView.getGamescreen().setOnKeyReleased(this::handleKeyReleased);
-
-
-
-
 
 
         //Game loop created by javafx animation timer
@@ -132,25 +127,7 @@ public class GameController implements Observer {
      * @param now
      */
     public void movePlayer(long now){
-        /*
-        if (!gameView.getGamescreen().isPlayerMoving()){
-            if (upPressed && now - lastMove >= MOVE_DELAY) {
-                gameModel.movePlayer(Directions.UP);
-                lastMove = now;
-            } else if (downPressed && now - lastMove >= MOVE_DELAY) {
-                gameModel.movePlayer(Directions.DOWN);
-                lastMove = now;
 
-            } else if (leftPressed && now - lastMove >= MOVE_DELAY) {
-                gameModel.movePlayer(Directions.LEFT);
-                lastMove = now;
-            } else if (rightPressed && now - lastMove >= MOVE_DELAY) {
-                gameModel.movePlayer(Directions.RIGHT);
-                lastMove = now;
-            }
-        }
-
-         */
 
         if (upPressed && now - lastMove >= MOVE_DELAY) {
             gameModel.movePlayer(Directions.UP);
@@ -180,7 +157,6 @@ public class GameController implements Observer {
 
     public void update(long now){
 
-        //if (!gameView.getGamescreen().isZoneChanging() && !gameModel.getPlayer().isAttacking()){movePlayer(now);}
 
         if ( !gameModel.getCurrentMap().isZoneChanging() && !gameModel.getPlayer().isAttacking()){movePlayer(now); }
 
@@ -231,5 +207,39 @@ public class GameController implements Observer {
             }
 
             }
+
+        if (arg instanceof PlayerTakeDamage pc){
+            if (!pc.isPlayerInjuring()){
+                gameModel.getPlayer().setHasPlayerInjuring(false);
+            }
+        }
+
+        if (arg instanceof PlayerAttack){
+            gameModel.getPlayer().playerEndAttack();
+
+        }
+
+        if (arg instanceof SwordThrowing st){
+
+            if(st.getStatus() == StartEndStatus.END){
+
+                gameModel.getPlayer().endPlayerWeaponThrowing();
+            }else{
+
+                gameModel.getPlayer().setWeaponThrowing(true);
+            }
+        }
+
+        if (arg instanceof PlayerTakeItem pti){
+            if(pti.getStatus() == StartEndStatus.END )  gameModel.getPlayer().setTakingItem(false);
+        }
+
+        if(arg instanceof ChangeZone changeZone){
+            gameModel.getCurrentMap().setZoneChanging(!(changeZone.getStatus() == StartEndStatus.END));
+        }
+
+
+
+
     }
 }
